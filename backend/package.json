@@ -1,0 +1,17 @@
+{
+  "name": "govinnovate-backend",
+  "version": "1.0.0",
+  "description": "GovInnovate Backend API for SIH 26136",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js",
+    "seed": "node seed/seedData.js"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
+    "express": "^4.19.2",
+    "mongoose": "^8.3.1"
+  }
+}
