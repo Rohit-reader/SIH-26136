@@ -15,7 +15,7 @@ import { formatText, formatCurrency } from '../utils/textUtils';
 import { EvaluationCriteriaChart } from '../components/charts/RoleAnalyticsCharts';
 import { RoleSidebar } from '../components/RoleSidebar';
 
-export const EvaluatorView = ({ onOpenEvaluationModal }) => {
+export const EvaluatorView = ({ onOpenEvaluationModal, currentUser, onLogout, onOpenAudit }) => {
   const [evaluations, setEvaluations] = useState([]);
   const [activeTab, setActiveTab] = useState('dashboard');
   const [collapsed, setCollapsed] = useState(false);
@@ -64,6 +64,9 @@ export const EvaluatorView = ({ onOpenEvaluationModal }) => {
         onSelectTab={setActiveTab}
         collapsed={collapsed}
         onToggleCollapse={() => setCollapsed(!collapsed)}
+        currentUser={currentUser}
+        onLogout={onLogout}
+        onOpenAudit={onOpenAudit}
       />
 
       {/* Main Content Area */}

@@ -62,7 +62,7 @@ body {
   width: 100%;
   max-width: 100%;
   margin: 0;
-  padding: 0 1.5rem 3rem 0; /* Flush left alignment with zero whitespace */
+  padding: 0;
 }
 
 /* Glass & Card Design */
@@ -343,7 +343,7 @@ body {
 /* Government Officer & Role Persistent Layout */
 .govt-layout {
   display: flex;
-  min-height: calc(100vh - 85px);
+  min-height: 100vh;
   gap: 1.5rem;
   width: 100%;
   align-items: stretch;
@@ -353,15 +353,31 @@ body {
   width: 270px;
   flex-shrink: 0;
   background-color: var(--navy-primary);
-  border-radius: 0; /* Square edges eliminate all bottom white space & rounded cut-offs */
+  border-radius: 0;
   padding: 1.25rem 0.75rem;
   display: flex;
   flex-direction: column;
   gap: 0.35rem;
   box-shadow: var(--shadow-md);
-  transition: all 0.2s ease;
-  align-self: stretch;
-  min-height: calc(100vh - 85px);
+  transition: width 0.2s ease;
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  overflow-y: auto;
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE and Edge */
+}
+
+.govt-sidebar::-webkit-scrollbar,
+.govt-sidebar nav::-webkit-scrollbar {
+  display: none;
+  width: 0;
+  height: 0;
+}
+
+.govt-sidebar nav {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
 }
 
 .govt-sidebar.collapsed {
@@ -434,6 +450,7 @@ body {
 .govt-content-area {
   flex: 1;
   min-width: 0;
+  padding: 1.5rem 1.5rem 3rem 0;
 }
 
 /* AI Policy Banner */

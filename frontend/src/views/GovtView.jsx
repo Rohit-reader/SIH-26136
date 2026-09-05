@@ -13,7 +13,7 @@ import { GovtProcurementTab } from '../components/govt/GovtProcurementTab';
 import { GovtScaleUpTab } from '../components/govt/GovtScaleUpTab';
 import { GovtNotificationsTab } from '../components/govt/GovtNotificationsTab';
 
-export const GovtView = ({ onOpenCreateModal }) => {
+export const GovtView = ({ onOpenCreateModal, currentUser, onLogout, onOpenAudit }) => {
   const [activeTab, setActiveTab] = useState('dashboard');
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
   const [loading, setLoading] = useState(true);
@@ -83,6 +83,9 @@ export const GovtView = ({ onOpenCreateModal }) => {
         counts={counts}
         collapsed={sidebarCollapsed}
         onToggleCollapse={() => setSidebarCollapsed(!sidebarCollapsed)}
+        currentUser={currentUser}
+        onLogout={onLogout}
+        onOpenAudit={onOpenAudit}
       />
 
       {/* Main Content Area */}

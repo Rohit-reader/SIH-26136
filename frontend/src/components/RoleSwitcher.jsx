@@ -22,7 +22,7 @@ export const RoleSwitcher = ({ currentRole, onRoleChange }) => {
         margin: '0 auto',
         display: 'flex',
         alignItems: 'center',
-        justify: 'space-between',
+        justifyContent: 'space-between',
         flexWrap: 'wrap',
         gap: '0.75rem'
       }}>

@@ -98,7 +98,7 @@ export const ChallengeBuilderModal = ({ isOpen, onClose, onChallengeCreated }) =
               marginBottom: '1.25rem',
               display: 'flex',
               alignItems: 'center',
-              justify: 'space-between'
+              justifyContent: 'space-between'
             }}>
               <div>
                 <p style={{ fontWeight: 600, color: '#1E3A8A', fontSize: '0.875rem' }}>

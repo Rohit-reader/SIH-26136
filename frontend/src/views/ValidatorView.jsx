@@ -16,7 +16,7 @@ import { InnovationFunnelChart } from '../components/charts/GovtAnalyticsCharts'
 import { EvaluationCriteriaChart } from '../components/charts/RoleAnalyticsCharts';
 import { RoleSidebar } from '../components/RoleSidebar';
 
-export const ValidatorView = ({ onRefreshData }) => {
+export const ValidatorView = ({ onRefreshData, currentUser, onLogout, onOpenAudit }) => {
   const [pilots, setPilots] = useState([]);
   const [activeTab, setActiveTab] = useState('dashboard');
   const [collapsed, setCollapsed] = useState(false);
@@ -86,6 +86,9 @@ export const ValidatorView = ({ onRefreshData }) => {
         onSelectTab={setActiveTab}
         collapsed={collapsed}
         onToggleCollapse={() => setCollapsed(!collapsed)}
+        currentUser={currentUser}
+        onLogout={onLogout}
+        onOpenAudit={onOpenAudit}
       />
 
       {/* Main Content Area */}
