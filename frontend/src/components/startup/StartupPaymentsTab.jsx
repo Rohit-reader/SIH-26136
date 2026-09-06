@@ -15,7 +15,7 @@ import {
 import axios from 'axios';
 import { formatText, formatCurrency } from '../../utils/textUtils';
 
-export const StartupPaymentsTab = ({ pilots = [] }) => {
+export const StartupPaymentsTab = ({ pilots = [], onRefresh }) => {
   const [contracts, setContracts] = useState([]);
   const [isSubmitModalOpen, setIsSubmitModalOpen] = useState(false);
   const [selectedContractId, setSelectedContractId] = useState('');
@@ -52,6 +52,7 @@ export const StartupPaymentsTab = ({ pilots = [] }) => {
       setEvidenceName('');
       setEvidenceNotes('');
       fetchContracts();
+      if (onRefresh) onRefresh();
     } catch (err) {
       console.error(err);
       alert('Failed to submit milestone deliverable.');
@@ -93,48 +94,10 @@ export const StartupPaymentsTab = ({ pilots = [] }) => {
       });
     });
   } else {
-    totalContracted = 1420000;
-    totalReceived = 994000;
-    totalPending = 426000;
-
-    paymentRecords.push(
-      {
-        id: 'MH-EKOSH-2026-TR-842109',
-        contractTitle: 'Innovation Agreement: SmartOPD AI Triage Platform',
-        contractNumber: 'MH-INNOV-2026-CT-8942',
-        milestone: 'Milestone #1: Hardware & Kiosk Setup',
-        amount: 426000,
-        status: 'Disbursed',
-        isDisbursed: true,
-        releasedDate: '2026-06-05',
-        sanctionOrderNo: 'e-Kosh: MH-EKOSH-2026-TR-842109',
-        invoiceNo: 'INV-2026-001'
-      },
-      {
-        id: 'MH-EKOSH-2026-TR-842110',
-        contractTitle: 'Innovation Agreement: SmartOPD AI Triage Platform',
-        contractNumber: 'MH-INNOV-2026-CT-8942',
-        milestone: 'Milestone #2: HMIS Integration & WhatsApp Live',
-        amount: 568000,
-        status: 'Disbursed',
-        isDisbursed: true,
-        releasedDate: '2026-07-08',
-        sanctionOrderNo: 'e-Kosh: MH-EKOSH-2026-TR-842110',
-        invoiceNo: 'INV-2026-002'
-      },
-      {
-        id: 'DRAFT-PAY-8423',
-        contractTitle: 'Innovation Agreement: SmartOPD AI Triage Platform',
-        contractNumber: 'MH-INNOV-2026-CT-8942',
-        milestone: 'Milestone #3: 75-Day Trial & Performance Audit',
-        amount: 426000,
-        status: 'Pending',
-        isDisbursed: false,
-        releasedDate: 'Expected Aug 2026',
-        sanctionOrderNo: 'Pending Treasury Clearance',
-        invoiceNo: 'DRAFT-INV-003'
-      }
-    );
+    // No contracts yet — show zero values
+    totalContracted = 0;
+    totalReceived = 0;
+    totalPending = 0;
   }
 
   return (

@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import axios from 'axios';
 import { 
   Building2, 
   ShieldCheck, 
@@ -23,7 +24,7 @@ import { formatText } from '../../utils/textUtils';
 import { StartupIndiaBadge } from '../Emblems';
 import { DigiLockerVerificationCard } from './DigiLockerVerificationCard';
 
-export const StartupProfileTab = ({ primaryStartup = {}, onSaveProfile }) => {
+export const StartupProfileTab = ({ primaryStartup = {}, startupId, onRefresh }) => {
   const [activeSubTab, setActiveSubTab] = useState('basic'); // 'basic' | 'company' | 'team' | 'tech' | 'docs'
   const [isEditing, setIsEditing] = useState(false);
   const [uploadModalOpen, setUploadModalOpen] = useState(false);
@@ -59,14 +60,34 @@ export const StartupProfileTab = ({ primaryStartup = {}, onSaveProfile }) => {
     ]
   });
 
-  const handleSave = (e) => {
+  const handleSave = async (e) => {
     e.preventDefault();
-    setIsEditing(false);
-    if (onSaveProfile) onSaveProfile(profileData);
-    alert('Startup Profile updated successfully!');
+    if (!startupId) {
+      alert('Cannot save: Startup profile not found in database.');
+      return;
+    }
+    try {
+      await axios.put(`/api/startups/${startupId}`, {
+        name: profileData.name,
+        dpiitNumber: profileData.dpiitNumber,
+        industryDomain: profileData.industryDomain,
+        technologies: profileData.technologies,
+        teamSize: profileData.teamSize,
+        location: profileData.location,
+        contactEmail: profileData.contactEmail,
+        contactPhone: profileData.contactPhone,
+        documents: profileData.documents.map(d => ({ title: d.title, type: d.type, url: d.url || '#' }))
+      });
+      setIsEditing(false);
+      if (onRefresh) onRefresh();
+      alert('Startup Profile updated successfully!');
+    } catch (err) {
+      console.error('Failed to save profile:', err);
+      alert(err.response?.data?.error || 'Failed to save profile.');
+    }
   };
 
-  const handleAddDocument = (e) => {
+  const handleAddDocument = async (e) => {
     e.preventDefault();
     if (!newDocName) return;
 
@@ -78,21 +99,39 @@ export const StartupProfileTab = ({ primaryStartup = {}, onSaveProfile }) => {
       date: new Date().toISOString().split('T')[0]
     };
 
-    setProfileData(prev => ({
-      ...prev,
-      documents: [...prev.documents, newDoc]
-    }));
+    const updatedDocs = [...profileData.documents, newDoc];
+    setProfileData(prev => ({ ...prev, documents: updatedDocs }));
+
+    if (startupId) {
+      try {
+        await axios.put(`/api/startups/${startupId}`, {
+          documents: updatedDocs.map(d => ({ title: d.title, type: d.type, url: d.url || '#' }))
+        });
+        if (onRefresh) onRefresh();
+      } catch (err) {
+        console.error('Failed to persist document:', err);
+      }
+    }
 
     setNewDocName('');
     setUploadModalOpen(false);
     alert(`Document "${newDocName}" uploaded successfully.`);
   };
 
-  const handleDeleteDocument = (docIndex) => {
-    setProfileData(prev => ({
-      ...prev,
-      documents: prev.documents.filter((_, idx) => idx !== docIndex)
-    }));
+  const handleDeleteDocument = async (docIndex) => {
+    const updatedDocs = profileData.documents.filter((_, idx) => idx !== docIndex);
+    setProfileData(prev => ({ ...prev, documents: updatedDocs }));
+
+    if (startupId) {
+      try {
+        await axios.put(`/api/startups/${startupId}`, {
+          documents: updatedDocs.map(d => ({ title: d.title, type: d.type, url: d.url || '#' }))
+        });
+        if (onRefresh) onRefresh();
+      } catch (err) {
+        console.error('Failed to persist document deletion:', err);
+      }
+    }
   };
 
   return (

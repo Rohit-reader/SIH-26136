@@ -186,4 +186,39 @@ router.get('/match-analysis/:id', async (req, res) => {
   }
 });
 
+// PUT /api/startups/:id - Update Startup Profile
+router.put('/:id', async (req, res) => {
+  try {
+    const startup = await Startup.findById(req.params.id);
+    if (!startup) return res.status(404).json({ error: 'Startup not found' });
+
+    // Allowed updatable fields
+    const allowedFields = [
+      'name', 'dpiitNumber', 'industryDomain', 'technologies', 'teamSize',
+      'location', 'contactEmail', 'contactPhone', 'documents', 'certifications',
+      'previousGovtProjects', 'foundingYear'
+    ];
+
+    allowedFields.forEach(field => {
+      if (req.body[field] !== undefined) {
+        startup[field] = req.body[field];
+      }
+    });
+
+    await startup.save();
+
+    await AuditLog.create({
+      action: 'STARTUP_PROFILE_UPDATED',
+      actorRole: 'Startup Admin',
+      actorName: startup.name,
+      details: `Updated startup profile for "${startup.name}" (DPIIT: ${startup.dpiitNumber})`,
+      entityId: startup._id.toString()
+    });
+
+    res.json(startup);
+  } catch (err) {
+    res.status(400).json({ error: err.message });
+  }
+});
+
 module.exports = router;

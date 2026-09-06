@@ -43,16 +43,6 @@ export const EvaluatorView = ({ onOpenEvaluationModal, currentUser, onLogout, on
     }
   };
 
-  const sampleProposal = {
-    _id: proposals[0]?._id || 'p123',
-    solutionTitle: proposals[0]?.solutionTitle || 'SmartOPD — AI Triage and Computer Vision Queue Platform',
-    startupName: proposals[0]?.startupId?.name || 'HealthAI Solutions Pvt Ltd',
-    proposedBudget: proposals[0]?.proposedBudget || 1420000,
-    technicalApproach: proposals[0]?.technicalApproach || 'Deploys edge-AI cameras and smart token kiosks to dynamically estimate patient wait times, auto-route priority emergency cases, and broadcast queue status via WhatsApp.',
-    securityApproach: proposals[0]?.securityApproach || 'End-to-end AES-256 encryption, zero PII exposure to public APIs, compliance with Digital Personal Data Protection Act 2023.',
-    eligibilityStatus: proposals[0]?.eligibilityScreening?.screeningStatus || proposals[0]?.status || 'Eligible'
-  };
-
   // Filter proposals eligible for Phase 4 evaluation
   const eligibleProposals = proposals.filter(p => {
     const s = p.eligibilityScreening?.screeningStatus || p.status;
@@ -61,7 +51,7 @@ export const EvaluatorView = ({ onOpenEvaluationModal, currentUser, onLogout, on
 
   const sidebarItems = [
     { id: 'dashboard', label: 'Evaluation Console', icon: LayoutDashboard },
-    { id: 'proposals', label: 'Assigned Proposals', icon: FileText, count: eligibleProposals.length || 1 },
+    { id: 'proposals', label: 'Assigned Proposals', icon: FileText, count: eligibleProposals.length },
     { id: 'scorecard', label: 'Scoring Criteria', icon: Award },
     { id: 'coi', label: 'COI Declarations', icon: ShieldCheck, count: evaluations.filter(e => e.coiDeclared).length }
   ];
@@ -71,7 +61,7 @@ export const EvaluatorView = ({ onOpenEvaluationModal, currentUser, onLogout, on
       {/* Persistent Evaluator Sidebar */}
       <RoleSidebar
         title="EVALUATOR PORTAL"
-        subtitle="Dr. A. Sharma (IITB Expert)"
+        subtitle={currentUser?.name || 'Expert Evaluator'}
         items={sidebarItems}
         activeTab={activeTab}
         onSelectTab={setActiveTab}
@@ -129,7 +119,12 @@ export const EvaluatorView = ({ onOpenEvaluationModal, currentUser, onLogout, on
               Assigned Startup Applications for Phase 4 Review
             </h3>
 
-            {(eligibleProposals.length > 0 ? eligibleProposals : [sampleProposal]).map((prop) => (
+            {eligibleProposals.length === 0 ? (
+              <div className="gov-card" style={{ textAlign: 'center', padding: '2.5rem', color: '#64748B' }}>
+                <FileText size={36} color="#CBD5E1" style={{ marginBottom: '0.5rem' }} />
+                <p style={{ margin: 0 }}>No proposals currently assigned for evaluation. Proposals that pass Phase 3 Eligibility will appear here.</p>
+              </div>
+            ) : eligibleProposals.map((prop) => (
               <div key={prop._id} className="gov-card" style={{ marginBottom: '1rem' }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', flexWrap: 'wrap', gap: '1rem', marginBottom: '1rem' }}>
                   <div>

@@ -12,64 +12,37 @@ import {
   Trash2,
   Filter
 } from 'lucide-react';
+import axios from 'axios';
 import { formatText } from '../../utils/textUtils';
 
-export const StartupNotificationsTab = ({ notifications = [], onNavigateTab }) => {
-  const [localNotifications, setLocalNotifications] = useState(() => {
-    if (notifications.length > 0) return notifications;
-    return [
-      {
-        _id: 'n1',
-        title: 'Payment Release Sanctioned',
-        message: 'Milestone #2 payment of ₹5,68,000 for SmartOPD Pilot has been released by State Treasury.',
-        category: 'payment',
-        isRead: false,
-        createdAt: '2026-09-04T10:30:00Z'
-      },
-      {
-        _id: 'n2',
-        title: 'Expert Evaluation Completed',
-        message: 'Dr. Anand Sharma scored your SmartOPD Technical Proposal 93.4/100.',
-        category: 'evaluation',
-        isRead: false,
-        createdAt: '2026-09-02T14:15:00Z'
-      },
-      {
-        _id: 'n3',
-        title: 'Field Pilot Launched',
-        message: 'Pune District Hospital trial deployment status updated to Active In-Progress.',
-        category: 'pilot',
-        isRead: true,
-        createdAt: '2026-08-28T09:00:00Z'
-      },
-      {
-        _id: 'n4',
-        title: 'New Government Challenge Published',
-        message: 'Public Health Department published "AI Tele-ICU Monitoring for Rural Sub-Centers".',
-        category: 'challenge',
-        isRead: true,
-        createdAt: '2026-08-25T11:45:00Z'
-      }
-    ];
-  });
-
+export const StartupNotificationsTab = ({ notifications = [], onNavigateTab, onRefresh }) => {
   const [activeCategory, setActiveCategory] = useState('all');
 
-  const handleMarkAsRead = (id) => {
-    setLocalNotifications(prev => prev.map(n => n._id === id ? { ...n, isRead: true } : n));
+  const handleMarkAsRead = async (id) => {
+    try {
+      await axios.patch(`/api/notifications/${id}/read`);
+      if (onRefresh) onRefresh();
+    } catch (err) {
+      console.error('Failed to mark notification as read:', err);
+    }
   };
 
-  const handleMarkAllRead = () => {
-    setLocalNotifications(prev => prev.map(n => ({ ...n, isRead: true })));
+  const handleMarkAllRead = async () => {
+    try {
+      await axios.patch('/api/notifications/mark-all-read');
+      if (onRefresh) onRefresh();
+    } catch (err) {
+      console.error('Failed to mark all notifications as read:', err);
+    }
   };
 
-  const filteredNotifications = localNotifications.filter(n => {
+  const filteredNotifications = notifications.filter(n => {
     if (activeCategory === 'unread') return !n.isRead;
     if (activeCategory === 'all') return true;
-    return (n.category || '').toLowerCase() === activeCategory.toLowerCase();
+    return (n.category || n.type || '').toLowerCase() === activeCategory.toLowerCase();
   });
 
-  const unreadCount = localNotifications.filter(n => !n.isRead).length;
+  const unreadCount = notifications.filter(n => !n.isRead).length;
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>

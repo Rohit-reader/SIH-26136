@@ -153,9 +153,8 @@ export const StartupView = ({ onOpenProposalModal, currentUser, onLogout, onOpen
             {activeTab === 'profile' && (
               <StartupProfileTab
                 primaryStartup={primaryStartup}
-                onSaveProfile={(updatedData) => {
-                  console.log('Saved profile:', updatedData);
-                }}
+                startupId={primaryStartup._id}
+                onRefresh={fetchStartupData}
               />
             )}
 
@@ -194,6 +193,7 @@ export const StartupView = ({ onOpenProposalModal, currentUser, onLogout, onOpen
             {activeTab === 'payments' && (
               <StartupPaymentsTab
                 pilots={pilots}
+                onRefresh={fetchStartupData}
               />
             )}
 
@@ -202,6 +202,7 @@ export const StartupView = ({ onOpenProposalModal, currentUser, onLogout, onOpen
               <StartupNotificationsTab
                 notifications={notifications}
                 onNavigateTab={setActiveTab}
+                onRefresh={fetchStartupData}
               />
             )}
           </>

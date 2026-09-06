@@ -168,8 +168,8 @@ export const GovtView = ({ onOpenCreateModal, currentUser, onLogout, onOpenAudit
             {activeTab === 'procurement' && (
               <GovtProcurementTab
                 pilots={pilots}
-                scaleUps={scaleUps}
-                auditLogs={auditLogs}
+                proposals={proposals}
+                onRefresh={fetchAllData}
               />
             )}
 
