@@ -21,6 +21,7 @@ import {
 } from 'lucide-react';
 import { formatText } from '../../utils/textUtils';
 import { StartupIndiaBadge } from '../Emblems';
+import { DigiLockerVerificationCard } from './DigiLockerVerificationCard';
 
 export const StartupProfileTab = ({ primaryStartup = {}, onSaveProfile }) => {
   const [activeSubTab, setActiveSubTab] = useState('basic'); // 'basic' | 'company' | 'team' | 'tech' | 'docs'
@@ -132,6 +133,16 @@ export const StartupProfileTab = ({ primaryStartup = {}, onSaveProfile }) => {
           </div>
         </div>
       </div>
+
+      {/* DigiLocker Verification Integration Card */}
+      <DigiLockerVerificationCard
+        primaryStartup={primaryStartup}
+        onVerificationUpdated={(v) => {
+          if (v && v.status === 'Verified') {
+            setProfileData(prev => ({ ...prev, verificationStatus: 'DPIIT Verified' }));
+          }
+        }}
+      />
 
       {/* Profile Section Sub-Tabs */}
       <div style={{ display: 'flex', gap: '0.5rem', borderBottom: '2px solid #E2E8F0', paddingBottom: '0.5rem', flexWrap: 'wrap' }}>

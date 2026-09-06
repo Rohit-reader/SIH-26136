@@ -110,7 +110,8 @@ export const GovtChallengesTab = ({ challenges = [], onRefresh, onOpenCreateModa
                   <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.5rem', flexWrap: 'wrap' }}>
                     <span className="badge badge-navy">{formatText(c.status)}</span>
                     <span className="badge badge-saffron">{formatText(c.department)}</span>
-                    <span className="badge badge-emerald">{formatText(c.location)}</span>
+                    {c.sector && <span className="badge badge-emerald">{formatText(c.sector)}</span>}
+                    <span className="badge badge-emerald">{formatText(c.location || 'Maharashtra')}</span>
                   </div>
 
                   <h3 style={{ fontSize: '1.2rem', fontWeight: 700, color: '#0A2540', marginBottom: '0.5rem' }}>
@@ -120,6 +121,14 @@ export const GovtChallengesTab = ({ challenges = [], onRefresh, onOpenCreateModa
                   <p style={{ fontSize: '0.875rem', color: '#334155', marginBottom: '1rem' }}>
                     {formatText(c.problemDescription)}
                   </p>
+
+                  {/* GFR Startup Waivers Badges */}
+                  <div style={{ backgroundColor: '#ECFDF5', border: '1px solid #A7F3D0', padding: '0.6rem 0.85rem', borderRadius: '6px', marginBottom: '1rem', display: 'flex', alignItems: 'center', gap: '0.85rem', flexWrap: 'wrap' }}>
+                    <span style={{ fontSize: '0.725rem', fontWeight: 700, color: '#065F46', textTransform: 'uppercase' }}>GFR Startup Relaxations:</span>
+                    <span className="badge badge-emerald" style={{ fontSize: '0.7rem' }}>✓ Turnover 100% Waived</span>
+                    <span className="badge badge-emerald" style={{ fontSize: '0.7rem' }}>✓ Prior Experience Waived</span>
+                    <span className="badge badge-emerald" style={{ fontSize: '0.7rem' }}>✓ EMD Exempted</span>
+                  </div>
 
                   {/* Baseline vs Target Box */}
                   <div style={{
@@ -218,7 +227,7 @@ export const GovtChallengesTab = ({ challenges = [], onRefresh, onOpenCreateModa
       {/* Challenge Detail Modal */}
       {selectedChallenge && (
         <div className="modal-overlay" onClick={() => setSelectedChallenge(null)}>
-          <div className="modal-content" onClick={e => e.stopPropagation()}>
+          <div className="modal-content" style={{ maxWidth: '780px' }} onClick={e => e.stopPropagation()}>
             <div className="modal-header">
               <h3 style={{ fontSize: '1.1rem', fontWeight: 700, color: '#0A2540' }}>
                 {formatText(selectedChallenge.title)}
@@ -227,24 +236,40 @@ export const GovtChallengesTab = ({ challenges = [], onRefresh, onOpenCreateModa
                 <X size={16} />
               </button>
             </div>
-            <div className="modal-body">
-              <p style={{ marginBottom: '1rem' }}><strong>Department:</strong> {formatText(selectedChallenge.department)}</p>
-              <p style={{ marginBottom: '1rem' }}><strong>Problem:</strong> {formatText(selectedChallenge.problemDescription)}</p>
-              <p style={{ marginBottom: '1rem' }}><strong>Target Beneficiaries:</strong> {formatText(selectedChallenge.targetBeneficiaries)}</p>
-              <p style={{ marginBottom: '1rem' }}><strong>Expected Outcome:</strong> {formatText(selectedChallenge.expectedOutcome)}</p>
-              <h4 style={{ fontSize: '0.95rem', fontWeight: 700, margin: '1rem 0 0.5rem' }}>KPI Metrics</h4>
-              <ul>
+            <div className="modal-body" style={{ display: 'flex', flexDirection: 'column', gap: '0.85rem' }}>
+              <p><strong>Department:</strong> {formatText(selectedChallenge.department)}</p>
+              <p><strong>Sector:</strong> {formatText(selectedChallenge.sector || 'Public Health')}</p>
+              <p><strong>Problem Description:</strong> {formatText(selectedChallenge.problemDescription)}</p>
+              <p><strong>Target Beneficiaries:</strong> {formatText(selectedChallenge.targetBeneficiaries)}</p>
+              <p><strong>Expected Outcome Target:</strong> {formatText(selectedChallenge.expectedOutcome)}</p>
+              
+              <div style={{ backgroundColor: '#ECFDF5', border: '1px solid #A7F3D0', padding: '0.75rem', borderRadius: '6px' }}>
+                <strong style={{ fontSize: '0.825rem', color: '#065F46' }}>DPIIT / MSINS Startup GFR Waivers:</strong>
+                <ul style={{ margin: '0.35rem 0 0 1.25rem', fontSize: '0.8rem', color: '#047857' }}>
+                  <li>Turnover Requirement: 100% Waived under GFR Rule 173(i)</li>
+                  <li>Prior Experience Criteria: 100% Waived for registered startups</li>
+                  <li>EMD Security Deposit: Exempted</li>
+                </ul>
+              </div>
+
+              {selectedChallenge.legalClauses && selectedChallenge.legalClauses.length > 0 && (
+                <div>
+                  <h4 style={{ fontSize: '0.9rem', fontWeight: 700, color: '#0A2540', marginBottom: '0.4rem' }}>Attached Legal & Security Clauses</h4>
+                  <ul style={{ listStyle: 'none', padding: 0, display: 'flex', flexDirection: 'column', gap: '0.4rem' }}>
+                    {selectedChallenge.legalClauses.map((clause, idx) => (
+                      <li key={idx} style={{ fontSize: '0.8rem', backgroundColor: '#F8FAFC', border: '1px solid #E2E8F0', padding: '0.5rem 0.75rem', borderRadius: '6px', color: '#334155' }}>
+                        ⚖️ {formatText(clause)}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+
+              <h4 style={{ fontSize: '0.9rem', fontWeight: 700, margin: '0.5rem 0 0.35rem' }}>Quantifiable KPI Metrics</h4>
+              <ul style={{ margin: 0, paddingLeft: '1.25rem' }}>
                 {selectedChallenge.kpiMetrics?.map((kpi, idx) => (
-                  <li key={idx} style={{ marginBottom: '0.4rem', fontSize: '0.875rem' }}>
+                  <li key={idx} style={{ marginBottom: '0.35rem', fontSize: '0.85rem' }}>
                     <strong>{formatText(kpi.name)}:</strong> Baseline ({kpi.baselineValue}) → Target ({kpi.targetValue})
-                  </li>
-                ))}
-              </ul>
-              <h4 style={{ fontSize: '0.95rem', fontWeight: 700, margin: '1rem 0 0.5rem' }}>Eligibility Requirements</h4>
-              <ul style={{ listStyle: 'none', padding: 0 }}>
-                {selectedChallenge.eligibilityRequirements?.map((req, idx) => (
-                  <li key={idx} style={{ fontSize: '0.875rem', display: 'flex', alignItems: 'center', gap: '0.35rem', marginBottom: '0.35rem' }}>
-                    <CheckCircle2 size={13} color="#059669" /> {formatText(req)}
                   </li>
                 ))}
               </ul>

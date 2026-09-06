@@ -120,6 +120,8 @@ export const GovtView = ({ onOpenCreateModal, currentUser, onLogout, onOpenAudit
             {activeTab === 'startups' && (
               <GovtStartupDiscoveryTab
                 startups={startups}
+                challenges={challenges}
+                onRefresh={fetchAllData}
               />
             )}
 

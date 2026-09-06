@@ -36,7 +36,7 @@ export const StartupBrowseChallengesTab = ({
   const [selectedDomain, setSelectedDomain] = useState('all');
   const [selectedDept, setSelectedDept] = useState('all');
   const [selectedLocation, setSelectedLocation] = useState('all');
-  const [selectedStatus, setSelectedStatus] = useState('Open');
+  const [selectedStatus, setSelectedStatus] = useState('all');
   const [sortBy, setSortBy] = useState('newest'); // 'newest' | 'budget_high' | 'deadline'
 
   // Detailed View State (Screen D)
@@ -79,7 +79,7 @@ export const StartupBrowseChallengesTab = ({
     setSelectedDomain('all');
     setSelectedDept('all');
     setSelectedLocation('all');
-    setSelectedStatus('Open');
+    setSelectedStatus('all');
     setSortBy('newest');
   };
 

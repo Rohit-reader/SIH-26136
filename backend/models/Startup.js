@@ -19,11 +19,36 @@ const startupSchema = new mongoose.Schema({
     default: 'DPIIT Verified' 
   },
   contactEmail: { type: String, required: true },
+  digilockerVerification: {
+    status: {
+      type: String,
+      enum: ['Not Verified', 'Verification in Progress', 'Verified', 'Failed', 'Expired'],
+      default: 'Not Verified'
+    },
+    provider: { type: String, default: 'digilocker' }, // 'digilocker' or 'mock'
+    mode: { type: String, default: 'production' }, // 'production' or 'demo'
+    verifiedAt: { type: Date },
+    documentType: { type: String, default: 'DPIIT Recognition Certificate' },
+    issuer: { type: String, default: 'Department for Promotion of Industry and Internal Trade (DPIIT)' },
+    maskedDocRef: { type: String },
+    failureReason: { type: String }
+  },
   documents: [{
     title: { type: String, required: true },
     type: { type: String, required: true },
     url: { type: String, required: true },
     uploadedAt: { type: Date, default: Date.now }
+  }],
+  shortlistedChallenges: [{
+    challengeId: { type: String, required: true },
+    shortlistedAt: { type: Date, default: Date.now }
+  }],
+  invitedChallenges: [{
+    challengeId: { type: String, required: true },
+    challengeTitle: { type: String },
+    departmentName: { type: String },
+    invitedAt: { type: Date, default: Date.now },
+    inviteMessage: { type: String }
   }],
   createdAt: { type: Date, default: Date.now }
 });

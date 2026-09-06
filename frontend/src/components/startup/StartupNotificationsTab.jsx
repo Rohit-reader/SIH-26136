@@ -179,6 +179,18 @@ export const StartupNotificationsTab = ({ notifications = [], onNavigateTab }) =
                   <span style={{ fontSize: '0.725rem', color: '#64748B' }}>
                     {n.createdAt ? new Date(n.createdAt).toLocaleString('en-IN') : 'Recent'}
                   </span>
+
+                  {(n.type === 'Challenge Invitation' || n.category === 'challenge') && (
+                    <div style={{ marginTop: '0.5rem' }}>
+                      <button
+                        onClick={() => onNavigateTab && onNavigateTab('challenges')}
+                        className="btn-primary"
+                        style={{ fontSize: '0.75rem', padding: '0.35rem 0.75rem', backgroundColor: '#0A2540' }}
+                      >
+                        <Rocket size={13} /> View Challenge & Submit Proposal
+                      </button>
+                    </div>
+                  )}
                 </div>
               </div>
 
