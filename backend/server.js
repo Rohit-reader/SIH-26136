@@ -26,6 +26,7 @@ app.use('/api/notifications', require('./routes/notificationRoutes'));
 app.use('/api/scaleups', require('./routes/scaleUpRoutes'));
 app.use('/api/audit', require('./routes/auditRoutes'));
 app.use('/api/digilocker', require('./routes/digilockerRoutes'));
+app.use('/api/contracts', require('./routes/contractRoutes'));
 
 app.get('/', (req, res) => {
   res.send({

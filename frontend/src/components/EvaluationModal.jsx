@@ -15,6 +15,7 @@ export const EvaluationModal = ({ isOpen, onClose, proposal, onEvaluationSubmitt
     teamCapability: 95
   });
   const [comments, setComments] = useState('Outstanding technical approach with realistic OPD queue optimization algorithms and solid security certifications.');
+  const [riskObservations, setRiskObservations] = useState('Low risk. Requires dedicated LAN access at hospital site.');
   const [recommendation, setRecommendation] = useState('Recommend for Pilot');
 
   if (!isOpen || !proposal) return null;
@@ -35,7 +36,7 @@ export const EvaluationModal = ({ isOpen, onClose, proposal, onEvaluationSubmitt
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!coiDeclared) {
-      alert('You must declare No Conflict of Interest before evaluating.');
+      alert('You must declare No Conflict of Interest (COI) before evaluating.');
       return;
     }
 
@@ -43,15 +44,19 @@ export const EvaluationModal = ({ isOpen, onClose, proposal, onEvaluationSubmitt
       await axios.post('/api/evaluations', {
         proposalId: proposal._id,
         evaluatorName: 'Dr. A. Sharma (Senior Health Tech Expert)',
+        evaluatorRole: 'Technical/Domain Evaluator',
         coiDeclared,
         scores,
         comments,
+        riskObservations,
         recommendation
       });
-      onEvaluationSubmitted();
+      alert('Expert Scorecard Submitted Successfully! Aggregate score updated.');
+      if (onEvaluationSubmitted) onEvaluationSubmitted();
       onClose();
     } catch (err) {
       console.error(err);
+      alert(err.response?.data?.error || 'Failed to submit expert evaluation');
     }
   };
 

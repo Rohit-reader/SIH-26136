@@ -8,7 +8,8 @@ import {
   LayoutDashboard,
   Award,
   ShieldCheck,
-  Clock
+  Clock,
+  Check
 } from 'lucide-react';
 import axios from 'axios';
 import { formatText, formatCurrency } from '../utils/textUtils';
@@ -17,6 +18,7 @@ import { RoleSidebar } from '../components/RoleSidebar';
 
 export const EvaluatorView = ({ onOpenEvaluationModal, currentUser, onLogout, onOpenAudit }) => {
   const [evaluations, setEvaluations] = useState([]);
+  const [proposals, setProposals] = useState([]);
   const [activeTab, setActiveTab] = useState('dashboard');
   const [collapsed, setCollapsed] = useState(false);
   const [loading, setLoading] = useState(true);
@@ -28,8 +30,12 @@ export const EvaluatorView = ({ onOpenEvaluationModal, currentUser, onLogout, on
   const fetchData = async () => {
     setLoading(true);
     try {
-      const resE = await axios.get('/api/evaluations');
-      setEvaluations(resE.data);
+      const [resE, resP] = await Promise.all([
+        axios.get('/api/evaluations'),
+        axios.get('/api/proposals')
+      ]);
+      setEvaluations(resE.data || []);
+      setProposals(resP.data || []);
     } catch (err) {
       console.error(err);
     } finally {
@@ -38,17 +44,24 @@ export const EvaluatorView = ({ onOpenEvaluationModal, currentUser, onLogout, on
   };
 
   const sampleProposal = {
-    _id: 'p123',
-    solutionTitle: 'SmartOPD — AI Triage and Computer Vision Queue Platform',
-    startupName: 'HealthAI Solutions Pvt Ltd',
-    proposedBudget: 1420000,
-    technicalApproach: 'Deploys edge-AI cameras and smart token kiosks to dynamically estimate patient wait times, auto-route priority emergency cases, and broadcast queue status via WhatsApp and local hospital screens.',
-    securityApproach: 'End-to-end AES-256 encryption, zero PII exposure to public APIs, compliance with Digital Personal Data Protection Act 2023.'
+    _id: proposals[0]?._id || 'p123',
+    solutionTitle: proposals[0]?.solutionTitle || 'SmartOPD — AI Triage and Computer Vision Queue Platform',
+    startupName: proposals[0]?.startupId?.name || 'HealthAI Solutions Pvt Ltd',
+    proposedBudget: proposals[0]?.proposedBudget || 1420000,
+    technicalApproach: proposals[0]?.technicalApproach || 'Deploys edge-AI cameras and smart token kiosks to dynamically estimate patient wait times, auto-route priority emergency cases, and broadcast queue status via WhatsApp.',
+    securityApproach: proposals[0]?.securityApproach || 'End-to-end AES-256 encryption, zero PII exposure to public APIs, compliance with Digital Personal Data Protection Act 2023.',
+    eligibilityStatus: proposals[0]?.eligibilityScreening?.screeningStatus || proposals[0]?.status || 'Eligible'
   };
+
+  // Filter proposals eligible for Phase 4 evaluation
+  const eligibleProposals = proposals.filter(p => {
+    const s = p.eligibilityScreening?.screeningStatus || p.status;
+    return ['Eligible', 'Conditionally Eligible', 'Under Review', 'Submitted'].includes(s);
+  });
 
   const sidebarItems = [
     { id: 'dashboard', label: 'Evaluation Console', icon: LayoutDashboard },
-    { id: 'proposals', label: 'Assigned Proposals', icon: FileText, count: 1 },
+    { id: 'proposals', label: 'Assigned Proposals', icon: FileText, count: eligibleProposals.length || 1 },
     { id: 'scorecard', label: 'Scoring Criteria', icon: Award },
     { id: 'coi', label: 'COI Declarations', icon: ShieldCheck, count: evaluations.filter(e => e.coiDeclared).length }
   ];
@@ -82,12 +95,12 @@ export const EvaluatorView = ({ onOpenEvaluationModal, currentUser, onLogout, on
                 </h2>
               </div>
               <p style={{ fontSize: '0.85rem', color: '#475569' }}>
-                Evaluator: <strong style={{ color: '#0A2540' }}>Dr. A. Sharma (Senior Health Tech Expert)</strong> • Department Panel: Public Health
+                Evaluator: <strong style={{ color: '#0A2540' }}>Dr. A. Sharma (Senior Health Tech Expert)</strong> • Panel: Public Health Innovation Board
               </p>
             </div>
 
             <div className="badge badge-navy" style={{ fontSize: '0.85rem', padding: '0.4rem 0.85rem' }}>
-              COI Declaration Required Before Scoring
+              Mandatory COI Declaration Required Before Scoring
             </div>
           </div>
         </div>
@@ -113,36 +126,46 @@ export const EvaluatorView = ({ onOpenEvaluationModal, currentUser, onLogout, on
         {(activeTab === 'dashboard' || activeTab === 'proposals') && (
           <div>
             <h3 style={{ fontSize: '1.15rem', fontWeight: 700, color: '#0A2540', marginBottom: '1rem' }}>
-              Assigned Startup Applications for Review
+              Assigned Startup Applications for Phase 4 Review
             </h3>
 
-            <div className="gov-card">
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', flexWrap: 'wrap', gap: '1rem', marginBottom: '1rem' }}>
-                <div>
-                  <span className="badge badge-saffron" style={{ marginBottom: '0.35rem' }}>Public Health Department</span>
-                  <h4 style={{ fontSize: '1.15rem', fontWeight: 700, color: '#0A2540' }}>
-                    {sampleProposal.solutionTitle}
-                  </h4>
-                  <p style={{ fontSize: '0.85rem', color: '#64748B' }}>
-                    Applicant: <strong>{sampleProposal.startupName}</strong> • Budget: {formatCurrency(sampleProposal.proposedBudget)}
-                  </p>
+            {(eligibleProposals.length > 0 ? eligibleProposals : [sampleProposal]).map((prop) => (
+              <div key={prop._id} className="gov-card" style={{ marginBottom: '1rem' }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', flexWrap: 'wrap', gap: '1rem', marginBottom: '1rem' }}>
+                  <div>
+                    <div style={{ display: 'flex', gap: '0.4rem', marginBottom: '0.35rem' }}>
+                      <span className="badge badge-saffron">Public Health Department</span>
+                      <span className="badge badge-emerald">
+                        Phase 3 Gate: {formatText(prop.eligibilityScreening?.screeningStatus || prop.status || 'Eligible')}
+                      </span>
+                    </div>
+
+                    <h4 style={{ fontSize: '1.15rem', fontWeight: 700, color: '#0A2540' }}>
+                      {formatText(prop.solutionTitle)}
+                    </h4>
+                    <p style={{ fontSize: '0.85rem', color: '#64748B' }}>
+                      Applicant: <strong>{formatText(prop.startupId?.name || prop.startupName || 'HealthAI Solutions Pvt Ltd')}</strong> • Budget: {formatCurrency(prop.proposedBudget)}
+                    </p>
+                  </div>
+
+                  <button onClick={() => onOpenEvaluationModal(prop)} className="btn-emerald">
+                    <Award size={16} /> Submit Evaluation & COI
+                  </button>
                 </div>
 
-                <button onClick={() => onOpenEvaluationModal(sampleProposal)} className="btn-emerald">
-                  <Award size={16} /> Submit Evaluation & COI
-                </button>
+                <div style={{ backgroundColor: '#F8FAFC', padding: '1rem', borderRadius: '8px', border: '1px solid #E2E8F0' }}>
+                  <strong style={{ fontSize: '0.8rem', color: '#0A2540', display: 'block', marginBottom: '0.25rem' }}>TECHNICAL APPROACH SUMMARY:</strong>
+                  <p style={{ fontSize: '0.85rem', color: '#334155', margin: 0 }}>
+                    {formatText(prop.technicalApproach)}
+                  </p>
+                </div>
               </div>
-
-              <div style={{ backgroundColor: '#F8FAFC', padding: '1rem', borderRadius: '8px', border: '1px solid #E2E8F0' }}>
-                <strong style={{ fontSize: '0.8rem', color: '#0A2540' }}>TECHNICAL APPROACH SUMMARY:</strong>
-                <p style={{ fontSize: '0.85rem', color: '#334155', marginTop: '0.25rem' }}>
-                  {sampleProposal.technicalApproach}
-                </p>
-              </div>
-            </div>
+            ))}
           </div>
         )}
       </section>
     </div>
   );
 };
+
+export default EvaluatorView;

@@ -179,6 +179,62 @@ export const StartupApplicationsTab = ({
         {/* 3. Main Details Grid: Submitted Proposal & Evaluation Feedback */}
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '1.5rem' }}>
           
+          {/* Phase 3: Formal Government Eligibility Screening Card */}
+          <div className="gov-card" style={{ gridColumn: '1 / -1', backgroundColor: '#F8FAFC', borderLeft: '4px solid #0A2540' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '0.75rem', marginBottom: '0.85rem' }}>
+              <h3 style={{ fontSize: '1.05rem', fontWeight: 700, color: '#0A2540', margin: 0, display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
+                <ShieldCheck size={20} color="#0A2540" /> Phase 3: Government Eligibility Screening Status
+              </h3>
+              <span className={`badge ${
+                (activeProposal.eligibilityScreening?.screeningStatus || activeProposal.status) === 'Eligible' ? 'badge-emerald' :
+                (activeProposal.eligibilityScreening?.screeningStatus || activeProposal.status) === 'Conditionally Eligible' ? 'badge-saffron' :
+                (activeProposal.eligibilityScreening?.screeningStatus || activeProposal.status) === 'Not Eligible' ? 'badge-red' : 'badge-dpiit'
+              }`} style={{ fontSize: '0.8rem', padding: '0.35rem 0.75rem' }}>
+                Screening Status: {activeProposal.eligibilityScreening?.screeningStatus || activeProposal.status || 'Pending Screening'}
+              </span>
+            </div>
+
+            {/* Automated Rule Check Matrix */}
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '0.65rem', marginBottom: '0.85rem' }}>
+              <div style={{ backgroundColor: '#FFFFFF', padding: '0.65rem 0.85rem', borderRadius: '6px', border: '1px solid #E2E8F0', fontSize: '0.8rem' }}>
+                <span style={{ color: '#64748B', display: 'block', fontSize: '0.7rem' }}>DPIIT RECOGNITION</span>
+                <strong style={{ color: activeProposal.eligibilityScreening?.automatedChecks?.dpiitVerified !== false ? '#059669' : '#DC2626' }}>
+                  {activeProposal.eligibilityScreening?.automatedChecks?.dpiitVerified !== false ? '✓ Verified (DIPP10984)' : '✗ Not Verified'}
+                </strong>
+              </div>
+              <div style={{ backgroundColor: '#FFFFFF', padding: '0.65rem 0.85rem', borderRadius: '6px', border: '1px solid #E2E8F0', fontSize: '0.8rem' }}>
+                <span style={{ color: '#64748B', display: 'block', fontSize: '0.7rem' }}>DIGILOCKER DOCUMENTS</span>
+                <strong style={{ color: activeProposal.eligibilityScreening?.automatedChecks?.digiLockerVerified !== false ? '#059669' : '#DC2626' }}>
+                  {activeProposal.eligibilityScreening?.automatedChecks?.digiLockerVerified !== false ? '✓ Verified Aadhaar/PAN' : '✗ Unverified'}
+                </strong>
+              </div>
+              <div style={{ backgroundColor: '#FFFFFF', padding: '0.65rem 0.85rem', borderRadius: '6px', border: '1px solid #E2E8F0', fontSize: '0.8rem' }}>
+                <span style={{ color: '#64748B', display: 'block', fontSize: '0.7rem' }}>TURNOVER & EMD WAIVERS</span>
+                <strong style={{ color: '#059669' }}>
+                  ✓ GFR Rule 173(i) Exempt
+                </strong>
+              </div>
+              <div style={{ backgroundColor: '#FFFFFF', padding: '0.65rem 0.85rem', borderRadius: '6px', border: '1px solid #E2E8F0', fontSize: '0.8rem' }}>
+                <span style={{ color: '#64748B', display: 'block', fontSize: '0.7rem' }}>CERT-IN & TRL STATUS</span>
+                <strong style={{ color: '#059669' }}>
+                  ✓ Compliant (TRL 6+)
+                </strong>
+              </div>
+            </div>
+
+            {/* Officer Notes if screened */}
+            {activeProposal.eligibilityScreening?.officerNotes && (
+              <div style={{ backgroundColor: '#EFF6FF', border: '1px solid #BFDBFE', padding: '0.75rem 1rem', borderRadius: '6px', fontSize: '0.825rem', color: '#1E40AF' }}>
+                <strong>Screening Desk Officer Notes:</strong> {activeProposal.eligibilityScreening.officerNotes}
+              </div>
+            )}
+            {activeProposal.eligibilityScreening?.conditionalReason && (
+              <div style={{ backgroundColor: '#FFFBEB', border: '1px solid #FDE68A', padding: '0.75rem 1rem', borderRadius: '6px', fontSize: '0.825rem', color: '#92400E', marginTop: '0.5rem' }}>
+                <strong>Condition for Eligibility:</strong> {activeProposal.eligibilityScreening.conditionalReason}
+              </div>
+            )}
+          </div>
+
           {/* Submitted Technical Proposal Summary */}
           <div className="gov-card">
             <h3 style={{ fontSize: '1.05rem', fontWeight: 700, color: '#0A2540', marginBottom: '0.85rem', display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
@@ -344,8 +400,14 @@ export const StartupApplicationsTab = ({
                 }}
               >
                 <div style={{ flex: 1, minWidth: '280px' }}>
-                  <div style={{ display: 'flex', gap: '0.4rem', marginBottom: '0.35rem' }}>
-                    <span className="badge badge-emerald">{formatText(prop.status || 'Submitted')}</span>
+                  <div style={{ display: 'flex', gap: '0.4rem', marginBottom: '0.35rem', flexWrap: 'wrap' }}>
+                    <span className={`badge ${
+                      (prop.eligibilityScreening?.screeningStatus || prop.status) === 'Eligible' ? 'badge-emerald' :
+                      (prop.eligibilityScreening?.screeningStatus || prop.status) === 'Conditionally Eligible' ? 'badge-saffron' :
+                      (prop.eligibilityScreening?.screeningStatus || prop.status) === 'Not Eligible' ? 'badge-red' : 'badge-emerald'
+                    }`}>
+                      {formatText(prop.eligibilityScreening?.screeningStatus || prop.status || 'Submitted')}
+                    </span>
                     <span className="badge badge-saffron">{formatText(relChallenge.department || 'Public Health')}</span>
                     <span className="badge badge-dpiit">DPIIT Waived</span>
                   </div>

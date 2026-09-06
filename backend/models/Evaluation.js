@@ -16,6 +16,7 @@ const evaluationSchema = new mongoose.Schema({
   },
   weightedTotalScore: { type: Number, default: 90.75 },
   comments: { type: String, default: 'Outstanding implementation plan with robust queue optimization model.' },
+  riskObservations: { type: String, default: '' },
   recommendation: { type: String, enum: ['Recommend for Pilot', 'Requires Revisions', 'Reject'], default: 'Recommend for Pilot' },
   evaluatedAt: { type: Date, default: Date.now }
 });

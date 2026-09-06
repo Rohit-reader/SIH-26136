@@ -33,6 +33,8 @@ export const StartupSubmitProposalModal = ({ isOpen, onClose, challenge, primary
     dpiitConfirmed: true,
     turnoverWaived: true,
     emdWaived: true,
+    certInDeclared: true,
+    trlDeclared: true,
 
     // Step 2: Startup & Solution Overview
     solutionTitle: 'SmartOPD — AI Triage & Computer Vision OPD Queue Platform',
@@ -338,6 +340,40 @@ export const StartupSubmitProposalModal = ({ isOpen, onClose, challenge, primary
                     </strong>
                     <span style={{ fontSize: '0.775rem', color: '#64748B' }}>
                       ₹0 deposit required to submit this innovation proposal.
+                    </span>
+                  </div>
+                </label>
+
+                <label style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', cursor: 'pointer' }}>
+                  <input 
+                    type="checkbox" 
+                    checked={formData.certInDeclared} 
+                    onChange={e => setFormData({ ...formData, certInDeclared: e.target.checked })} 
+                    style={{ width: '18px', height: '18px' }} 
+                  />
+                  <div>
+                    <strong style={{ fontSize: '0.9rem', color: '#0A2540', display: 'block' }}>
+                      CERT-In Cybersecurity & Data Compliance Declaration
+                    </strong>
+                    <span style={{ fontSize: '0.775rem', color: '#64748B' }}>
+                      Self-declaration that proposed solution complies with CERT-In cybersecurity & DPDP Act 2023 directives.
+                    </span>
+                  </div>
+                </label>
+
+                <label style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', cursor: 'pointer' }}>
+                  <input 
+                    type="checkbox" 
+                    checked={formData.trlDeclared} 
+                    onChange={e => setFormData({ ...formData, trlDeclared: e.target.checked })} 
+                    style={{ width: '18px', height: '18px' }} 
+                  />
+                  <div>
+                    <strong style={{ fontSize: '0.9rem', color: '#0A2540', display: 'block' }}>
+                      Technology Readiness Level (TRL 5+) Qualification
+                    </strong>
+                    <span style={{ fontSize: '0.775rem', color: '#64748B' }}>
+                      Confirmed working prototype tested in simulated or relevant field environment.
                     </span>
                   </div>
                 </label>
