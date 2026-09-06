@@ -10,7 +10,7 @@ import {
   Building2, 
   MapPin, 
   TrendingUp, 
-  DollarSign, 
+  IndianRupee, 
   CheckSquare, 
   Plus, 
   MessageSquare,
@@ -116,7 +116,7 @@ export const StartupPilotsTab = ({ pilots = [], onRefreshData }) => {
       {/* Sub Workspace Tabs */}
       <div style={{ display: 'flex', gap: '0.5rem', borderBottom: '2px solid #E2E8F0', paddingBottom: '0.5rem', flexWrap: 'wrap' }}>
         {[
-          { id: 'milestones', label: 'Milestone Schedule & Payments', icon: DollarSign },
+          { id: 'milestones', label: 'Milestone Schedule & Payments', icon: IndianRupee },
           { id: 'kpis', label: 'Telemetry KPIs & Outcomes', icon: TrendingUp },
           { id: 'evidence', label: 'Evidence & Deliverables Upload', icon: Upload },
           { id: 'issues', label: 'Risks & Support Log', icon: AlertTriangle }
@@ -154,7 +154,7 @@ export const StartupPilotsTab = ({ pilots = [], onRefreshData }) => {
       {activeWorkspaceTab === 'milestones' && (
         <div className="gov-card" style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
           <h3 style={{ fontSize: '1.1rem', fontWeight: 700, color: '#0A2540', margin: 0, display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-            <DollarSign size={20} color="#0A2540" /> Contracted Milestones & Payment Track
+            <IndianRupee size={20} color="#0A2540" /> Contracted Milestones & Payment Track
           </h3>
 
           <div style={{ display: 'flex', flexDirection: 'column', gap: '0.85rem' }}>

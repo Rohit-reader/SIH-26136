@@ -5,7 +5,7 @@ import {
   Clock, 
   FileText, 
   Rocket, 
-  DollarSign, 
+  IndianRupee, 
   Award, 
   ShieldCheck, 
   Check, 

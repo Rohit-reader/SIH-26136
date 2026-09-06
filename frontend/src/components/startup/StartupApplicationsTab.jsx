@@ -9,7 +9,7 @@ import {
   Award, 
   ShieldCheck, 
   ExternalLink, 
-  DollarSign, 
+  IndianRupee, 
   AlertCircle,
   FileCheck,
   ChevronRight,

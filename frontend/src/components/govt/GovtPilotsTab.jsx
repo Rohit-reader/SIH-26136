@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Rocket, Clock, CheckCircle2, DollarSign, ExternalLink, Plus, MapPin, Building, X } from 'lucide-react';
+import { Rocket, Clock, CheckCircle2, IndianRupee, ExternalLink, Plus, MapPin, Building, X } from 'lucide-react';
 import axios from 'axios';
 import { formatText, formatCurrency } from '../../utils/textUtils';
 
@@ -171,7 +171,7 @@ export const GovtPilotsTab = ({ pilots = [], proposals = [], onRefresh }) => {
                             className="btn-emerald"
                             style={{ fontSize: '0.75rem', padding: '0.35rem 0.65rem' }}
                           >
-                            <DollarSign size={13} /> Approve Payment
+                            <IndianRupee size={13} /> Approve Payment
                           </button>
                         )}
                       </div>

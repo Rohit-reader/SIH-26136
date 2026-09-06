@@ -1,5 +1,5 @@
 import React from 'react';
-import { ShoppingBag, FileText, CheckCircle2, ShieldCheck, DollarSign, ExternalLink } from 'lucide-react';
+import { ShoppingBag, FileText, CheckCircle2, ShieldCheck, IndianRupee, ExternalLink } from 'lucide-react';
 import { formatText, formatCurrency } from '../../utils/textUtils';
 
 export const GovtProcurementTab = ({ pilots = [], scaleUps = [], auditLogs = [] }) => {

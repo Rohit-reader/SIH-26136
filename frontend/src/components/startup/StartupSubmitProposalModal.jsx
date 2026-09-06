@@ -11,7 +11,7 @@ import {
   AlertTriangle, 
   Upload, 
   Sparkles, 
-  DollarSign, 
+  IndianRupee, 
   Cpu, 
   Clock,
   Layers,

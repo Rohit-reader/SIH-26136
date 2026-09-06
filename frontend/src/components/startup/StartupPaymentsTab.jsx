@@ -1,6 +1,6 @@
 import React from 'react';
 import { 
-  DollarSign, 
+  IndianRupee, 
   CheckCircle2, 
   Clock, 
   FileText, 
@@ -89,7 +89,7 @@ export const StartupPaymentsTab = ({ pilots = [] }) => {
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '0.75rem' }}>
           <div>
             <h2 style={{ fontSize: '1.25rem', fontWeight: 700, color: '#0A2540', margin: 0, display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-              <DollarSign size={22} color="#059669" /> Financial Track & Milestone Disbursements
+              <IndianRupee size={22} color="#059669" /> Financial Track & Milestone Disbursements
             </h2>
             <p style={{ fontSize: '0.8rem', color: '#64748B', margin: '0.2rem 0 0 0' }}>
               Official government treasury release schedule for outcome-based field trials

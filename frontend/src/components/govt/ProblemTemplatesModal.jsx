@@ -6,7 +6,7 @@ import {
   Building2, 
   Sparkles, 
   ShieldCheck, 
-  DollarSign, 
+  IndianRupee, 
   Clock, 
   ArrowRight,
   Filter,

@@ -13,7 +13,7 @@ import {
   ChevronLeft,
   Building2,
   Lock,
-  DollarSign,
+  IndianRupee,
   Clock,
   Target,
   FileCheck

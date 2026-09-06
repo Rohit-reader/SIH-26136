@@ -4,7 +4,7 @@ import {
   LayoutDashboard,
   Target,
   FileText,
-  DollarSign,
+  IndianRupee,
   FileCheck,
   Bell,
   User,
@@ -90,7 +90,7 @@ export const StartupView = ({ onOpenProposalModal, currentUser, onLogout, onOpen
     { id: 'challenges', label: 'Browse Challenges', icon: Target, count: challenges.length },
     { id: 'applications', label: 'My Applications', icon: FileText, count: proposals.length },
     { id: 'pilots', label: 'Pilot Workspace', icon: Rocket, count: pilots.length },
-    { id: 'payments', label: 'Payments & Milestones', icon: DollarSign },
+    { id: 'payments', label: 'Payments & Milestones', icon: IndianRupee },
     { id: 'notifications', label: 'Notifications', icon: Bell, count: notifications.filter(n => !n.isRead).length },
     { id: 'profile', label: 'Company Profile', icon: User }
   ];

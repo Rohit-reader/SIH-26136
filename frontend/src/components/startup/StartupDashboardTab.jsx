@@ -9,7 +9,7 @@ import {
   CheckCircle2, 
   AlertCircle, 
   TrendingUp, 
-  DollarSign, 
+  IndianRupee, 
   ChevronRight, 
   Bell, 
   ArrowUpRight,
@@ -275,7 +275,7 @@ export const StartupDashboardTab = ({
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.5rem' }}>
             <span style={{ fontSize: '0.75rem', fontWeight: 700, color: '#64748B' }}>PENDING PAYMENTS</span>
             <div style={{ backgroundColor: '#F0FDF4', padding: '0.4rem', borderRadius: '50%' }}>
-              <DollarSign size={16} color="#166534" />
+              <IndianRupee size={16} color="#166534" />
             </div>
           </div>
           <span style={{ fontSize: '1.4rem', fontWeight: 800, color: '#166534', display: 'block' }}>

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Activity, CheckCircle2, TrendingUp, ShieldCheck, DollarSign } from 'lucide-react';
+import { Activity, CheckCircle2, TrendingUp, ShieldCheck, IndianRupee } from 'lucide-react';
 import { formatText } from '../../utils/textUtils';
 
 export const GovtKPIPerformanceTab = ({ pilots = [] }) => {

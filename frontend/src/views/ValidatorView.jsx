@@ -3,7 +3,7 @@ import {
   ShieldCheck, 
   Award, 
   CheckCircle2, 
-  DollarSign, 
+  IndianRupee, 
   TrendingUp, 
   ChevronRight, 
   Activity,
@@ -72,7 +72,7 @@ export const ValidatorView = ({ onRefreshData, currentUser, onLogout, onOpenAudi
     { id: 'dashboard', label: 'Validation Console', icon: LayoutDashboard },
     { id: 'audits', label: 'Field Audits', icon: CheckCircle2, count: pilots.length },
     { id: 'scale', label: 'Scale Decisions', icon: TrendingUp, count: 1 },
-    { id: 'milestones', label: 'Milestone Approvals', icon: DollarSign, count: 1 }
+    { id: 'milestones', label: 'Milestone Approvals', icon: IndianRupee, count: 1 }
   ];
 
   return (
@@ -195,7 +195,7 @@ export const ValidatorView = ({ onRefreshData, currentUser, onLogout, onOpenAudi
                       <td>
                         {m.status === 'Evidence Submitted' ? (
                           <button onClick={() => handlePayMilestone(currentPilot._id, m.number)} className="btn-primary" style={{ fontSize: '0.75rem', padding: '0.35rem 0.75rem' }}>
-                            <DollarSign size={12} /> Approve & Pay
+                            <IndianRupee size={12} /> Approve & Pay
                           </button>
                         ) : (
                           <span style={{ fontSize: '0.8rem', color: '#64748B' }}>Verified</span>
