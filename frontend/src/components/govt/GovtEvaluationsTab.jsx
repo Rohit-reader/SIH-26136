@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Award, ShieldCheck, UserCheck, CheckCircle2, AlertTriangle, Plus } from 'lucide-react';
+import { Award, ShieldCheck, UserCheck, CheckCircle2, AlertTriangle, Plus, X } from 'lucide-react';
 import axios from 'axios';
 import { formatText } from '../../utils/textUtils';
 
@@ -155,7 +155,9 @@ export const GovtEvaluationsTab = ({ evaluations = [], proposals = [], onRefresh
           <div className="modal-content" onClick={e => e.stopPropagation()}>
             <div className="modal-header">
               <h3 style={{ fontSize: '1.1rem', fontWeight: 700, color: '#0A2540' }}>Assign Domain Expert / Evaluator</h3>
-              <button onClick={() => setIsAssignModalOpen(false)} className="btn-secondary" style={{ padding: '0.2rem 0.5rem' }}>✕</button>
+              <button onClick={() => setIsAssignModalOpen(false)} className="btn-secondary" style={{ padding: '0.2rem 0.5rem' }}>
+                <X size={16} />
+              </button>
             </div>
             <form onSubmit={handleAssignEvaluator}>
               <div className="modal-body">

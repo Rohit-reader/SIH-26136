@@ -160,8 +160,8 @@ export const ValidatorView = ({ onRefreshData, currentUser, onLogout, onOpenAudi
                   <TrendingUp size={16} /> Certify & Recommend Scale Statewide
                 </button>
               ) : (
-                <span className="badge badge-emerald" style={{ fontSize: '0.9rem', padding: '0.4rem 0.85rem' }}>
-                  ✓ Certified for Statewide Scaling
+                <span className="badge badge-emerald" style={{ fontSize: '0.9rem', padding: '0.4rem 0.85rem', display: 'inline-flex', alignItems: 'center', gap: '0.35rem' }}>
+                  <CheckCircle2 size={16} /> Certified for Statewide Scaling
                 </span>
               )}
             </div>

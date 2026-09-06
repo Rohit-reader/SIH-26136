@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Search, Building, ShieldCheck, FileCheck, CheckCircle2, ExternalLink, Sparkles, Eye } from 'lucide-react';
+import { Search, Building, ShieldCheck, FileCheck, CheckCircle2, ExternalLink, Sparkles, Eye, X } from 'lucide-react';
 import { formatText } from '../../utils/textUtils';
 
 export const GovtStartupDiscoveryTab = ({ startups = [] }) => {
@@ -139,7 +139,9 @@ export const GovtStartupDiscoveryTab = ({ startups = [] }) => {
               <h3 style={{ fontSize: '1.1rem', fontWeight: 700, color: '#0A2540' }}>
                 AI Semantic Match Rating — {formatText(selectedStartup.name)}
               </h3>
-              <button onClick={() => setSelectedStartup(null)} className="btn-secondary" style={{ padding: '0.2rem 0.5rem' }}>✕</button>
+              <button onClick={() => setSelectedStartup(null)} className="btn-secondary" style={{ padding: '0.2rem 0.5rem' }}>
+                <X size={16} />
+              </button>
             </div>
             <div className="modal-body">
               <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', backgroundColor: '#ECFDF5', padding: '1rem', borderRadius: '8px', marginBottom: '1.25rem' }}>
@@ -173,7 +175,9 @@ export const GovtStartupDiscoveryTab = ({ startups = [] }) => {
               <h3 style={{ fontSize: '1.1rem', fontWeight: 700, color: '#0A2540' }}>
                 Verified Credentials & Documents — {formatText(activeDocModal.name)}
               </h3>
-              <button onClick={() => setActiveDocModal(null)} className="btn-secondary" style={{ padding: '0.2rem 0.5rem' }}>✕</button>
+              <button onClick={() => setActiveDocModal(null)} className="btn-secondary" style={{ padding: '0.2rem 0.5rem' }}>
+                <X size={16} />
+              </button>
             </div>
             <div className="modal-body">
               <p style={{ fontSize: '0.85rem', color: '#64748B', marginBottom: '1rem' }}>

@@ -15,7 +15,8 @@ import {
   Cpu, 
   Clock,
   Layers,
-  Award
+  Award,
+  Check
 } from 'lucide-react';
 import axios from 'axios';
 import { formatText, formatCurrency } from '../../utils/textUtils';
@@ -188,7 +189,7 @@ export const StartupSubmitProposalModal = ({ isOpen, onClose, challenge, primary
           <div>
             <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.2rem' }}>
               <span className="badge badge-saffron" style={{ fontSize: '0.675rem' }}>
-                SIH 26136 PROPOSAL WORKFLOW
+                PROPOSAL WORKFLOW
               </span>
               <span style={{ fontSize: '0.75rem', color: '#94A3B8' }}>
                 Step {currentStep} of {totalSteps}
@@ -201,9 +202,9 @@ export const StartupSubmitProposalModal = ({ isOpen, onClose, challenge, primary
 
           <button 
             onClick={onClose} 
-            style={{ background: 'none', border: 'none', color: '#FFFFFF', cursor: 'pointer', fontSize: '1.25rem' }}
+            style={{ background: 'none', border: 'none', color: '#FFFFFF', cursor: 'pointer', display: 'flex', alignItems: 'center' }}
           >
-            ✕
+            <X size={20} />
           </button>
         </div>
 
@@ -242,7 +243,7 @@ export const StartupSubmitProposalModal = ({ isOpen, onClose, challenge, primary
                   whiteSpace: 'nowrap'
                 }}
               >
-                <span>{isCompleted ? '✓' : stepNum}</span>
+                <span style={{ display: 'inline-flex', alignItems: 'center' }}>{isCompleted ? <Check size={13} color="#059669" /> : stepNum}</span>
                 <span>{title.split('. ')[1]}</span>
                 {idx < totalSteps - 1 && <span style={{ color: '#CBD5E1', marginLeft: '0.2rem' }}>›</span>}
               </div>
@@ -551,8 +552,8 @@ export const StartupSubmitProposalModal = ({ isOpen, onClose, challenge, primary
                       <FileText size={18} color="#1E3A8A" />
                       <strong style={{ fontSize: '0.85rem', color: '#0A2540' }}>{doc.title}</strong>
                     </div>
-                    <span className="badge badge-emerald" style={{ fontSize: '0.7rem' }}>
-                      Attached ✓
+                    <span className="badge badge-emerald" style={{ fontSize: '0.7rem', display: 'inline-flex', alignItems: 'center', gap: '0.25rem' }}>
+                      Attached <CheckCircle2 size={12} />
                     </span>
                   </div>
                 ))}

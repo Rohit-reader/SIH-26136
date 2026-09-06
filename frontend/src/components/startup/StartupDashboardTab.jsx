@@ -114,8 +114,8 @@ export const StartupDashboardTab = ({
               <span style={{ fontSize: '0.7rem', color: '#94A3B8', fontWeight: 700, letterSpacing: '0.5px' }}>DPIIT EXEMPTION STATUS</span>
               <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', justifyContent: 'center', marginTop: '0.2rem' }}>
                 <ShieldCheck size={16} color="#10B981" />
-                <span style={{ fontWeight: 700, color: '#10B981', fontSize: '0.875rem' }}>
-                  Turnover & EMD Waived ✓
+                <span style={{ fontWeight: 700, color: '#10B981', fontSize: '0.875rem', display: 'inline-flex', alignItems: 'center', gap: '0.25rem' }}>
+                  Turnover & EMD Waived <CheckCircle2 size={13} color="#10B981" />
                 </span>
               </div>
             </div>

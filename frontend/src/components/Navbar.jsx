@@ -12,12 +12,7 @@ export const Navbar = ({ currentUser, onOpenAuth, onLogout, onOpenAudit }) => {
           <div className="govt-title-block">
             <MaharashtraEmblem className="govt-emblem-img" />
             <div className="title-text-group">
-              <h1>
-                GovInnovate
-                <span className="badge badge-saffron" style={{ fontSize: '0.7rem' }}>
-                  SIH 26136
-                </span>
-              </h1>
+              <h1>GovInnovate</h1>
               <p>Maharashtra State Innovation Society • Department of Skills, Employment, Entrepreneurship & Innovation</p>
             </div>
           </div>

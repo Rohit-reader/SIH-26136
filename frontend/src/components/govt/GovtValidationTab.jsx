@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { CheckCircle2, ShieldCheck, ShoppingBag, TrendingUp, AlertTriangle } from 'lucide-react';
+import { CheckCircle2, ShieldCheck, ShoppingBag, TrendingUp, AlertTriangle, X } from 'lucide-react';
 import axios from 'axios';
 import { formatText } from '../../utils/textUtils';
 
@@ -135,7 +135,9 @@ export const GovtValidationTab = ({ pilots = [], onRefresh, onNavigateToScaleUp 
               <h3 style={{ fontSize: '1.1rem', fontWeight: 700, color: '#0A2540' }}>
                 Execute Statutory Procurement Decision — {formatText(selectedPilot.pilotTitle)}
               </h3>
-              <button onClick={() => setSelectedPilot(null)} className="btn-secondary" style={{ padding: '0.2rem 0.5rem' }}>✕</button>
+              <button onClick={() => setSelectedPilot(null)} className="btn-secondary" style={{ padding: '0.2rem 0.5rem' }}>
+                <X size={16} />
+              </button>
             </div>
             <div className="modal-body">
               <div className="form-group">

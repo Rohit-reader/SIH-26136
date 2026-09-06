@@ -55,9 +55,6 @@ export const GovtSidebar = ({
                 <h3 style={{ fontSize: '1rem', fontWeight: 800, color: '#FFFFFF', lineHeight: 1.1 }}>
                   GovInnovate
                 </h3>
-                <span className="badge badge-saffron" style={{ fontSize: '0.65rem', padding: '0.1rem 0.4rem' }}>
-                  SIH 26136
-                </span>
               </div>
             )}
           </div>

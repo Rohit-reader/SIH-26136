@@ -51,7 +51,7 @@ export const LandingPageView = ({ onOpenLogin }) => {
       }}>
         <div style={{ maxWidth: '1280px', margin: '0 auto', textAlign: 'center' }}>
           <div style={{ display: 'inline-flex', alignItems: 'center', gap: '0.5rem', backgroundColor: 'rgba(255,255,255,0.1)', border: '1px solid rgba(255,255,255,0.2)', padding: '0.35rem 0.85rem', borderRadius: '9999px', fontSize: '0.8rem', fontWeight: 600, marginBottom: '1.25rem' }}>
-            <span style={{ color: '#FF9933' }}>★ Official Maharashtra Innovation Procurement Platform</span> • <span>SIH 26136</span>
+            <Award size={14} color="#FF9933" /> <span style={{ color: '#FF9933' }}>Official Maharashtra Innovation Procurement Platform</span>
           </div>
 
           <h1 style={{ fontFamily: "'Cinzel', serif", fontSize: '2.5rem', fontWeight: 700, lineHeight: 1.25, letterSpacing: '0.5px', marginBottom: '1rem', color: '#FFFFFF' }}>
@@ -259,7 +259,7 @@ export const LandingPageView = ({ onOpenLogin }) => {
           </button>
         </div>
         <div style={{ maxWidth: '1280px', margin: '1.5rem auto 0 auto', paddingTop: '1rem', borderTop: '1px solid rgba(255,255,255,0.1)', textAlign: 'center', fontSize: '0.75rem' }}>
-          © 2026 Government of Maharashtra. Smart India Hackathon Problem Statement SIH 26136 Implementation.
+          © 2026 Government of Maharashtra. All Rights Reserved.
         </div>
       </footer>
     </div>

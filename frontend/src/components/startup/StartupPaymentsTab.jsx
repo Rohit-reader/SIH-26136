@@ -171,8 +171,8 @@ export const StartupPaymentsTab = ({ pilots = [] }) => {
                     {formatCurrency(p.amount)}
                   </td>
                   <td style={{ padding: '0.75rem' }}>
-                    <span className={p.status === 'Paid' ? 'badge badge-emerald' : 'badge badge-saffron'} style={{ fontSize: '0.7rem' }}>
-                      {p.status === 'Paid' ? 'Disbursed ✓' : 'Under Treasury Review'}
+                    <span className={p.status === 'Paid' ? 'badge badge-emerald' : 'badge badge-saffron'} style={{ fontSize: '0.7rem', display: 'inline-flex', alignItems: 'center', gap: '0.25rem' }}>
+                      {p.status === 'Paid' ? <>Disbursed <CheckCircle2 size={12} /></> : 'Under Treasury Review'}
                     </span>
                   </td>
                   <td style={{ padding: '0.75rem' }}>

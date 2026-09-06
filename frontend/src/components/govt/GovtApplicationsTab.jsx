@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { FileText, CheckCircle2, XCircle, AlertTriangle, Sparkles, Eye, ShieldCheck, UserCheck } from 'lucide-react';
+import { FileText, CheckCircle2, XCircle, AlertTriangle, Sparkles, Eye, ShieldCheck, UserCheck, X } from 'lucide-react';
 import axios from 'axios';
 import { formatText, formatCurrency } from '../../utils/textUtils';
 
@@ -104,8 +104,8 @@ export const GovtApplicationsTab = ({ proposals = [], onRefresh }) => {
                     {p.aiRiskFlags && p.aiRiskFlags.length > 0 && (
                       <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', flexWrap: 'wrap' }}>
                         {p.aiRiskFlags.map((risk, idx) => (
-                          <span key={idx} style={{ backgroundColor: '#FEF2F2', color: '#DC2626', fontSize: '0.75rem', fontWeight: 600, padding: '0.2rem 0.6rem', borderRadius: '4px', border: '1px solid #FCA5A5' }}>
-                            ⚠️ Risk Flag: {formatText(risk)}
+                          <span key={idx} style={{ backgroundColor: '#FEF2F2', color: '#DC2626', fontSize: '0.75rem', fontWeight: 600, padding: '0.2rem 0.6rem', borderRadius: '4px', border: '1px solid #FCA5A5', display: 'inline-flex', alignItems: 'center', gap: '0.35rem' }}>
+                            <AlertTriangle size={13} color="#DC2626" /> Risk Flag: {formatText(risk)}
                           </span>
                         ))}
                       </div>
@@ -164,7 +164,9 @@ export const GovtApplicationsTab = ({ proposals = [], onRefresh }) => {
               <h3 style={{ fontSize: '1.1rem', fontWeight: 700, color: '#0A2540' }}>
                 {formatText(selectedProposal.solutionTitle)}
               </h3>
-              <button onClick={() => setSelectedProposal(null)} className="btn-secondary" style={{ padding: '0.2rem 0.5rem' }}>✕</button>
+              <button onClick={() => setSelectedProposal(null)} className="btn-secondary" style={{ padding: '0.2rem 0.5rem' }}>
+                <X size={16} />
+              </button>
             </div>
             <div className="modal-body">
               {/* Automated Eligibility Checklist */}
@@ -173,10 +175,10 @@ export const GovtApplicationsTab = ({ proposals = [], onRefresh }) => {
                   Automated Procurement Eligibility Checklist
                 </h4>
                 <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.5rem', fontSize: '0.825rem' }}>
-                  <div style={{ color: '#15803D' }}>✓ DPIIT Recognized Startup (Relaxed EMD/Turnover)</div>
-                  <div style={{ color: '#15803D' }}>✓ Domain Experience & Tech Alignment Verified</div>
-                  <div style={{ color: '#15803D' }}>✓ ISO 27001 / CERT-In Cyber Compliance Certified</div>
-                  <div style={{ color: '#15803D' }}>✓ Prior Experience Exemption Applied</div>
+                  <div style={{ color: '#15803D', display: 'flex', alignItems: 'center', gap: '0.35rem' }}><CheckCircle2 size={14} /> DPIIT Recognized Startup (Relaxed EMD/Turnover)</div>
+                  <div style={{ color: '#15803D', display: 'flex', alignItems: 'center', gap: '0.35rem' }}><CheckCircle2 size={14} /> Domain Experience & Tech Alignment Verified</div>
+                  <div style={{ color: '#15803D', display: 'flex', alignItems: 'center', gap: '0.35rem' }}><CheckCircle2 size={14} /> ISO 27001 / CERT-In Cyber Compliance Certified</div>
+                  <div style={{ color: '#15803D', display: 'flex', alignItems: 'center', gap: '0.35rem' }}><CheckCircle2 size={14} /> Prior Experience Exemption Applied</div>
                 </div>
               </div>
 

@@ -15,7 +15,9 @@ import {
   HelpCircle,
   ArrowLeft,
   KeyRound,
-  AlertCircle
+  AlertCircle,
+  X,
+  ArrowRight
 } from 'lucide-react';
 import { MaharashtraEmblem } from '../components/Emblems';
 import { formatText } from '../utils/textUtils';
@@ -214,9 +216,6 @@ export const LoginPageView = ({ onLoginSuccess, onNavigateToLanding, isModal = f
               <div>
                 <h1 style={{ fontSize: '1.25rem', fontWeight: 700, color: '#FFFFFF', display: 'flex', alignItems: 'center', gap: '0.5rem', margin: 0 }}>
                   GovInnovate Portal
-                  <span className="badge badge-saffron" style={{ fontSize: '0.65rem' }}>
-                    SIH 26136
-                  </span>
                 </h1>
                 <p style={{ fontSize: '0.75rem', color: '#94A3B8', margin: 0 }}>
                   Government of Maharashtra • Unified User Authentication Portal
@@ -285,8 +284,8 @@ export const LoginPageView = ({ onLoginSuccess, onNavigateToLanding, isModal = f
               </div>
 
               {isModal && onClose && (
-                <button
-                  onClick={onClose}
+                <button 
+                  onClick={onClose} 
                   style={{
                     position: 'absolute',
                     top: '1.25rem',
@@ -295,10 +294,11 @@ export const LoginPageView = ({ onLoginSuccess, onNavigateToLanding, isModal = f
                     border: 'none',
                     color: '#94A3B8',
                     cursor: 'pointer',
-                    fontSize: '1.25rem'
+                    display: 'flex',
+                    alignItems: 'center'
                   }}
                 >
-                  ✕
+                  <X size={18} />
                 </button>
               )}
             </div>
@@ -600,7 +600,11 @@ export const LoginPageView = ({ onLoginSuccess, onNavigateToLanding, isModal = f
                         className={isSelected ? 'badge badge-emerald' : 'badge badge-navy'}
                         style={{ fontSize: '0.7rem', flexShrink: 0 }}
                       >
-                        {isSelected ? 'Selected ✓' : 'Select User →'}
+                        {isSelected ? (
+                          <span style={{ display: 'inline-flex', alignItems: 'center', gap: '0.25rem' }}>Selected <CheckCircle2 size={12} /></span>
+                        ) : (
+                          <span style={{ display: 'inline-flex', alignItems: 'center', gap: '0.25rem' }}>Select User <ArrowRight size={12} /></span>
+                        )}
                       </button>
                     </div>
 
@@ -614,8 +618,8 @@ export const LoginPageView = ({ onLoginSuccess, onNavigateToLanding, isModal = f
                       fontSize: '0.725rem',
                       color: '#64748B'
                     }}>
-                      <span>📧 {acc.email}</span>
-                      <span style={{ fontStyle: 'italic' }}>🔑 Master Password</span>
+                      <span style={{ display: 'inline-flex', alignItems: 'center', gap: '0.25rem' }}><Mail size={12} color="#64748B" /> {acc.email}</span>
+                      <span style={{ fontStyle: 'italic', display: 'inline-flex', alignItems: 'center', gap: '0.25rem' }}><KeyRound size={12} color="#64748B" /> Master Password</span>
                     </div>
                   </div>
                 );

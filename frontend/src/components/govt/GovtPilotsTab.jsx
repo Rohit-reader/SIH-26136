@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Rocket, Clock, CheckCircle2, DollarSign, ExternalLink, Plus, MapPin, Building } from 'lucide-react';
+import { Rocket, Clock, CheckCircle2, DollarSign, ExternalLink, Plus, MapPin, Building, X } from 'lucide-react';
 import axios from 'axios';
 import { formatText, formatCurrency } from '../../utils/textUtils';
 
@@ -190,7 +190,9 @@ export const GovtPilotsTab = ({ pilots = [], proposals = [], onRefresh }) => {
           <div className="modal-content" onClick={e => e.stopPropagation()}>
             <div className="modal-header">
               <h3 style={{ fontSize: '1.1rem', fontWeight: 700, color: '#0A2540' }}>Structure Controlled Pilot Project</h3>
-              <button onClick={() => setIsCreateModalOpen(false)} className="btn-secondary" style={{ padding: '0.2rem 0.5rem' }}>✕</button>
+              <button onClick={() => setIsCreateModalOpen(false)} className="btn-secondary" style={{ padding: '0.2rem 0.5rem' }}>
+                <X size={16} />
+              </button>
             </div>
             <form onSubmit={handleCreatePilot}>
               <div className="modal-body">

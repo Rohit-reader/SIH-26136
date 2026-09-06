@@ -1,11 +1,13 @@
 import React, { useState } from 'react';
-import { Plus, Filter, Building, CheckCircle2, Clock, Trash2, Send, Eye } from 'lucide-react';
+import { Plus, Filter, Building, CheckCircle2, Clock, Trash2, Send, Eye, FileText, Lock, X } from 'lucide-react';
 import axios from 'axios';
 import { formatText, formatCurrency } from '../../utils/textUtils';
+import { ProblemTemplatesModal } from './ProblemTemplatesModal';
 
 export const GovtChallengesTab = ({ challenges = [], onRefresh, onOpenCreateModal }) => {
   const [filterStatus, setFilterStatus] = useState('All');
   const [selectedChallenge, setSelectedChallenge] = useState(null);
+  const [isTemplatesModalOpen, setIsTemplatesModalOpen] = useState(false);
 
   const statuses = ['All', 'Published', 'Draft', 'Pending Approval', 'Pilot Active', 'Completed'];
 
@@ -49,11 +51,30 @@ export const GovtChallengesTab = ({ challenges = [], onRefresh, onOpenCreateModa
             Formulate outcome specs, define baseline targets, set eligibility rules, and publish government challenges
           </p>
         </div>
-        <button onClick={onOpenCreateModal} className="btn-primary">
-          <Plus size={16} />
-          <span>Create Outcome Challenge</span>
-        </button>
+        <div style={{ display: 'flex', gap: '0.75rem' }}>
+          <button 
+            onClick={() => setIsTemplatesModalOpen(true)} 
+            className="btn-secondary"
+            style={{ backgroundColor: '#F8FAFC' }}
+          >
+            <FileText size={16} color="#FF9933" />
+            <span>Problem Statement Templates</span>
+          </button>
+          <button onClick={onOpenCreateModal} className="btn-primary">
+            <Plus size={16} />
+            <span>Create Outcome Challenge</span>
+          </button>
+        </div>
       </div>
+
+      <ProblemTemplatesModal
+        isOpen={isTemplatesModalOpen}
+        onClose={() => setIsTemplatesModalOpen(false)}
+        onSelectTemplate={(template) => {
+          setIsTemplatesModalOpen(false);
+          onOpenCreateModal();
+        }}
+      />
 
       {/* Filter Tabs */}
       <div style={{ display: 'flex', gap: '0.5rem', marginBottom: '1.5rem', flexWrap: 'wrap' }}>
@@ -137,8 +158,8 @@ export const GovtChallengesTab = ({ challenges = [], onRefresh, onOpenCreateModa
                       </span>
                     ))}
                     {c.securityRequirements?.map((sec, idx) => (
-                      <span key={idx} style={{ backgroundColor: '#FEF3C7', color: '#92400E', fontSize: '0.75rem', fontWeight: 600, padding: '0.2rem 0.6rem', borderRadius: '4px' }}>
-                        🔒 {formatText(sec)}
+                      <span key={idx} style={{ backgroundColor: '#FEF3C7', color: '#92400E', fontSize: '0.75rem', fontWeight: 600, padding: '0.2rem 0.6rem', borderRadius: '4px', display: 'inline-flex', alignItems: 'center', gap: '0.3rem' }}>
+                        <Lock size={12} color="#92400E" /> {formatText(sec)}
                       </span>
                     ))}
                   </div>
@@ -202,7 +223,9 @@ export const GovtChallengesTab = ({ challenges = [], onRefresh, onOpenCreateModa
               <h3 style={{ fontSize: '1.1rem', fontWeight: 700, color: '#0A2540' }}>
                 {formatText(selectedChallenge.title)}
               </h3>
-              <button onClick={() => setSelectedChallenge(null)} className="btn-secondary" style={{ padding: '0.2rem 0.5rem' }}>✕</button>
+              <button onClick={() => setSelectedChallenge(null)} className="btn-secondary" style={{ padding: '0.2rem 0.5rem' }}>
+                <X size={16} />
+              </button>
             </div>
             <div className="modal-body">
               <p style={{ marginBottom: '1rem' }}><strong>Department:</strong> {formatText(selectedChallenge.department)}</p>
@@ -218,9 +241,11 @@ export const GovtChallengesTab = ({ challenges = [], onRefresh, onOpenCreateModa
                 ))}
               </ul>
               <h4 style={{ fontSize: '0.95rem', fontWeight: 700, margin: '1rem 0 0.5rem' }}>Eligibility Requirements</h4>
-              <ul>
+              <ul style={{ listStyle: 'none', padding: 0 }}>
                 {selectedChallenge.eligibilityRequirements?.map((req, idx) => (
-                  <li key={idx} style={{ fontSize: '0.875rem' }}>✓ {formatText(req)}</li>
+                  <li key={idx} style={{ fontSize: '0.875rem', display: 'flex', alignItems: 'center', gap: '0.35rem', marginBottom: '0.35rem' }}>
+                    <CheckCircle2 size={13} color="#059669" /> {formatText(req)}
+                  </li>
                 ))}
               </ul>
             </div>

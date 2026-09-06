@@ -29,7 +29,7 @@ export const StartupProfileTab = ({ primaryStartup = {}, onSaveProfile }) => {
   const [newDocName, setNewDocName] = useState('');
   const [newDocType, setNewDocType] = useState('DPIIT Certificate');
 
-  // Form State initialized with primaryStartup or default SIH26136 mock data
+  // Form State initialized with primaryStartup or default mock data
   const [profileData, setProfileData] = useState({
     name: primaryStartup.name || 'HealthAI Solutions Pvt Ltd',
     dpiitNumber: primaryStartup.dpiitNumber || 'DIPP10984',
@@ -485,8 +485,8 @@ export const StartupProfileTab = ({ primaryStartup = {}, onSaveProfile }) => {
                   </div>
 
                   <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                    <span className="badge badge-emerald" style={{ fontSize: '0.7rem' }}>
-                      Verified ✓
+                    <span className="badge badge-emerald" style={{ fontSize: '0.7rem', display: 'inline-flex', alignItems: 'center', gap: '0.25rem' }}>
+                      Verified <CheckCircle2 size={12} />
                     </span>
                     <a href={doc.url} target="_blank" rel="noreferrer" className="btn-secondary" style={{ padding: '0.35rem 0.65rem', fontSize: '0.75rem' }}>
                       View Document <ExternalLink size={12} />

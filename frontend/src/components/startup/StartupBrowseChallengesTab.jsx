@@ -172,10 +172,10 @@ export const StartupBrowseChallengesTab = ({
             flexWrap: 'wrap',
             gap: '1rem'
           }}>
-            <div style={{ display: 'flex', gap: '1.5rem', fontSize: '0.8rem', color: '#94A3B8' }}>
-              <span>📅 Application Deadline: <strong style={{ color: '#FFFFFF' }}>{detailChallenge.applicationDeadline || '30 Sep 2026'}</strong></span>
-              <span>⏱️ Expected Pilot Duration: <strong style={{ color: '#FFFFFF' }}>{detailChallenge.pilotDurationMonths || 3} Months</strong></span>
-              <span>🎯 Max Pilot Locations: <strong style={{ color: '#FFFFFF' }}>{detailChallenge.pilotSites || '3 District Hospitals'}</strong></span>
+            <div style={{ display: 'flex', gap: '1.5rem', fontSize: '0.8rem', color: '#94A3B8', flexWrap: 'wrap' }}>
+              <span style={{ display: 'inline-flex', alignItems: 'center', gap: '0.3rem' }}><Calendar size={14} color="#FF9933" /> Application Deadline: <strong style={{ color: '#FFFFFF' }}>{detailChallenge.applicationDeadline || '30 Sep 2026'}</strong></span>
+              <span style={{ display: 'inline-flex', alignItems: 'center', gap: '0.3rem' }}><Clock size={14} color="#FF9933" /> Expected Pilot Duration: <strong style={{ color: '#FFFFFF' }}>{detailChallenge.pilotDurationMonths || 3} Months</strong></span>
+              <span style={{ display: 'inline-flex', alignItems: 'center', gap: '0.3rem' }}><Target size={14} color="#FF9933" /> Max Pilot Locations: <strong style={{ color: '#FFFFFF' }}>{detailChallenge.pilotSites || '3 District Hospitals'}</strong></span>
             </div>
 
             <button 
@@ -298,8 +298,8 @@ export const StartupBrowseChallengesTab = ({
             <p style={{ fontSize: '0.825rem', color: '#475569', lineHeight: 1.6, marginBottom: '0.5rem' }}>
               Pilot to be deployed across 3 designated District General Hospitals in Maharashtra. Hardware connectivity & high-speed Internet provided by Department.
             </p>
-            <span style={{ fontSize: '0.775rem', fontWeight: 600, color: '#0A2540', display: 'block' }}>
-              🔒 Data Ownership: 100% Government of Maharashtra. Startup retains core proprietary IP.
+            <span style={{ fontSize: '0.775rem', fontWeight: 600, color: '#0A2540', display: 'flex', alignItems: 'center', gap: '0.35rem' }}>
+              <Lock size={14} color="#0A2540" /> Data Ownership: 100% Government of Maharashtra. Startup retains core proprietary IP.
             </span>
           </div>
 
@@ -310,11 +310,11 @@ export const StartupBrowseChallengesTab = ({
             </h3>
             <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
               <a href="#" onClick={(e) => { e.preventDefault(); alert('Downloading Official Challenge Guidelines PDF'); }} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '0.5rem 0.75rem', border: '1px solid #E2E8F0', borderRadius: '6px', fontSize: '0.8rem', textDecoration: 'none', color: '#0A2540' }}>
-                <span>📄 Challenge Technical Guidelines.pdf</span>
+                <span style={{ display: 'flex', alignItems: 'center', gap: '0.35rem' }}><FileText size={14} color="#2563EB" /> Challenge Technical Guidelines.pdf</span>
                 <Download size={14} color="#2563EB" />
               </a>
               <a href="#" onClick={(e) => { e.preventDefault(); alert('Downloading Proposal Format Template DOCX'); }} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '0.5rem 0.75rem', border: '1px solid #E2E8F0', borderRadius: '6px', fontSize: '0.8rem', textDecoration: 'none', color: '#0A2540' }}>
-                <span>📝 Technical Proposal Template.docx</span>
+                <span style={{ display: 'flex', alignItems: 'center', gap: '0.35rem' }}><FileText size={14} color="#2563EB" /> Technical Proposal Template.docx</span>
                 <Download size={14} color="#2563EB" />
               </a>
             </div>
@@ -504,7 +504,7 @@ export const StartupBrowseChallengesTab = ({
                     <div style={{ display: 'flex', gap: '0.4rem', flexWrap: 'wrap', marginBottom: '0.4rem' }}>
                       <span className="badge badge-navy">{formatText(challenge.status || 'Open')}</span>
                       <span className="badge badge-saffron">{formatText(challenge.department)}</span>
-                      <span className="badge badge-dpiit">DPIIT Waived ✓</span>
+                      <span className="badge badge-dpiit" style={{ display: 'inline-flex', alignItems: 'center', gap: '0.25rem' }}>DPIIT Waived <CheckCircle2 size={12} /></span>
                       <span className="badge badge-emerald">{formatText(challenge.location || 'Maharashtra')}</span>
                     </div>
 
@@ -549,8 +549,8 @@ export const StartupBrowseChallengesTab = ({
                       <div style={{ fontSize: '1.35rem', fontWeight: 800, color: '#0A2540' }}>
                         {formatCurrency(challenge.estimatedBudget)}
                       </div>
-                      <span style={{ fontSize: '0.725rem', color: '#059669', fontWeight: 600 }}>
-                        📅 Deadline: {challenge.applicationDeadline || '30 Sep 2026'}
+                      <span style={{ fontSize: '0.725rem', color: '#059669', fontWeight: 600, display: 'inline-flex', alignItems: 'center', gap: '0.25rem' }}>
+                        <Calendar size={12} color="#059669" /> Deadline: {challenge.applicationDeadline || '30 Sep 2026'}
                       </span>
                     </div>
 

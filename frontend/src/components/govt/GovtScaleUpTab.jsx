@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { TrendingUp, Plus, MapPin, Building, ShieldCheck, CheckCircle2 } from 'lucide-react';
+import { TrendingUp, Plus, MapPin, Building, ShieldCheck, CheckCircle2, X } from 'lucide-react';
 import axios from 'axios';
 import { formatText, formatCurrency } from '../../utils/textUtils';
 
@@ -122,7 +122,9 @@ export const GovtScaleUpTab = ({ scaleUps = [], pilots = [], onRefresh }) => {
           <div className="modal-content" onClick={e => e.stopPropagation()}>
             <div className="modal-header">
               <h3 style={{ fontSize: '1.1rem', fontWeight: 700, color: '#0A2540' }}>Sanction Statewide Scale-Up Order</h3>
-              <button onClick={() => setIsModalOpen(false)} className="btn-secondary" style={{ padding: '0.2rem 0.5rem' }}>✕</button>
+              <button onClick={() => setIsModalOpen(false)} className="btn-secondary" style={{ padding: '0.2rem 0.5rem' }}>
+                <X size={16} />
+              </button>
             </div>
             <form onSubmit={handleCreateScaleUp}>
               <div className="modal-body">
