@@ -8,7 +8,8 @@ import {
   FileCheck,
   Bell,
   User,
-  ShieldCheck
+  ShieldCheck,
+  TrendingUp
 } from 'lucide-react';
 import axios from 'axios';
 import { formatText } from '../utils/textUtils';
@@ -23,6 +24,7 @@ import { StartupApplicationsTab } from '../components/startup/StartupApplication
 import { StartupPilotsTab } from '../components/startup/StartupPilotsTab';
 import { StartupPaymentsTab } from '../components/startup/StartupPaymentsTab';
 import { StartupNotificationsTab } from '../components/startup/StartupNotificationsTab';
+import { StartupScaleUpTab } from '../components/startup/StartupScaleUpTab';
 
 export const StartupView = ({ onOpenProposalModal, currentUser, onLogout, onOpenAudit }) => {
   const [activeTab, setActiveTab] = useState('dashboard');
@@ -91,6 +93,7 @@ export const StartupView = ({ onOpenProposalModal, currentUser, onLogout, onOpen
     { id: 'applications', label: 'My Applications', icon: FileText, count: proposals.length },
     { id: 'pilots', label: 'Pilot Workspace', icon: Rocket, count: pilots.length },
     { id: 'payments', label: 'Payments & Milestones', icon: IndianRupee },
+    { id: 'scaleup', label: 'Scale-Up & Rollouts', icon: TrendingUp },
     { id: 'notifications', label: 'Notifications', icon: Bell, count: notifications.filter(n => !n.isRead).length },
     { id: 'profile', label: 'Company Profile', icon: User }
   ];
@@ -193,6 +196,14 @@ export const StartupView = ({ onOpenProposalModal, currentUser, onLogout, onOpen
             {activeTab === 'payments' && (
               <StartupPaymentsTab
                 pilots={pilots}
+                onRefresh={fetchStartupData}
+              />
+            )}
+
+            {/* Screen Scale-Up & Rollouts */}
+            {activeTab === 'scaleup' && (
+              <StartupScaleUpTab
+                primaryStartup={primaryStartup}
                 onRefresh={fetchStartupData}
               />
             )}

@@ -25,6 +25,7 @@ export const GovtView = ({ onOpenCreateModal, currentUser, onLogout, onOpenAudit
   const [evaluations, setEvaluations] = useState([]);
   const [pilots, setPilots] = useState([]);
   const [scaleUps, setScaleUps] = useState([]);
+  const [scaleDecisions, setScaleDecisions] = useState([]);
   const [notifications, setNotifications] = useState([]);
   const [auditLogs, setAuditLogs] = useState([]);
 
@@ -36,7 +37,7 @@ export const GovtView = ({ onOpenCreateModal, currentUser, onLogout, onOpenAudit
     setLoading(true);
     try {
       const [
-        resC, resS, resP, resE, resPilots, resScale, resN, resA
+        resC, resS, resP, resE, resPilots, resScale, resDecisions, resN, resA
       ] = await Promise.all([
         axios.get('/api/challenges'),
         axios.get('/api/startups'),
@@ -44,18 +45,20 @@ export const GovtView = ({ onOpenCreateModal, currentUser, onLogout, onOpenAudit
         axios.get('/api/evaluations'),
         axios.get('/api/pilots'),
         axios.get('/api/scaleups'),
+        axios.get('/api/scale-decisions'),
         axios.get('/api/notifications'),
         axios.get('/api/audit')
       ]);
 
-      setChallenges(resC.data);
-      setStartups(resS.data);
-      setProposals(resP.data);
-      setEvaluations(resE.data);
-      setPilots(resPilots.data);
-      setScaleUps(resScale.data);
-      setNotifications(resN.data);
-      setAuditLogs(resA.data);
+      setChallenges(resC.data || []);
+      setStartups(resS.data || []);
+      setProposals(resP.data || []);
+      setEvaluations(resE.data || []);
+      setPilots(resPilots.data || []);
+      setScaleUps(resScale.data || []);
+      setScaleDecisions(resDecisions.data || []);
+      setNotifications(resN.data || []);
+      setAuditLogs(resA.data || []);
     } catch (err) {
       console.error('Error fetching GovtView data:', err);
     } finally {
@@ -70,7 +73,7 @@ export const GovtView = ({ onOpenCreateModal, currentUser, onLogout, onOpenAudit
     evaluations: evaluations.length,
     pilots: pilots.length,
     validations: pilots.filter(p => p.validationStatus === 'Pending Review').length,
-    scaleUps: scaleUps.length,
+    scaleUps: scaleDecisions.length || scaleUps.length,
     notifications: notifications.filter(n => !n.isRead).length
   };
 
@@ -176,7 +179,11 @@ export const GovtView = ({ onOpenCreateModal, currentUser, onLogout, onOpenAudit
             {activeTab === 'scaleup' && (
               <GovtScaleUpTab
                 scaleUps={scaleUps}
+                scaleDecisions={scaleDecisions}
                 pilots={pilots}
+                challenges={challenges}
+                startups={startups}
+                currentUser={currentUser}
                 onRefresh={fetchAllData}
               />
             )}
