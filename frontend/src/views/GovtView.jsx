@@ -112,6 +112,7 @@ export const GovtView = ({ onOpenCreateModal, currentUser, onLogout, onOpenAudit
                 pilots={pilots}
                 scaleUps={scaleUps}
                 auditLogs={auditLogs}
+                currentUser={currentUser}
                 onSelectTab={setActiveTab}
                 onOpenCreateModal={onOpenCreateModal}
               />

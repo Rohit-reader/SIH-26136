@@ -19,7 +19,7 @@ import {
   User
 } from 'lucide-react';
 import { MaharashtraEmblem } from '../Emblems';
-import { formatText } from '../../utils/textUtils';
+import { formatText, isAuditAdmin } from '../../utils/textUtils';
 import { LanguageSwitcher } from '../LanguageSwitcher';
 
 export const GovtSidebar = ({ 
@@ -150,8 +150,8 @@ export const GovtSidebar = ({
           </div>
         )}
 
-        {/* Audit Log Button */}
-        {onOpenAudit && (
+        {/* Audit Log Button (Restricted to Government Admin and Platform Admin) */}
+        {isAuditAdmin(currentUser) && onOpenAudit && (
           <button
             onClick={onOpenAudit}
             className="sidebar-action-btn"

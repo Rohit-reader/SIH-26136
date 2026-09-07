@@ -2,7 +2,7 @@ import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { MaharashtraEmblem } from './Emblems';
 import { Shield, LogIn, LogOut, FileText, User } from 'lucide-react';
-import { formatText } from '../utils/textUtils';
+import { formatText, isAuditAdmin } from '../utils/textUtils';
 import { LanguageSwitcher } from './LanguageSwitcher';
 
 export const Navbar = ({ currentUser, onOpenAuth, onLogout, onOpenAudit }) => {
@@ -51,14 +51,18 @@ export const Navbar = ({ currentUser, onOpenAuth, onLogout, onOpenAudit }) => {
                   </div>
                 </div>
 
-                <button 
-                  onClick={onOpenAudit} 
-                  className="btn-secondary"
-                  style={{ backgroundColor: '#1E293B', color: '#FFFFFF', borderColor: '#334155' }}
-                >
-                  <FileText size={16} color="#FF9933" />
-                  <span>{t('nav.auditLog')}</span>
-                </button>
+                {/* Audit Log Button (Restricted to Government Admin and Platform Admin) */}
+                {isAuditAdmin(currentUser) && onOpenAudit && (
+                  <button 
+                    onClick={onOpenAudit} 
+                    className="btn-secondary"
+                    style={{ backgroundColor: '#1E293B', color: '#FFFFFF', borderColor: '#334155' }}
+                    title="Administrative Transparency Audit Trail"
+                  >
+                    <FileText size={16} color="#FF9933" />
+                    <span>{t('nav.auditLog')}</span>
+                  </button>
+                )}
 
                 <button 
                   onClick={onLogout} 
@@ -72,15 +76,6 @@ export const Navbar = ({ currentUser, onOpenAuth, onLogout, onOpenAudit }) => {
               </>
             ) : (
               <>
-                <button 
-                  onClick={onOpenAudit} 
-                  className="btn-secondary"
-                  style={{ backgroundColor: '#1E293B', color: '#FFFFFF', borderColor: '#334155' }}
-                >
-                  <FileText size={16} color="#FF9933" />
-                  <span>{t('common.auditTrail')}</span>
-                </button>
-
                 <button 
                   onClick={onOpenAuth} 
                   className="btn-emerald"

@@ -15,7 +15,7 @@ import {
   ArrowRight,
   Plus
 } from 'lucide-react';
-import { formatText, formatCurrency } from '../../utils/textUtils';
+import { formatText, formatCurrency, isAuditAdmin } from '../../utils/textUtils';
 import { DepartmentBudgetChart, InnovationFunnelChart } from '../charts/GovtAnalyticsCharts';
 
 export const GovtDashboardTab = ({ 
@@ -25,6 +25,7 @@ export const GovtDashboardTab = ({
   pilots = [], 
   scaleUps = [], 
   auditLogs = [],
+  currentUser,
   onSelectTab,
   onOpenCreateModal
 }) => {
@@ -247,7 +248,7 @@ export const GovtDashboardTab = ({
       </div>
 
       {/* Active Challenges Table & Activity Feed Row */}
-      <div style={{ display: 'grid', gridTemplateColumns: '2fr 1fr', gap: '1.5rem' }}>
+      <div style={{ display: 'grid', gridTemplateColumns: isAuditAdmin(currentUser) ? '2fr 1fr' : '1fr', gap: '1.5rem' }}>
         {/* Active Challenges */}
         <div className="gov-card">
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>
@@ -283,24 +284,26 @@ export const GovtDashboardTab = ({
           </table>
         </div>
 
-        {/* Audit Log Activity Stream */}
-        <div className="gov-card">
-          <h3 style={{ fontSize: '1.05rem', fontWeight: 700, color: '#0A2540', marginBottom: '1rem' }}>
-            Recent Activity Audit Stream
-          </h3>
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '0.85rem' }}>
-            {auditLogs.slice(0, 5).map((log, idx) => (
-              <div key={log._id || idx} style={{ borderBottom: '1px solid #E2E8F0', paddingBottom: '0.65rem' }}>
-                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '0.2rem' }}>
-                  <span className="badge badge-navy" style={{ fontSize: '0.65rem' }}>{formatText(log.action)}</span>
-                  <span style={{ fontSize: '0.7rem', color: '#94A3B8' }}>{new Date(log.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</span>
+        {/* Audit Log Activity Stream (Restricted to Government Admin and Platform Admin) */}
+        {isAuditAdmin(currentUser) && (
+          <div className="gov-card">
+            <h3 style={{ fontSize: '1.05rem', fontWeight: 700, color: '#0A2540', marginBottom: '1rem' }}>
+              Recent Activity Audit Stream
+            </h3>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.85rem' }}>
+              {auditLogs.slice(0, 5).map((log, idx) => (
+                <div key={log._id || idx} style={{ borderBottom: '1px solid #E2E8F0', paddingBottom: '0.65rem' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '0.2rem' }}>
+                    <span className="badge badge-navy" style={{ fontSize: '0.65rem' }}>{formatText(log.action)}</span>
+                    <span style={{ fontSize: '0.7rem', color: '#94A3B8' }}>{new Date(log.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</span>
+                  </div>
+                  <p style={{ fontSize: '0.8rem', fontWeight: 600, color: '#0F172A' }}>{log.actorName}</p>
+                  <p style={{ fontSize: '0.75rem', color: '#64748B' }}>{log.details}</p>
                 </div>
-                <p style={{ fontSize: '0.8rem', fontWeight: 600, color: '#0F172A' }}>{log.actorName}</p>
-                <p style={{ fontSize: '0.75rem', color: '#64748B' }}>{log.details}</p>
-              </div>
-            ))}
+              ))}
+            </div>
           </div>
-        </div>
+        )}
       </div>
     </div>
   );

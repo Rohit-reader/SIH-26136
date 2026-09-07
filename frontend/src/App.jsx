@@ -159,6 +159,7 @@ export function App() {
       <AuditLogModal
         isOpen={isAuditModalOpen}
         onClose={() => setIsAuditModalOpen(false)}
+        currentUser={currentUser}
       />
     </div>
   );

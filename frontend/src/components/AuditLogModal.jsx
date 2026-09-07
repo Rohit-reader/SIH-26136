@@ -1,19 +1,21 @@
 import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
-import { X, ShieldCheck, Clock, FileText } from 'lucide-react';
+import { X, ShieldCheck, Clock, FileText, AlertTriangle, Lock } from 'lucide-react';
 import axios from 'axios';
-import { formatText } from '../utils/textUtils';
+import { formatText, isAuditAdmin } from '../utils/textUtils';
 
-export const AuditLogModal = ({ isOpen, onClose }) => {
+export const AuditLogModal = ({ isOpen, onClose, currentUser }) => {
   const { t } = useTranslation();
   const [logs, setLogs] = useState([]);
   const [loading, setLoading] = useState(true);
 
+  const hasAccess = isAuditAdmin(currentUser);
+
   useEffect(() => {
-    if (isOpen) {
+    if (isOpen && hasAccess) {
       fetchLogs();
     }
-  }, [isOpen]);
+  }, [isOpen, hasAccess]);
 
   const fetchLogs = async () => {
     setLoading(true);
@@ -28,6 +30,40 @@ export const AuditLogModal = ({ isOpen, onClose }) => {
   };
 
   if (!isOpen) return null;
+
+  if (!hasAccess) {
+    return (
+      <div className="modal-overlay" onClick={onClose}>
+        <div className="modal-content" onClick={e => e.stopPropagation()} style={{ maxWidth: '520px', borderRadius: '12px', overflow: 'hidden' }}>
+          <div style={{ backgroundColor: '#DC2626', color: '#FFFFFF', padding: '1.25rem 1.5rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+              <Lock size={20} color="#FFFFFF" />
+              <h3 style={{ fontSize: '1.1rem', fontWeight: 700, margin: 0 }}>Access Restricted</h3>
+            </div>
+            <button onClick={onClose} style={{ background: 'none', border: 'none', color: '#FFFFFF', cursor: 'pointer' }}>
+              <X size={20} />
+            </button>
+          </div>
+          <div style={{ padding: '1.5rem' }}>
+            <div style={{ display: 'flex', gap: '0.75rem', alignItems: 'flex-start', marginBottom: '1.25rem' }}>
+              <AlertTriangle size={24} color="#DC2626" style={{ flexShrink: 0, marginTop: '2px' }} />
+              <div>
+                <h4 style={{ margin: '0 0 0.25rem 0', color: '#0F172A', fontWeight: 700 }}>Administrative Clearance Required</h4>
+                <p style={{ margin: 0, fontSize: '0.85rem', color: '#475569', lineHeight: 1.5 }}>
+                  The Governance Transparency Audit Trail is strictly confidential and accessible exclusively to <strong>Government Administrators</strong> and <strong>Platform / Super Admins</strong>.
+                </p>
+              </div>
+            </div>
+            <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
+              <button onClick={onClose} className="btn-secondary">
+                {t('common.close')}
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="modal-overlay">
