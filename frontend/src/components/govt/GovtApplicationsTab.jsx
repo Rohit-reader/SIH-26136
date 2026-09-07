@@ -151,7 +151,7 @@ export const GovtApplicationsTab = ({ proposals = [], onRefresh }) => {
         ) : (
           filteredProposals.map((p) => {
             const startupName = p.startupId?.name || 'HealthAI Solutions Pvt Ltd';
-            const challengeTitle = p.challengeId?.title || 'AI Based Hospital OPD Queue Optimization';
+            const challengeTitle = p.challengeId?.title || 'Hospital OPD Queue Optimization System';
             const screeningState = p.eligibilityScreening?.screeningStatus || (p.status === 'Eligible' ? 'Eligible' : 'Pending Screening');
             const isDigiLocker = p.startupId?.digilockerVerification?.status === 'Verified';
 

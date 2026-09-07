@@ -1,4 +1,5 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { 
   Building, 
   FileText, 
@@ -27,6 +28,7 @@ export const GovtDashboardTab = ({
   onSelectTab,
   onOpenCreateModal
 }) => {
+  const { t } = useTranslation();
   const activeChallenges = challenges.filter(c => c.status === 'Published' || c.status === 'Pilot Active').length;
   const pendingProposals = proposals.filter(p => p.status === 'Submitted' || p.status === 'Under Review').length;
   const pendingEvaluations = evaluations.filter(e => e.recommendation === 'Recommend for Pilot').length;
@@ -42,15 +44,15 @@ export const GovtDashboardTab = ({
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '1.5rem' }}>
         <div>
           <h2 style={{ fontSize: '1.4rem', fontWeight: 700, color: '#0A2540' }}>
-            Government Executive Innovation Dashboard
+            {t('govt.dashboardTitle')}
           </h2>
           <p style={{ fontSize: '0.85rem', color: '#64748B' }}>
-            Overview of Maharashtra government innovation procurement lifecycle, active pilots, and scaled solutions
+            {t('govt.dashboardSubtitle')}
           </p>
         </div>
         <button onClick={onOpenCreateModal} className="btn-primary">
           <Plus size={16} />
-          <span>Create Outcome Challenge</span>
+          <span>{t('govt.createChallengeBtn')}</span>
         </button>
       </div>
 
@@ -60,7 +62,7 @@ export const GovtDashboardTab = ({
           <div className="metric-card-accent" style={{ backgroundColor: '#0A2540' }}></div>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
             <div>
-              <p style={{ fontSize: '0.75rem', fontWeight: 600, color: '#64748B' }}>ACTIVE CHALLENGES</p>
+              <p style={{ fontSize: '0.75rem', fontWeight: 600, color: '#64748B' }}>{t('govt.metrics.activeChallenges').toUpperCase()}</p>
               <h3 style={{ fontSize: '1.75rem', fontWeight: 800, color: '#0A2540' }}>{challenges.length}</h3>
             </div>
             <div style={{ backgroundColor: '#EFF6FF', padding: '0.65rem', borderRadius: '50%' }}>

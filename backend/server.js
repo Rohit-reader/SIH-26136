@@ -29,6 +29,7 @@ app.use('/api/digilocker', require('./routes/digilockerRoutes'));
 app.use('/api/contracts', require('./routes/contractRoutes'));
 app.use('/api/validations', require('./routes/validationRoutes'));
 app.use('/api/scale-decisions', require('./routes/scaleDecisionRoutes'));
+app.use('/api/seed', require('./routes/seedRoutes'));
 
 app.get('/', (req, res) => {
   res.send({

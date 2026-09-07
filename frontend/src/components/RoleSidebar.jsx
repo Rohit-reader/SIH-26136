@@ -1,4 +1,5 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { 
   ChevronLeft, 
   ChevronRight,
@@ -8,6 +9,7 @@ import {
 } from 'lucide-react';
 import { MaharashtraEmblem } from './Emblems';
 import { formatText } from '../utils/textUtils';
+import { LanguageSwitcher } from './LanguageSwitcher';
 
 export const RoleSidebar = ({ 
   title, 
@@ -21,6 +23,8 @@ export const RoleSidebar = ({
   onLogout,
   onOpenAudit
 }) => {
+  const { t } = useTranslation();
+
   return (
     <aside className={`govt-sidebar ${collapsed ? 'collapsed' : ''}`}>
       {/* Brand & Sidebar Header */}
@@ -31,7 +35,7 @@ export const RoleSidebar = ({
             {!collapsed && (
               <div>
                 <h3 style={{ fontSize: '1rem', fontWeight: 800, color: '#FFFFFF', lineHeight: 1.1 }}>
-                  GovInnovate
+                  {t('app.title')}
                 </h3>
               </div>
             )}
@@ -53,6 +57,11 @@ export const RoleSidebar = ({
           >
             {collapsed ? <ChevronRight size={18} /> : <ChevronLeft size={18} />}
           </button>
+        </div>
+
+        {/* Language Switcher in Sidebar */}
+        <div style={{ display: 'flex', justifyContent: collapsed ? 'center' : 'flex-start' }}>
+          <LanguageSwitcher isCollapsed={collapsed} />
         </div>
 
         {!collapsed && (
@@ -135,7 +144,7 @@ export const RoleSidebar = ({
           <button
             onClick={onOpenAudit}
             className="sidebar-action-btn"
-            title="Open Transparency Audit Trail Log"
+            title={t('nav.auditLog')}
             style={{
               display: 'flex',
               alignItems: 'center',
@@ -154,7 +163,7 @@ export const RoleSidebar = ({
             }}
           >
             <FileText size={16} color="#FF9933" />
-            {!collapsed && <span>Audit Log</span>}
+            {!collapsed && <span>{t('nav.auditLog')}</span>}
           </button>
         )}
 
@@ -163,7 +172,7 @@ export const RoleSidebar = ({
           <button
             onClick={onLogout}
             className="sidebar-action-btn"
-            title="Sign Out of Portal"
+            title={t('common.signOut')}
             style={{
               display: 'flex',
               alignItems: 'center',
@@ -182,7 +191,7 @@ export const RoleSidebar = ({
             }}
           >
             <LogOut size={16} color="#F87171" />
-            {!collapsed && <span>Sign Out</span>}
+            {!collapsed && <span>{t('common.signOut')}</span>}
           </button>
         )}
       </div>

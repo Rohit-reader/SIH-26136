@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import { X, ShieldCheck, Clock, FileText } from 'lucide-react';
 import axios from 'axios';
 import { formatText } from '../utils/textUtils';
 
 export const AuditLogModal = ({ isOpen, onClose }) => {
+  const { t } = useTranslation();
   const [logs, setLogs] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -17,7 +19,7 @@ export const AuditLogModal = ({ isOpen, onClose }) => {
     setLoading(true);
     try {
       const res = await axios.get('/api/audit');
-      setLogs(res.data);
+      setLogs(res.data || []);
     } catch (err) {
       console.error(err);
     } finally {
@@ -34,7 +36,7 @@ export const AuditLogModal = ({ isOpen, onClose }) => {
           <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
             <ShieldCheck size={20} color="#0A2540" />
             <h3 style={{ fontSize: '1.1rem', fontWeight: 700, color: '#0A2540' }}>
-              Official Transparency Audit Trail Log
+              {t('audit.title')}
             </h3>
           </div>
           <button onClick={onClose} style={{ background: 'none', border: 'none', cursor: 'pointer' }}>
@@ -44,7 +46,7 @@ export const AuditLogModal = ({ isOpen, onClose }) => {
 
         <div className="modal-body">
           <p style={{ fontSize: '0.85rem', color: '#475569', marginBottom: '1rem' }}>
-            All lifecycle operations (challenge creation, AI match, COI declarations, milestone approvals, payment releases, validator decisions) are recorded with timestamps.
+            All lifecycle operations (challenge creation, capability matching, COI declarations, milestone approvals, payment releases, validator decisions) are recorded with timestamps.
           </p>
 
           {loading ? (
@@ -85,7 +87,7 @@ export const AuditLogModal = ({ isOpen, onClose }) => {
 
         <div className="modal-footer">
           <button onClick={onClose} className="btn-secondary">
-            Close
+            {t('common.close')}
           </button>
         </div>
       </div>

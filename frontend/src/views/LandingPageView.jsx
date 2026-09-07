@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import { 
   Building, 
   Rocket, 
@@ -17,6 +18,7 @@ import axios from 'axios';
 import { formatText, formatCurrency } from '../utils/textUtils';
 
 export const LandingPageView = ({ onOpenLogin }) => {
+  const { t } = useTranslation();
   const [challenges, setChallenges] = useState([]);
   const [startups, setStartups] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -31,8 +33,8 @@ export const LandingPageView = ({ onOpenLogin }) => {
         axios.get('/api/challenges'),
         axios.get('/api/startups')
       ]);
-      setChallenges(resC.data);
-      setStartups(resS.data);
+      setChallenges(resC.data || []);
+      setStartups(resS.data || []);
     } catch (err) {
       console.error(err);
     } finally {
@@ -51,23 +53,23 @@ export const LandingPageView = ({ onOpenLogin }) => {
       }}>
         <div style={{ maxWidth: '1280px', margin: '0 auto', textAlign: 'center' }}>
           <div style={{ display: 'inline-flex', alignItems: 'center', gap: '0.5rem', backgroundColor: 'rgba(255,255,255,0.1)', border: '1px solid rgba(255,255,255,0.2)', padding: '0.35rem 0.85rem', borderRadius: '9999px', fontSize: '0.8rem', fontWeight: 600, marginBottom: '1.25rem' }}>
-            <Award size={14} color="#FF9933" /> <span style={{ color: '#FF9933' }}>Official Maharashtra Innovation Procurement Platform</span>
+            <Award size={14} color="#FF9933" /> <span style={{ color: '#FF9933' }}>{t('landing.badge')}</span>
           </div>
 
           <h1 style={{ fontFamily: "'Cinzel', serif", fontSize: '2.5rem', fontWeight: 700, lineHeight: 1.25, letterSpacing: '0.5px', marginBottom: '1rem', color: '#FFFFFF' }}>
-            GovInnovate — Startup-Friendly Government Innovation Procurement
+            {t('landing.heroTitle')}
           </h1>
 
           <p style={{ fontSize: '1.1rem', color: '#94A3B8', maxWidth: '840px', margin: '0 auto 2rem auto', lineHeight: 1.6 }}>
-            Enabling Maharashtra government departments to discover, evaluate, test, validate, and scale innovative solutions from DPIIT-recognized startups through outcome-based challenges and milestone contracting.
+            {t('landing.heroSubtitle')}
           </p>
 
           <div style={{ display: 'flex', justifyContent: 'center', gap: '1rem', flexWrap: 'wrap' }}>
             <button onClick={onOpenLogin} className="btn-emerald" style={{ padding: '0.85rem 1.75rem', fontSize: '1rem', boxShadow: '0 4px 12px rgba(5,150,105,0.3)' }}>
-              <LogIn size={18} /> Sign In to Portal
+              <LogIn size={18} /> {t('landing.getStarted')}
             </button>
             <a href="#challenges-showcase" className="btn-secondary" style={{ backgroundColor: 'rgba(255,255,255,0.1)', color: '#FFFFFF', borderColor: 'rgba(255,255,255,0.3)', padding: '0.85rem 1.75rem', fontSize: '1rem', textDecoration: 'none' }}>
-              <Search size={18} /> Explore Challenges
+              <Search size={18} /> {t('landing.exploreChallenges')}
             </a>
           </div>
         </div>
@@ -78,19 +80,19 @@ export const LandingPageView = ({ onOpenLogin }) => {
         <div style={{ maxWidth: '1280px', margin: '0 auto', display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '1.5rem', textAlign: 'center' }}>
           <div>
             <span style={{ fontSize: '2rem', fontWeight: 800, color: '#0A2540' }}>{challenges.length}</span>
-            <p style={{ fontSize: '0.8rem', color: '#64748B', fontWeight: 600 }}>PUBLISHED CHALLENGES</p>
+            <p style={{ fontSize: '0.8rem', color: '#64748B', fontWeight: 600 }}>{t('landing.statsChallenges')}</p>
           </div>
           <div>
             <span style={{ fontSize: '2rem', fontWeight: 800, color: '#D97706' }}>{startups.length}</span>
-            <p style={{ fontSize: '0.8rem', color: '#64748B', fontWeight: 600 }}>DPIIT VERIFIED STARTUPS</p>
+            <p style={{ fontSize: '0.8rem', color: '#64748B', fontWeight: 600 }}>{t('landing.statsStartups')}</p>
           </div>
           <div>
             <span style={{ fontSize: '2rem', fontWeight: 800, color: '#059669' }}>94.8%</span>
-            <p style={{ fontSize: '0.8rem', color: '#64748B', fontWeight: 600 }}>PILOT SUCCESS SCORE</p>
+            <p style={{ fontSize: '0.8rem', color: '#64748B', fontWeight: 600 }}>{t('landing.statsPilots')}</p>
           </div>
           <div>
             <span style={{ fontSize: '2rem', fontWeight: 800, color: '#166534' }}>₹4.5 Cr</span>
-            <p style={{ fontSize: '0.8rem', color: '#64748B', fontWeight: 600 }}>STATEWIDE SCALED ORDERS</p>
+            <p style={{ fontSize: '0.8rem', color: '#64748B', fontWeight: 600 }}>{t('landing.statsScale')}</p>
           </div>
         </div>
       </section>
@@ -124,7 +126,7 @@ export const LandingPageView = ({ onOpenLogin }) => {
               <Rocket size={22} color="#D97706" />
             </div>
             <h3 style={{ fontSize: '1.1rem', fontWeight: 700, color: '#0A2540', marginBottom: '0.5rem' }}>
-              2. Startup Discovery & AI Match
+              2. Startup Discovery & Matching
             </h3>
             <p style={{ fontSize: '0.85rem', color: '#475569' }}>
               DPIIT recognized startups discover challenges and submit technical proposals with turnover and EMD exemptions applied.

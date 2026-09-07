@@ -1,4 +1,5 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { 
   LayoutDashboard, 
   Target, 
@@ -18,6 +19,7 @@ import {
 } from 'lucide-react';
 import { MaharashtraEmblem } from '../Emblems';
 import { formatText } from '../../utils/textUtils';
+import { LanguageSwitcher } from '../LanguageSwitcher';
 
 export const GovtSidebar = ({ 
   activeTab, 
@@ -29,18 +31,20 @@ export const GovtSidebar = ({
   onLogout,
   onOpenAudit
 }) => {
+  const { t } = useTranslation();
+
   const menuItems = [
-    { id: 'dashboard', label: 'Dashboard', icon: LayoutDashboard },
-    { id: 'challenges', label: 'Challenges', icon: Target, count: counts.challenges },
-    { id: 'startups', label: 'Startup Discovery', icon: Search, count: counts.startups },
-    { id: 'applications', label: 'Applications', icon: FileText, count: counts.proposals },
-    { id: 'evaluations', label: 'Evaluations', icon: Award, count: counts.evaluations },
-    { id: 'pilots', label: 'Pilots', icon: Rocket, count: counts.pilots },
-    { id: 'kpis', label: 'KPI & Performance', icon: Activity },
-    { id: 'validation', label: 'Validation', icon: CheckCircle2, count: counts.validations },
-    { id: 'procurement', label: 'Procurement', icon: ShoppingBag },
-    { id: 'scaleup', label: 'Scale-Up', icon: TrendingUp, count: counts.scaleUps },
-    { id: 'notifications', label: 'Notifications', icon: Bell, count: counts.notifications }
+    { id: 'dashboard', label: t('nav.dashboard'), icon: LayoutDashboard },
+    { id: 'challenges', label: t('nav.challenges'), icon: Target, count: counts.challenges },
+    { id: 'startups', label: t('nav.startups'), icon: Search, count: counts.startups },
+    { id: 'applications', label: t('nav.applications'), icon: FileText, count: counts.proposals },
+    { id: 'evaluations', label: t('nav.evaluations'), icon: Award, count: counts.evaluations },
+    { id: 'pilots', label: t('nav.pilots'), icon: Rocket, count: counts.pilots },
+    { id: 'kpis', label: t('nav.kpis'), icon: Activity },
+    { id: 'validation', label: t('nav.validation'), icon: CheckCircle2, count: counts.validations },
+    { id: 'procurement', label: t('nav.procurement'), icon: ShoppingBag },
+    { id: 'scaleup', label: t('nav.scaleup'), icon: TrendingUp, count: counts.scaleUps },
+    { id: 'notifications', label: t('nav.notifications'), icon: Bell, count: counts.notifications }
   ];
 
   return (
@@ -53,7 +57,7 @@ export const GovtSidebar = ({
             {!collapsed && (
               <div>
                 <h3 style={{ fontSize: '1rem', fontWeight: 800, color: '#FFFFFF', lineHeight: 1.1 }}>
-                  GovInnovate
+                  {t('app.title')}
                 </h3>
               </div>
             )}
@@ -77,13 +81,18 @@ export const GovtSidebar = ({
           </button>
         </div>
 
+        {/* Language Switcher in Government Sidebar */}
+        <div style={{ display: 'flex', justifyContent: collapsed ? 'center' : 'flex-start' }}>
+          <LanguageSwitcher isCollapsed={collapsed} />
+        </div>
+
         {!collapsed && (
           <div style={{ backgroundColor: 'rgba(255, 255, 255, 0.06)', padding: '0.5rem 0.65rem', borderRadius: '6px', border: '1px solid rgba(255, 255, 255, 0.1)' }}>
             <h4 style={{ fontSize: '0.75rem', fontWeight: 700, letterSpacing: '0.5px', color: '#93C5FD', textTransform: 'uppercase' }}>
-              GOVERNMENT OFFICER
+              {t('roles.govtOfficer')}
             </h4>
             <p style={{ fontSize: '0.675rem', color: '#94A3B8', fontWeight: 500 }}>
-              Innovation Lifecycle Desk
+              {t('roles.govtDesk')}
             </p>
           </div>
         )}
@@ -155,7 +164,7 @@ export const GovtSidebar = ({
           <button
             onClick={onOpenAudit}
             className="sidebar-action-btn"
-            title="Open Transparency Audit Trail Log"
+            title={t('nav.auditLog')}
             style={{
               display: 'flex',
               alignItems: 'center',
@@ -174,7 +183,7 @@ export const GovtSidebar = ({
             }}
           >
             <FileText size={16} color="#FF9933" />
-            {!collapsed && <span>Audit Log</span>}
+            {!collapsed && <span>{t('nav.auditLog')}</span>}
           </button>
         )}
 
@@ -183,7 +192,7 @@ export const GovtSidebar = ({
           <button
             onClick={onLogout}
             className="sidebar-action-btn"
-            title="Sign Out of Portal"
+            title={t('common.signOut')}
             style={{
               display: 'flex',
               alignItems: 'center',
@@ -202,7 +211,7 @@ export const GovtSidebar = ({
             }}
           >
             <LogOut size={16} color="#F87171" />
-            {!collapsed && <span>Sign Out</span>}
+            {!collapsed && <span>{t('common.signOut')}</span>}
           </button>
         )}
       </div>

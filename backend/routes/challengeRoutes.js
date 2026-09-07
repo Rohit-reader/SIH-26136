@@ -90,31 +90,32 @@ router.delete('/:id', async (req, res) => {
 });
 
 // AI Assistant for Challenge Generation
-router.post('/ai-assist', async (req, res) => {
-  const { problemText, sector } = req.body;
-  const text = (problemText || '').toLowerCase();
+const handleAiFormulation = (req, res) => {
+  const { problemText, title, sector } = req.body;
+  const inputText = (title || problemText || '').toLowerCase();
   
   let detectedSector = sector || 'General Innovation';
-  if (text.includes('hospital') || text.includes('health') || text.includes('opd') || text.includes('patient') || text.includes('doctor')) {
+  if (inputText.includes('hospital') || inputText.includes('health') || inputText.includes('opd') || inputText.includes('patient') || inputText.includes('doctor')) {
     detectedSector = 'Public Health';
-  } else if (text.includes('crop') || text.includes('pest') || text.includes('farm') || text.includes('agri') || text.includes('soil')) {
+  } else if (inputText.includes('crop') || inputText.includes('pest') || inputText.includes('farm') || inputText.includes('agri') || inputText.includes('soil')) {
     detectedSector = 'Agriculture & Irrigation';
-  } else if (text.includes('school') || text.includes('student') || text.includes('dropout') || text.includes('education') || text.includes('skill')) {
+  } else if (inputText.includes('school') || inputText.includes('student') || inputText.includes('dropout') || inputText.includes('education') || inputText.includes('skill')) {
     detectedSector = 'School Education & Skills';
-  } else if (text.includes('water') || text.includes('leak') || text.includes('chlorine') || text.includes('pipe') || text.includes('sanitation')) {
+  } else if (inputText.includes('water') || inputText.includes('leak') || inputText.includes('chlorine') || inputText.includes('pipe') || inputText.includes('sanitation')) {
     detectedSector = 'Water & Sanitation';
-  } else if (text.includes('road') || text.includes('pothole') || text.includes('traffic') || text.includes('municipal') || text.includes('pwd')) {
+  } else if (inputText.includes('road') || inputText.includes('pothole') || inputText.includes('traffic') || inputText.includes('municipal') || inputText.includes('pwd')) {
     detectedSector = 'Smart Governance & ULBs';
   }
 
-  const titlePrefix = problemText && problemText.length > 5 
-    ? problemText.split(' ').slice(0, 7).join(' ') 
+  const rawTitle = title || problemText || '';
+  const titleClean = rawTitle.length > 5 
+    ? rawTitle.split(' ').slice(0, 7).join(' ') 
     : 'AI & Data Driven Operational Optimization';
 
   const aiGenerated = {
-    title: `Smart Outcome Challenge: ${titlePrefix}`,
+    title: rawTitle.length > 5 ? rawTitle : `Smart Outcome Challenge: ${titleClean}`,
     sector: detectedSector,
-    problemDescription: problemText || 'Manual operational bottlenecks leading to citizen delays and high service delivery backlogs.',
+    problemDescription: problemText || `Deploy automated AI & IoT enabled intelligent workflow to eliminate manual operational bottlenecks and enhance citizen turnaround times.`,
     currentSituation: `Current baseline manual workflow results in extended SLA delays and unmonitored operational inefficiencies.`,
     targetBeneficiaries: `Citizens and Department Field Officers in Pilot Districts of Maharashtra`,
     expectedOutcome: `Quantifiable improvement in operational SLA efficiency by > 60% within 90 days of controlled pilot deployment.`,
@@ -142,6 +143,9 @@ router.post('/ai-assist', async (req, res) => {
   };
 
   res.json(aiGenerated);
-});
+};
+
+router.post('/ai-assist', handleAiFormulation);
+router.post('/ai-formulate', handleAiFormulation);
 
 module.exports = router;

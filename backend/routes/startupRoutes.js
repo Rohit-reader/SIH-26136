@@ -79,10 +79,12 @@ router.post('/:id/invite', async (req, res) => {
     await Notification.create({
       recipientRole: 'Startup Admin',
       recipientName: startup.name,
+      recipientEmail: startup.contactEmail || '',
       type: 'Challenge Invitation',
       title: `Official Challenge Invitation: ${challengeTitle || 'Innovation Challenge'}`,
       message: `${departmentName || 'Government Department'} has directly invited ${startup.name} to submit a solution proposal. Note: "${inviteMessage || 'Outcome-based milestone trial eligibility verified.'}"`,
       link: `/startup?tab=challenges&challengeId=${challengeId}`,
+      entityId: challengeId,
       isRead: false
     });
 
@@ -97,6 +99,7 @@ router.post('/:id/invite', async (req, res) => {
 
     res.json({ success: true, message: `Challenge invitation sent to ${startup.name}`, invitedChallenges: startup.invitedChallenges });
   } catch (err) {
+    console.error('Invite error:', err);
     res.status(500).json({ error: err.message });
   }
 });

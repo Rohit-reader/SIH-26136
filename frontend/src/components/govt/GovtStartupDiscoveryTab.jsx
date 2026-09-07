@@ -109,7 +109,8 @@ export const GovtStartupDiscoveryTab = ({ startups = [], challenges = [], onRefr
       if (onRefresh) onRefresh();
     } catch (err) {
       console.error(err);
-      alert('Failed to send invitation.');
+      const errMsg = err.response?.data?.error || err.message || 'Failed to send invitation.';
+      alert(`Failed to send invitation: ${errMsg}`);
     } finally {
       setInviteSending(false);
     }
@@ -313,12 +314,10 @@ export const GovtStartupDiscoveryTab = ({ startups = [], challenges = [], onRefr
                       </span>
                     )}
                   </div>
-                </div>
-
-                {/* Match Score & Specs Box */}
+                </div>                {/* Match Score & Specs Box */}
                 <div style={{ backgroundColor: '#F8FAFC', border: '1px solid #E2E8F0', borderRadius: '8px', padding: '0.85rem', marginBottom: '0.85rem' }}>
                   <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderBottom: '1px dashed #CBD5E1', paddingBottom: '0.5rem', marginBottom: '0.5rem' }}>
-                    <span style={{ fontSize: '0.725rem', color: '#64748B', fontWeight: 700 }}>AI COMPATIBILITY MATCH</span>
+                    <span style={{ fontSize: '0.725rem', color: '#64748B', fontWeight: 700 }}>COMPATIBILITY MATCH</span>
                     <span style={{ fontSize: '1.1rem', fontWeight: 800, color: dynamicMatch.matchScore > 85 ? '#059669' : '#D97706' }}>
                       {dynamicMatch.matchScore}% Match
                     </span>
@@ -371,7 +370,7 @@ export const GovtStartupDiscoveryTab = ({ startups = [], challenges = [], onRefr
                     style={{
                       flex: 1,
                       fontSize: '0.775rem',
-                      justify: 'center',
+                      justifyContent: 'center',
                       borderColor: isShortlisted ? '#D97706' : '#CBD5E1',
                       backgroundColor: isShortlisted ? '#FFFBEB' : '#FFFFFF',
                       color: isShortlisted ? '#B45309' : '#0A2540'
@@ -401,7 +400,7 @@ export const GovtStartupDiscoveryTab = ({ startups = [], challenges = [], onRefr
                   className="btn-secondary"
                   style={{ width: '100%', fontSize: '0.775rem', justifyContent: 'center' }}
                 >
-                  <Sparkles size={14} color="#D97706" /> Inspect Capabilities & AI Match Rationale
+                  <Sparkles size={14} color="#D97706" /> Inspect Capabilities & Match Rationale
                 </button>
               </div>
             </div>
@@ -409,14 +408,14 @@ export const GovtStartupDiscoveryTab = ({ startups = [], challenges = [], onRefr
         })}
       </div>
 
-      {/* AI Match & Capabilities Deep-Dive Modal */}
+      {/* Match & Capabilities Deep-Dive Modal */}
       {selectedStartup && (
         <div className="modal-overlay" onClick={() => setSelectedStartup(null)} style={{ zIndex: 1100 }}>
           <div className="modal-content" style={{ maxWidth: '780px' }} onClick={e => e.stopPropagation()}>
             <div className="modal-header">
               <div>
                 <h3 style={{ fontSize: '1.15rem', fontWeight: 700, color: '#0A2540', margin: 0 }}>
-                  Startup Capabilities & AI Rationale — {formatText(selectedStartup.name)}
+                  Startup Capabilities & Match Rationale — {formatText(selectedStartup.name)}
                 </h3>
                 <span style={{ fontSize: '0.75rem', color: '#64748B' }}>
                   Target Challenge: {selectedChallenge.title}
@@ -446,7 +445,7 @@ export const GovtStartupDiscoveryTab = ({ startups = [], challenges = [], onRefr
               {/* Explainable Match Reasons */}
               <div>
                 <h4 style={{ fontSize: '0.9rem', fontWeight: 700, color: '#0A2540', marginBottom: '0.4rem' }}>
-                  Explainable AI Match Rationale
+                  Evaluation & Match Rationale
                 </h4>
                 <ul style={{ listStyle: 'none', padding: 0, display: 'flex', flexDirection: 'column', gap: '0.4rem' }}>
                   {(selectedStartup.matchDetails?.reasons || selectedStartup.matchJustification)?.map((reason, idx) => (

@@ -3,8 +3,8 @@ import { Building2, Rocket, Scale, ShieldCheck, Eye } from 'lucide-react';
 
 export const RoleSwitcher = ({ currentRole, onRoleChange }) => {
   const roles = [
-    { id: 'govt', label: 'Government Officer', icon: Building2, desc: 'Challenge Builder & AI Assistant' },
-    { id: 'startup', label: 'Startup Admin', icon: Rocket, desc: 'AI Semantic Discovery & Proposal' },
+    { id: 'govt', label: 'Government Officer', icon: Building2, desc: 'Challenge Builder & Registry' },
+    { id: 'startup', label: 'Startup Admin', icon: Rocket, desc: 'Startup Discovery & Proposals' },
     { id: 'evaluator', label: 'Domain Evaluator', icon: Scale, desc: 'COI Declaration & Scorecard' },
     { id: 'validator', label: 'Independent Validator', icon: ShieldCheck, desc: 'Pilot Score & Statewide Scale' },
     { id: 'public', label: 'Public Portal', icon: Eye, desc: 'Open Transparency View' }

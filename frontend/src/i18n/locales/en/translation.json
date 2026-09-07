@@ -1,0 +1,211 @@
+{
+  "app": {
+    "title": "GovInnovate Maharashtra",
+    "subtitle": "Public Sector Innovation & Procurement Platform",
+    "tagline": "Government of Maharashtra Innovation Registry",
+    "stateEmblemAlt": "Government of Maharashtra Emblem"
+  },
+  "common": {
+    "loading": "Loading data from Innovation Registry...",
+    "save": "Save Changes",
+    "cancel": "Cancel",
+    "submit": "Submit",
+    "close": "Close",
+    "back": "Back",
+    "view": "View Details",
+    "edit": "Edit",
+    "delete": "Delete",
+    "confirm": "Confirm",
+    "refresh": "Refresh Data",
+    "search": "Search",
+    "filter": "Filter",
+    "all": "All",
+    "status": "Status",
+    "actions": "Actions",
+    "date": "Date",
+    "amount": "Amount",
+    "budget": "Budget",
+    "score": "Score",
+    "verified": "Verified",
+    "pending": "Pending",
+    "approved": "Approved",
+    "rejected": "Rejected",
+    "active": "Active",
+    "completed": "Completed",
+    "auditTrail": "Transparency Audit Trail",
+    "signOut": "Sign Out",
+    "signIn": "Sign In",
+    "switchRole": "Switch Portal Role",
+    "language": "Language",
+    "english": "English",
+    "marathi": "मराठी"
+  },
+  "nav": {
+    "dashboard": "Dashboard",
+    "challenges": "Challenges",
+    "startups": "Startup Discovery",
+    "applications": "Applications",
+    "evaluations": "Evaluations",
+    "pilots": "Pilots",
+    "kpis": "KPI & Performance",
+    "validation": "Validation",
+    "procurement": "Procurement",
+    "scaleup": "Scale-Up",
+    "notifications": "Notifications",
+    "profile": "Company Profile",
+    "payments": "Payments & Milestones",
+    "browseChallenges": "Browse Challenges",
+    "auditLog": "Audit Log",
+    "portalAccess": "Portal Access",
+    "officialPortal": "Maharashtra Innovation Portal"
+  },
+  "roles": {
+    "govtOfficer": "Government Officer",
+    "govtDesk": "Innovation Lifecycle Desk",
+    "startupAdmin": "Startup Partner",
+    "startupDesk": "Innovation Sandbox Workspace",
+    "evaluator": "Technical / Domain Evaluator",
+    "evaluatorDesk": "Expert Peer Review Desk",
+    "validator": "Independent Validator",
+    "validatorDesk": "MSInS Quality Control Board",
+    "public": "Citizen / Public Viewer"
+  },
+  "landing": {
+    "badge": "Maharashtra State Innovation Society (MSInS) Initiative",
+    "heroTitle": "Empowering Startups to Solve Public Sector Challenges",
+    "heroSubtitle": "A unified platform connecting government departments with innovative startups for evidence-based procurement, sandbox trials, and statewide scale.",
+    "exploreChallenges": "Explore Live Challenges",
+    "getStarted": "Sign In to Portal",
+    "statsChallenges": "Active Public Challenges",
+    "statsStartups": "DPIIT Recognized Startups",
+    "statsPilots": "Controlled Sandbox Trials",
+    "statsScale": "Statewide Scale Budget",
+    "pillarsTitle": "Transforming Public Procurement Through Innovation",
+    "pillar1Title": "1. Outcome Problem Definition",
+    "pillar1Desc": "Government departments articulate real-world civic challenges with measurable performance targets.",
+    "pillar2Title": "2. Startup Discovery & GFR Exemption",
+    "pillar2Desc": "Intelligent matching and DPIIT GFR Rule 173(i) prior turnover waivers for young startups.",
+    "pillar3Title": "3. Controlled Field Pilots",
+    "pillar3Desc": "Live trials with milestone-based e-Kosh treasury disbursements and real-world KPI tracking.",
+    "pillar4Title": "4. Independent Validation & GeM Scale",
+    "pillar4Desc": "Quality Control Board certification enabling statewide procurement via GeM Startup Runway.",
+    "ctaTitle": "Ready to Deploy Innovations for Maharashtra?",
+    "ctaDesc": "Join hundreds of innovators and civil servants driving digital transformation across 36 districts.",
+    "ctaButton": "Access Innovation Registry"
+  },
+  "login": {
+    "title": "Government of Maharashtra Innovation Registry",
+    "subtitle": "Single Sign-On (SSO) Portal for Public Sector Innovation Procurement",
+    "selectRole": "Select Your Role / Department",
+    "emailLabel": "Official Email Address",
+    "passwordLabel": "Password",
+    "loginBtn": "Sign In to Secure Workspace",
+    "quickDemoLogins": "Quick Demo Access (Click to Auto-Fill Credentials)",
+    "officerAccount": "Government Administrator",
+    "startupAccount": "Startup Partner (HealthAI)",
+    "evaluatorAccount": "Expert Technical Evaluator",
+    "validatorAccount": "MSInS Independent Validator",
+    "securityNotice": "Secured via MahaGov 2-Factor Authentication & DigiLocker"
+  },
+  "govt": {
+    "dashboardTitle": "Government Executive Innovation Dashboard",
+    "dashboardSubtitle": "Overview of Maharashtra government innovation procurement lifecycle, active pilots, and scaled solutions",
+    "createChallengeBtn": "Create Outcome Challenge",
+    "metrics": {
+      "activeChallenges": "Active Challenges",
+      "pendingProposals": "Pending Proposals",
+      "expertEvaluations": "Expert Evaluations",
+      "activePilots": "Active Controlled Pilots",
+      "pendingMilestones": "Pending Milestones",
+      "independentValidation": "Independent Validation",
+      "scaleRecommendations": "Scale Recommendations",
+      "solutionsScaled": "Solutions Being Scaled",
+      "disbursedPayments": "Disbursed Treasury Funds"
+    },
+    "challenges": {
+      "title": "Outcome Problem Definition & Challenge Registry",
+      "subtitle": "Publish public sector challenges, define baseline KPIs, and invite DPIIT recognized startups",
+      "createBtn": "Publish New Challenge",
+      "tableTitle": "Active Departmental Challenges"
+    },
+    "startups": {
+      "title": "Startup Discovery & GFR Exemption Desk",
+      "subtitle": "Discover deep-tech startups, verify DPIIT certificates, and evaluate GFR Rule 173(i) waivers",
+      "matchScore": "Compatibility Match Score",
+      "verifyExemption": "Verify DPIIT Waiver"
+    },
+    "applications": {
+      "title": "Proposal Submissions & Statutory Eligibility Screening",
+      "subtitle": "Screen startup applications against GFR turnover, EMD deposit, and technical readiness criteria",
+      "eligible": "Eligible for Review",
+      "conditionallyEligible": "Conditionally Eligible",
+      "notEligible": "Not Eligible"
+    },
+    "evaluations": {
+      "title": "Expert Evaluation & Conflict of Interest (COI) Desk",
+      "subtitle": "Review blind peer evaluations, scoring criteria, and COI declarations",
+      "weightedScore": "Weighted Total Score",
+      "recommendForPilot": "Recommend for Pilot"
+    },
+    "pilots": {
+      "title": "Phase 5 — Controlled Field Pilots Workspace",
+      "subtitle": "Track real-world sandbox deployments, hospital/farm telemetry, and milestone deliverables",
+      "launchPilot": "Launch Controlled Pilot",
+      "kpiTracking": "Live KPI Telemetry",
+      "milestones": "Milestones & Deliverables"
+    },
+    "validation": {
+      "title": "Phase 7 — Independent Quality Control Board Validation",
+      "subtitle": "Inspect telemetry audits, verified KPI outcomes, and CERT-In security audits",
+      "certifiedScore": "IVR Certified Score",
+      "certifyBtn": "Certify Validation Report"
+    },
+    "procurement": {
+      "title": "Phase 6 — Innovation Contracting & Treasury Payments",
+      "subtitle": "Execute standard agreements, verify milestone deliverables, and disburse e-Kosh funds",
+      "instantiateContract": "Instantiate Innovation Contract",
+      "disbursePayment": "Disburse e-Kosh Treasury Payment"
+    },
+    "scaleup": {
+      "title": "Phase 8 — Statewide Scale-Up & Procurement Decision",
+      "subtitle": "Evidence-based statutory scaling, GeM Startup Runway integration, and 36-district rollout monitoring",
+      "initiateCase": "Initiate Scale Decision Case",
+      "scaleReadiness": "Scale Readiness Score",
+      "procurementReadiness": "Procurement Readiness",
+      "authorizedDecision": "Statutory Authorized Decision",
+      "scaleGates": "Mandatory Scale Gates",
+      "deployments": "District Deployment Expansion",
+      "exportDossier": "Export Procurement / Scale Dossier"
+    }
+  },
+  "startup": {
+    "dashboardTitle": "Startup Innovation Sandbox Workspace",
+    "dashboardSubtitle": "Track your proposals, active pilots, milestone payments, and statewide scale orders",
+    "browseOpenChallenges": "Browse Open Challenges",
+    "applyNow": "Submit Technical Proposal",
+    "activePilots": "Active Sandbox Trials",
+    "receivedDisbursements": "Received Treasury Disbursements",
+    "scaleOrders": "Statewide Scale Orders",
+    "submitMilestone": "Submit Milestone Evidence",
+    "myApplications": "My Submitted Proposals",
+    "complianceConditions": "Compliance Conditions"
+  },
+  "evaluator": {
+    "title": "Independent Expert Evaluation Console",
+    "subtitle": "Evaluate assigned startup proposals against technical feasibility, innovation, and impact criteria",
+    "coiNotice": "Conflict of Interest (COI) Declaration Required Prior to Scoring",
+    "submitEvaluation": "Submit Formal Evaluation"
+  },
+  "validator": {
+    "title": "MSInS Quality Control Board — Independent Validation Desk",
+    "subtitle": "Audit field telemetry, conduct discrepancy checks, and certify IVR reports for Phase 8 scale-up",
+    "submitReport": "Submit Independent Validation Report (IVR)",
+    "certifyReport": "Certify & Handoff to Scale Desk"
+  },
+  "audit": {
+    "title": "Transparency & Public Audit Trail",
+    "subtitle": "Immutable cryptographic log of all administrative actions, evaluations, and treasury payments",
+    "filterByAction": "Filter by Action Type",
+    "exportAudit": "Export Audit Certificate (PDF / JSON)"
+  }
+}

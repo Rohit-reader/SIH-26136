@@ -87,6 +87,8 @@ const EMPTY_FORM_DATA = {
 export const ChallengeBuilderModal = ({ isOpen, onClose, onChallengeCreated }) => {
   const [activeStep, setActiveStep] = useState(1);
   const [loadingAi, setLoadingAi] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [errorMsg, setErrorMsg] = useState('');
   const [isTemplatesModalOpen, setIsTemplatesModalOpen] = useState(false);
 
   const [formData, setFormData] = useState(EMPTY_FORM_DATA);
@@ -108,15 +110,18 @@ export const ChallengeBuilderModal = ({ isOpen, onClose, onChallengeCreated }) =
       kpiBaseline: template.kpiBaseline,
       kpiTarget: template.kpiTarget,
       requiredTechnology: template.requiredTechnology,
-      securityRequirements: template.securityRequirements
+      securityRequirements: template.securityRequirements || prev.securityRequirements
     }));
+    setErrorMsg('');
   };
 
   const handleAiAssist = async () => {
+    if (!formData.title) return;
     setLoadingAi(true);
+    setErrorMsg('');
     try {
-      const res = await axios.post('/api/challenges/ai-assist', {
-        problemText: formData.problemDescription || 'OPD Hospital Queue Waiting Time',
+      const res = await axios.post('/api/challenges/ai-formulate', {
+        title: formData.title,
         sector: formData.sector
       });
       const data = res.data;
@@ -153,39 +158,57 @@ export const ChallengeBuilderModal = ({ isOpen, onClose, onChallengeCreated }) =
   };
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
+    if (e && e.preventDefault) e.preventDefault();
+    setErrorMsg('');
+    setIsSubmitting(true);
     try {
+      if (!formData.title || !formData.title.trim()) {
+        setErrorMsg('Please specify a Challenge Title in Sector & Context (Step 1).');
+        setActiveStep(1);
+        setIsSubmitting(false);
+        return;
+      }
+      if (!formData.problemDescription || !formData.problemDescription.trim()) {
+        setErrorMsg('Please provide a Problem Statement in Sector & Context (Step 1).');
+        setActiveStep(1);
+        setIsSubmitting(false);
+        return;
+      }
+
       const compiledClauses = formData.selectedClauses.map(id => {
         const found = PRE_APPROVED_LEGAL_CLAUSES.find(c => c.id === id);
         return found ? `${found.title}: ${found.text}` : id;
       });
 
+      const budget = Number(formData.estimatedBudget) > 0 ? Number(formData.estimatedBudget) : 1500000;
+      const duration = Number(formData.pilotDurationDays) > 0 ? Number(formData.pilotDurationDays) : 90;
+
       const payload = {
-        title: formData.title,
-        department: formData.department,
-        sector: formData.sector,
-        problemDescription: formData.problemDescription,
-        currentSituation: formData.currentSituation,
-        targetBeneficiaries: formData.targetBeneficiaries,
-        targetDistrict: formData.targetDistrict,
-        expectedOutcome: formData.expectedOutcome,
-        estimatedBudget: Number(formData.estimatedBudget),
-        pilotDurationDays: Number(formData.pilotDurationDays),
+        title: formData.title.trim(),
+        department: formData.department || 'Public Health Department, Government of Maharashtra',
+        sector: formData.sector || 'Public Health',
+        problemDescription: formData.problemDescription.trim(),
+        currentSituation: formData.currentSituation || 'Standard manual operational baseline',
+        targetBeneficiaries: formData.targetBeneficiaries || 'Citizens & Field Beneficiaries across Maharashtra',
+        targetDistrict: formData.targetDistrict || 'Statewide (All 36 Districts)',
+        expectedOutcome: formData.expectedOutcome || formData.kpiTarget || 'Measurable outcome & operational improvement',
+        estimatedBudget: budget,
+        pilotDurationDays: duration,
         kpiMetrics: [
           { 
             name: 'Primary Operational KPI Benchmark', 
-            baselineValue: formData.kpiBaseline, 
-            targetValue: formData.kpiTarget, 
+            baselineValue: formData.kpiBaseline || 'Current manual process baseline', 
+            targetValue: formData.kpiTarget || formData.expectedOutcome || 'Target operational improvement', 
             currentValue: 'Pending Pilot Launch' 
           }
         ],
         requiredTechnology: typeof formData.requiredTechnology === 'string' 
-          ? formData.requiredTechnology.split(',').map(s => s.trim()) 
-          : formData.requiredTechnology,
+          ? formData.requiredTechnology.split(',').map(s => s.trim()).filter(Boolean) 
+          : (formData.requiredTechnology || []),
         securityRequirements: typeof formData.securityRequirements === 'string'
-          ? formData.securityRequirements.split(',').map(s => s.trim())
-          : formData.securityRequirements,
-        exemptions: formData.exemptions,
+          ? formData.securityRequirements.split(',').map(s => s.trim()).filter(Boolean)
+          : (formData.securityRequirements || []),
+        exemptions: formData.exemptions || { turnoverWaived: true, experienceWaived: true, emdExempted: true },
         legalClauses: compiledClauses,
         status: 'Published'
       };
@@ -193,10 +216,18 @@ export const ChallengeBuilderModal = ({ isOpen, onClose, onChallengeCreated }) =
       await axios.post('/api/challenges', payload);
       setFormData(EMPTY_FORM_DATA);
       setActiveStep(1);
-      onChallengeCreated();
-      onClose();
+      if (typeof onChallengeCreated === 'function') {
+        onChallengeCreated();
+      }
+      if (typeof onClose === 'function') {
+        onClose();
+      }
     } catch (err) {
-      console.error(err);
+      console.error('Failed to publish challenge:', err);
+      const msg = err.response?.data?.error || err.message || 'Failed to publish challenge. Please check input values.';
+      setErrorMsg(msg);
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -280,10 +311,10 @@ export const ChallengeBuilderModal = ({ isOpen, onClose, onChallengeCreated }) =
           <form onSubmit={handleSubmit} style={{ flex: 1, overflowY: 'auto', display: 'flex', flexDirection: 'column' }}>
             <div className="modal-body" style={{ flex: 1, padding: '1.25rem 1.5rem' }}>
               
-              {/* Helper Bar for Template & AI Assist */}
+              {/* Helper Bar for Standard Formulation Templates */}
               <div style={{
-                backgroundColor: '#EFF6FF',
-                border: '1px solid #BFDBFE',
+                backgroundColor: '#F8FAFC',
+                border: '1px solid #E2E8F0',
                 borderRadius: '8px',
                 padding: '0.75rem 1rem',
                 marginBottom: '1.25rem',
@@ -294,34 +325,23 @@ export const ChallengeBuilderModal = ({ isOpen, onClose, onChallengeCreated }) =
                 gap: '0.75rem'
               }}>
                 <div>
-                  <p style={{ fontWeight: 700, color: '#1E3A8A', fontSize: '0.85rem', margin: 0, display: 'flex', alignItems: 'center', gap: '0.35rem' }}>
-                    <Sparkles size={16} color="#2563EB" /> AI Assistant & Standard Formulation Library
+                  <p style={{ fontWeight: 700, color: '#0A2540', fontSize: '0.85rem', margin: 0, display: 'flex', alignItems: 'center', gap: '0.35rem' }}>
+                    <FileText size={16} color="#FF9933" /> Standard Problem Formulation Library
                   </p>
-                  <p style={{ fontSize: '0.75rem', color: '#3B82F6', margin: '0.15rem 0 0 0' }}>
-                    Load state templates or use AI to synthesize outcome KPIs, cybersecurity criteria & GFR clauses
+                  <p style={{ fontSize: '0.75rem', color: '#64748B', margin: '0.15rem 0 0 0' }}>
+                    Load pre-structured department templates for outcome KPIs, cybersecurity criteria & GFR clauses
                   </p>
                 </div>
 
-                <div style={{ display: 'flex', gap: '0.5rem' }}>
+                <div>
                   <button
                     type="button"
                     onClick={() => setIsTemplatesModalOpen(true)}
                     className="btn-primary"
-                    style={{ backgroundColor: '#0A2540', fontSize: '0.775rem', padding: '0.4rem 0.75rem' }}
+                    style={{ backgroundColor: '#0A2540', fontSize: '0.775rem', padding: '0.4rem 0.85rem' }}
                   >
                     <FileText size={14} color="#FF9933" />
                     <span>Sector Templates</span>
-                  </button>
-
-                  <button
-                    type="button"
-                    onClick={handleAiAssist}
-                    className="btn-primary"
-                    disabled={loadingAi}
-                    style={{ backgroundColor: '#D97706', fontSize: '0.775rem', padding: '0.4rem 0.75rem' }}
-                  >
-                    <Sparkles size={14} color="#FFFFFF" />
-                    <span>{loadingAi ? 'Synthesizing...' : 'AI Auto-Fill'}</span>
                   </button>
                 </div>
               </div>
@@ -360,7 +380,7 @@ export const ChallengeBuilderModal = ({ isOpen, onClose, onChallengeCreated }) =
                     <label className="form-label">Challenge Title</label>
                     <input
                       className="form-input"
-                      placeholder="e.g. AI OPD Queue Triage & Hospital Crowding Reduction"
+                      placeholder="e.g. Smart OPD Queue Triage & Hospital Crowding Reduction"
                       value={formData.title}
                       onChange={e => setFormData({ ...formData, title: e.target.value })}
                       required
@@ -591,10 +611,18 @@ export const ChallengeBuilderModal = ({ isOpen, onClose, onChallengeCreated }) =
               )}
             </div>
 
+            {/* Error message banner if any */}
+            {errorMsg && (
+              <div style={{ backgroundColor: '#FEF2F2', borderTop: '1px solid #FCA5A5', padding: '0.65rem 1.5rem', color: '#991B1B', fontSize: '0.825rem', fontWeight: 600, display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                <span>⚠️ {errorMsg}</span>
+              </div>
+            )}
+
             {/* Footer Navigation Controls */}
             <div className="modal-footer" style={{ backgroundColor: '#F8FAFC', borderTop: '1px solid #E2E8F0', padding: '1rem 1.5rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
               <button
                 type="button"
+                disabled={isSubmitting}
                 onClick={() => activeStep > 1 ? setActiveStep(activeStep - 1) : onClose()}
                 className="btn-secondary"
                 style={{ fontSize: '0.85rem' }}
@@ -607,7 +635,14 @@ export const ChallengeBuilderModal = ({ isOpen, onClose, onChallengeCreated }) =
                 {activeStep < 4 ? (
                   <button
                     type="button"
-                    onClick={() => setActiveStep(activeStep + 1)}
+                    onClick={() => {
+                      if (activeStep === 1 && !formData.title.trim()) {
+                        setErrorMsg('Please enter a Challenge Title before proceeding.');
+                        return;
+                      }
+                      setErrorMsg('');
+                      setActiveStep(activeStep + 1);
+                    }}
                     className="btn-primary"
                     style={{ backgroundColor: '#0A2540', fontSize: '0.85rem' }}
                   >
@@ -615,9 +650,14 @@ export const ChallengeBuilderModal = ({ isOpen, onClose, onChallengeCreated }) =
                     <ChevronRight size={16} />
                   </button>
                 ) : (
-                  <button type="submit" className="btn-emerald" style={{ fontSize: '0.85rem' }}>
+                  <button 
+                    type="submit" 
+                    disabled={isSubmitting}
+                    className="btn-emerald" 
+                    style={{ fontSize: '0.85rem', opacity: isSubmitting ? 0.7 : 1, cursor: isSubmitting ? 'not-allowed' : 'pointer' }}
+                  >
                     <FileCheck size={18} />
-                    <span>Publish Standardized Challenge</span>
+                    <span>{isSubmitting ? 'Publishing Challenge...' : 'Publish Standardized Challenge'}</span>
                   </button>
                 )}
               </div>

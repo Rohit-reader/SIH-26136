@@ -1072,7 +1072,7 @@ export const GovtScaleUpTab = ({
                   <div style={{ backgroundColor: '#F0FDF4', border: '1px solid #BBF7D0', borderRadius: '8px', padding: '1rem' }}>
                     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.4rem' }}>
                       <span style={{ fontSize: '0.75rem', fontWeight: 700, color: '#166534', textTransform: 'uppercase' }}>
-                        AI Decision Support Engine Recommendation (Step 12)
+                        Decision Intelligence Engine Recommendation (Step 12)
                       </span>
                       <span className="badge badge-emerald" style={{ fontSize: '0.75rem' }}>
                         {selectedCase.recommendation?.decision?.replace(/_/g, ' ') || 'SCALE AND PROCURE'}

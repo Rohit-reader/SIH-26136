@@ -1,9 +1,13 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { MaharashtraEmblem } from './Emblems';
 import { Shield, LogIn, LogOut, FileText, User } from 'lucide-react';
 import { formatText } from '../utils/textUtils';
+import { LanguageSwitcher } from './LanguageSwitcher';
 
 export const Navbar = ({ currentUser, onOpenAuth, onLogout, onOpenAudit }) => {
+  const { t } = useTranslation();
+
   return (
     <header>
       <div className="header-banner">
@@ -12,13 +16,16 @@ export const Navbar = ({ currentUser, onOpenAuth, onLogout, onOpenAudit }) => {
           <div className="govt-title-block">
             <MaharashtraEmblem className="govt-emblem-img" />
             <div className="title-text-group">
-              <h1>GovInnovate</h1>
-              <p>Maharashtra State Innovation Society • Department of Skills, Employment, Entrepreneurship & Innovation</p>
+              <h1>{t('app.title')}</h1>
+              <p>{t('app.subtitle')} • {t('app.tagline')}</p>
             </div>
           </div>
 
           {/* Right Header Navigation & Auth Controls */}
           <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+            {/* Language Selector */}
+            <LanguageSwitcher />
+
             {currentUser ? (
               <>
                 {/* Logged in User Badge */}
@@ -50,17 +57,17 @@ export const Navbar = ({ currentUser, onOpenAuth, onLogout, onOpenAudit }) => {
                   style={{ backgroundColor: '#1E293B', color: '#FFFFFF', borderColor: '#334155' }}
                 >
                   <FileText size={16} color="#FF9933" />
-                  <span>Audit Log</span>
+                  <span>{t('nav.auditLog')}</span>
                 </button>
 
                 <button 
                   onClick={onLogout} 
                   className="btn-secondary"
                   style={{ backgroundColor: '#0F172A', color: '#F87171', borderColor: '#7F1D1D' }}
-                  title="Sign Out of Portal"
+                  title={t('common.signOut')}
                 >
                   <LogOut size={16} />
-                  <span>Sign Out</span>
+                  <span>{t('common.signOut')}</span>
                 </button>
               </>
             ) : (
@@ -71,7 +78,7 @@ export const Navbar = ({ currentUser, onOpenAuth, onLogout, onOpenAudit }) => {
                   style={{ backgroundColor: '#1E293B', color: '#FFFFFF', borderColor: '#334155' }}
                 >
                   <FileText size={16} color="#FF9933" />
-                  <span>Public Audit Log</span>
+                  <span>{t('common.auditTrail')}</span>
                 </button>
 
                 <button 
@@ -80,7 +87,7 @@ export const Navbar = ({ currentUser, onOpenAuth, onLogout, onOpenAudit }) => {
                   style={{ padding: '0.55rem 1.15rem' }}
                 >
                   <LogIn size={16} />
-                  <span>Sign In to Portal</span>
+                  <span>{t('common.signIn')}</span>
                 </button>
               </>
             )}

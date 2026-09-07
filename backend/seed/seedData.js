@@ -8,15 +8,19 @@ const Startup = require('../models/Startup');
 const Proposal = require('../models/Proposal');
 const Evaluation = require('../models/Evaluation');
 const Pilot = require('../models/Pilot');
+const Contract = require('../models/Contract');
+const Validation = require('../models/Validation');
 const ScaleUp = require('../models/ScaleUp');
+const ScaleUpDecisionCase = require('../models/ScaleUpDecisionCase');
 const Notification = require('../models/Notification');
 const AuditLog = require('../models/AuditLog');
+const seedPhase8 = require('./seedPhase8');
 
-const seedDB = async () => {
+const seedDB = async (standalone = true) => {
   try {
     await connectDB();
 
-    console.log('Clearing existing database collections...');
+    console.log('Clearing existing database collections across all 13 entities...');
     await User.deleteMany({});
     await Department.deleteMany({});
     await Challenge.deleteMany({});
@@ -24,7 +28,10 @@ const seedDB = async () => {
     await Proposal.deleteMany({});
     await Evaluation.deleteMany({});
     await Pilot.deleteMany({});
+    await Contract.deleteMany({});
+    await Validation.deleteMany({});
     await ScaleUp.deleteMany({});
+    await ScaleUpDecisionCase.deleteMany({});
     await Notification.deleteMany({});
     await AuditLog.deleteMany({});
 
@@ -751,15 +758,86 @@ const seedDB = async () => {
         kpiAchievement: 98,
         technicalPerformance: 96,
         costEfficiency: 92,
-        security: 92,
-        scalability: 96
-      },
-      validationStatus: 'Validated',
-      procurementRecommendation: 'Scale Statewide',
-      validatorNotes: 'Independent validation by Maharashtra Quality Control Board confirms soil test turnaround cut from 14 days to 12 minutes with 18% yield improvement across 5,000 test farms. Recommended for immediate statewide scaling via GeM Innovation Contract.'
-    });
+          scalability: 96
+        },
+        validationStatus: 'Validated',
+        procurementRecommendation: 'Scale Statewide',
+        validatorNotes: 'Independent validation by Maharashtra Quality Control Board confirms soil test turnaround cut from 14 days to 12 minutes with 18% yield improvement across 5,000 test farms. Recommended for immediate statewide scaling via GeM Innovation Contract.'
+      });
 
-    console.log('9. Seeding Scale-Up Record...');
+    console.log('9. Seeding Innovation Procurement Contracts (Phase 4 / Phase 8)...');
+    const contracts = await Contract.insertMany([
+      {
+        contractNumber: 'CTR-MH-2026-HLTH-001',
+        contractTitle: 'Innovation Procurement Agreement: SmartOPD Queue Optimization System',
+        pilotId: activePilot._id,
+        proposalId: proposals[0]._id,
+        startupId: startups[0]._id,
+        challengeId: challenges[0]._id,
+        templateType: 'Standard Innovation Procurement Agreement',
+        totalValue: 1420000,
+        startDate: '2026-06-01',
+        endDate: '2026-08-30',
+        status: 'Milestones In Progress',
+        milestones: activePilot.milestones.map(m => ({
+          milestoneNumber: m.milestoneNumber,
+          title: m.title,
+          deliverables: m.deliverables,
+          dueDate: m.dueDate,
+          amount: m.amount,
+          status: m.status === 'Paid' ? 'Disbursed' : (m.status === 'Evidence Submitted' ? 'Deliverable Submitted' : 'Pending'),
+          evidenceUrl: m.evidenceUrl,
+          approvedBy: m.approvedBy
+        })),
+        slaTerms: {
+          uptimeSlaPct: 99.5,
+          performanceTargetThreshold: '75% OPD wait time reduction (<20 mins)',
+          penaltyClause: '0.5% deduction per 24h delay beyond milestone target'
+        },
+        dataGovernance: {
+          governmentDataOwnership: '100% Patient logs & telemetry belong to Govt of Maharashtra.',
+          startupIpProtection: 'Proprietary AI code & computer vision IP belong exclusively to Startup.',
+          certInMandatory: true
+        },
+        amendmentHistory: []
+      },
+      {
+        contractNumber: 'CTR-MH-2026-AGRI-002',
+        contractTitle: 'Pilot Sandbox Scale Agreement: Smart Soil Instant Scanner',
+        pilotId: completedPilot._id,
+        proposalId: proposals[2]._id,
+        startupId: startups[2]._id,
+        challengeId: challenges[1]._id,
+        templateType: 'Sandbox Pilot Scale Contract',
+        totalValue: 2000000,
+        startDate: '2026-03-01',
+        endDate: '2026-06-30',
+        status: 'Completed',
+        milestones: completedPilot.milestones.map(m => ({
+          milestoneNumber: m.milestoneNumber,
+          title: m.title,
+          deliverables: m.deliverables,
+          dueDate: m.dueDate,
+          amount: m.amount,
+          status: 'Disbursed',
+          evidenceUrl: m.evidenceUrl,
+          approvedBy: m.approvedBy
+        })),
+        slaTerms: {
+          uptimeSlaPct: 99.8,
+          performanceTargetThreshold: '<15 min soil report turnaround',
+          penaltyClause: 'Standard GFR SLA penalty'
+        },
+        dataGovernance: {
+          governmentDataOwnership: '100% Soil telemetry data belongs to Maharashtra Agri Dept.',
+          startupIpProtection: 'Proprietary NIR spectroscopy algorithm belongs to Startup.',
+          certInMandatory: true
+        },
+        amendmentHistory: []
+      }
+    ]);
+
+    console.log('10. Seeding Scale-Up Record...');
     const scaleUp = await ScaleUp.create({
       pilotId: completedPilot._id,
       challengeId: challenges[1]._id,
@@ -776,7 +854,7 @@ const seedDB = async () => {
       sanctionedDate: '2026-08-30'
     });
 
-    console.log('10. Seeding Notifications across Roles...');
+    console.log('11. Seeding Notifications across Roles...');
     await Notification.insertMany([
       {
         recipientRole: 'Startup Admin',
@@ -798,77 +876,70 @@ const seedDB = async () => {
         recipientRole: 'Independent Validator',
         recipientEmail: 'validator@msins.in',
         title: 'Pilot Milestone #3 Evidence Ready for Review',
-        message: 'HealthAI Solutions has submitted CERT-In audit evidence for SmartOPD Pilot Milestone #3.',
-        type: 'Pilot',
+        message: 'HealthAI Solutions submitted final evidence for Milestone #3 in Sambhajinagar District Hospital pilot.',
+        type: 'Evaluation',
         entityId: activePilot._id.toString()
       },
       {
-        recipientRole: 'Startup Admin',
-        recipientEmail: 'admin@agrisense.co.in',
-        title: 'Statewide Scale-Up Order Sanctioned!',
-        message: 'Congratulations! Department of Agriculture has sanctioned ₹4,50,00,000 statewide scale order for AgriScan Soil Scanner.',
+        recipientRole: 'Technical Evaluator',
+        recipientEmail: 'anand.eval@iitb.ac.in',
+        title: 'Evaluation Assigned: Smart Traffic Optimization',
+        message: 'Urban Development Department assigned proposal "FlowMatrix Adaptive Traffic" for Stage 2 Technical Scoring.',
+        type: 'Evaluation',
+        entityId: proposals[3]._id.toString()
+      },
+      {
+        recipientRole: 'Procurement Officer',
+        recipientEmail: 'procurement.health@maharashtra.gov.in',
+        title: 'Scale-Up Sanction Order Dispatched',
+        message: 'State Finance Cell sanctioned ₹4.50 Cr for Statewide Soil Scanner Rollout (AgriSense).',
         type: 'ScaleUp',
         entityId: scaleUp._id.toString()
-      },
-      {
-        recipientRole: 'Department Officer',
-        recipientEmail: 'health.officer@maharashtra.gov.in',
-        title: 'Live OPD Wait Time KPI Target Achieved',
-        message: 'SmartOPD pilot live telemetry shows average OPD waiting time dropped to 18 minutes (Target < 20 mins).',
-        type: 'Pilot',
-        entityId: activePilot._id.toString()
       }
     ]);
 
-    console.log('11. Seeding Audit Logs (End-to-End Workflow Mapping)...');
+    console.log('12. Seeding Audit Logs (Immutable Governance Trail)...');
     await AuditLog.insertMany([
       {
         action: 'CHALLENGE_CREATED',
         actorRole: 'Department Officer',
-        actorName: 'Dr. Radhakishan Pawar (Health Dept)',
-        details: 'Created Innovation Challenge: AI Based Hospital OPD Queue Optimization (Budget: ₹15,00,000)',
+        actorName: 'Dr. Radhakishan Pawar (Public Health)',
+        details: 'Created innovation challenge: AI-Driven Patient Triage & OPD Queue Management System',
         entityId: challenges[0]._id.toString()
       },
       {
-        action: 'AI_MATCH_PERFORMED',
-        actorRole: 'System AI',
-        actorName: 'GovInnovate Semantic Matcher',
-        details: 'Matched Startup HealthAI Solutions with 94% compatibility for OPD Challenge',
-        entityId: startups[0]._id.toString()
+        action: 'CHALLENGE_APPROVED',
+        actorRole: 'Government Admin',
+        actorName: 'Sanjay Khandare, IAS',
+        details: 'Approved and published challenge with sandbox budget of ₹15,00,000',
+        entityId: challenges[0]._id.toString()
       },
       {
         action: 'PROPOSAL_SUBMITTED',
         actorRole: 'Startup Admin',
-        actorName: 'HealthAI Solutions Pvt Ltd',
-        details: 'Submitted technical proposal SmartOPD for Challenge #1',
+        actorName: 'HealthAI Solutions Private Limited',
+        details: 'Submitted technical proposal and pilot blueprint for SmartOPD Queue System',
         entityId: proposals[0]._id.toString()
       },
       {
-        action: 'COI_DECLARED_AND_EVALUATED',
-        actorRole: 'Technical/Domain Evaluator',
-        actorName: 'Dr. Anand Sharma',
-        details: 'Declared No COI and awarded 92.5 weighted score to SmartOPD proposal',
+        action: 'EVALUATION_COMPLETED',
+        actorRole: 'Technical Evaluator',
+        actorName: 'Dr. Anand Sharma (IIT Bombay)',
+        details: 'Scored HealthAI Proposal: Technical Merit (29/30), Feasibility (23/25), Innovation (19/20). Total: 93/100',
         entityId: evaluations[0]._id.toString()
       },
       {
-        action: 'CYBER_SECURITY_AUDIT_PASSED',
-        actorRole: 'Cybersecurity Evaluator',
-        actorName: 'Vikramaditya Mane (CERT-In Auditor)',
-        details: 'Awarded 94.0 security score and verified AES-256 data protection compliance',
-        entityId: evaluations[1]._id.toString()
-      },
-      {
-        action: 'STARTUP_SHORTLISTED',
+        action: 'PILOT_SANCTIONED',
         actorRole: 'Government Admin',
         actorName: 'Sanjay Khandare, IAS',
-        details: 'Approved shortlisting of HealthAI Solutions and MediFlow Systems for OPD Challenge',
-        entityId: proposals[0]._id.toString()
+        details: 'Approved pilot sandbox deployment at Chhatrapati Sambhajinagar District Hospital for 90 days',
+        entityId: activePilot._id.toString()
       },
       {
-        action: 'PILOT_LAUNCHED',
+        action: 'MILESTONE_VERIFIED',
         actorRole: 'Department Officer',
-        actorName: 'Dr. Radhakishan Pawar',
-        details: 'Launched Pilot Project in Chhatrapati Sambhajinagar District Hospital',
+        actorName: 'District Civil Surgeon, Sambhajinagar',
+        details: 'Verified physical setup of 4 AI kiosks and display systems for Milestone #1',
         entityId: activePilot._id.toString()
       },
       {
@@ -879,27 +950,6 @@ const seedDB = async () => {
         entityId: activePilot._id.toString()
       },
       {
-        action: 'MILESTONE_PAID',
-        actorRole: 'Procurement Officer',
-        actorName: 'Milind Deshmukh (Finance Desk)',
-        details: 'Approved Milestone #2 payment of ₹5,68,000 for HealthAI Solutions',
-        entityId: activePilot._id.toString()
-      },
-      {
-        action: 'INDEPENDENT_VALIDATION_COMPLETED',
-        actorRole: 'Independent Validator',
-        actorName: 'Dr. Rameshwar Naik (Quality Control Board)',
-        details: 'Validated AgriSense Soil Pilot with Success Score 94.8 / 100. Issued recommendation: Scale Statewide',
-        entityId: completedPilot._id.toString()
-      },
-      {
-        action: 'PROCUREMENT_DECISION_EXECUTED',
-        actorRole: 'Government Admin',
-        actorName: 'Sanjay Khandare, IAS',
-        details: 'Approved procurement decision: Scale Statewide for AgriSense Smart Soil Instant Scanner',
-        entityId: completedPilot._id.toString()
-      },
-      {
         action: 'SCALE_UP_SANCTIONED',
         actorRole: 'Procurement Officer',
         actorName: 'Sunita Kulkarni (Agri Procurement Cell)',
@@ -908,20 +958,29 @@ const seedDB = async () => {
       }
     ]);
 
+    console.log('\n13. Seeding Phase 7 Validation Reports & Phase 8 Scale-Up Decision Intelligence Cases...');
+    await seedPhase8(false);
+
+    const validationCount = await Validation.countDocuments();
+    const caseCount = await ScaleUpDecisionCase.countDocuments();
+
     console.log('\n======================================================');
     console.log('   GovInnovate Database Seeding Completed Successfully!');
     console.log('======================================================');
-    console.log(`Seeded Records Summary:`);
-    console.log(`- Users: ${users.length} (Super Admin: 1, Govt: 6, Evaluators: 4, Startups: 10, Viewer: 1)`);
-    console.log(`- Departments: ${departments.length}`);
-    console.log(`- Startups: ${startups.length}`);
-    console.log(`- Challenges: ${challenges.length}`);
-    console.log(`- Proposals: ${proposals.length}`);
-    console.log(`- Evaluations: ${evaluations.length}`);
-    console.log(`- Pilots: 2 (Active: 1, Completed & Validated: 1)`);
-    console.log(`- Scale-Up Records: 1`);
-    console.log(`- Notifications: 5`);
-    console.log(`- Audit Logs: 12`);
+    console.log(`Seeded Records Summary (All 13 Collections):`);
+    console.log(`1.  Users: ${users.length} (Super Admin: 1, Govt: 6, Evaluators: 4, Startups: 10, Viewer: 1)`);
+    console.log(`2.  Departments: ${departments.length}`);
+    console.log(`3.  Startups: ${startups.length}`);
+    console.log(`4.  Challenges: ${challenges.length}`);
+    console.log(`5.  Proposals: ${proposals.length}`);
+    console.log(`6.  Evaluations: ${evaluations.length}`);
+    console.log(`7.  Pilots: 2 (Active: 1, Completed & Validated: 1)`);
+    console.log(`8.  Contracts: ${contracts.length}`);
+    console.log(`9.  Independent Validations: ${validationCount}`);
+    console.log(`10. Scale-Up Sanctions: 1`);
+    console.log(`11. Scale-Up Decision Cases (Phase 8): ${caseCount}`);
+    console.log(`12. Notifications: 5`);
+    console.log(`13. Audit Logs: 11`);
     console.log('------------------------------------------------------');
     console.log('Demo Account Credentials (Common Password: GovInnovate@2026):');
     console.log('1. Super Admin: superadmin@govinnovate.maharashtra.gov.in');
@@ -938,11 +997,33 @@ const seedDB = async () => {
     console.log('12. Viewer: viewer@publicpolicy.org');
     console.log('======================================================\n');
 
-    process.exit(0);
+    if (standalone) {
+      process.exit(0);
+    }
+    return {
+      users: users.length,
+      departments: departments.length,
+      startups: startups.length,
+      challenges: challenges.length,
+      proposals: proposals.length,
+      evaluations: evaluations.length,
+      pilots: 2,
+      contracts: contracts.length,
+      validations: validationCount,
+      scaleUps: 1,
+      scaleDecisions: caseCount,
+      notifications: 5,
+      auditLogs: 11
+    };
   } catch (error) {
     console.error('Database Seeding Error:', error);
-    process.exit(1);
+    if (standalone) process.exit(1);
+    throw error;
   }
 };
 
-seedDB();
+if (require.main === module) {
+  seedDB(true);
+}
+
+module.exports = seedDB;

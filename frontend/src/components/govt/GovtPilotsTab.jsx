@@ -127,7 +127,7 @@ export const GovtPilotsTab = ({ pilots = [], proposals = [], onRefresh }) => {
         ) : (
           pilots.map((pilot) => {
             const startupName = pilot.startupId?.name || 'HealthAI Solutions Pvt Ltd';
-            const challengeTitle = pilot.challengeId?.title || 'AI Based Hospital OPD Queue Optimization';
+            const challengeTitle = pilot.challengeId?.title || 'Hospital OPD Queue Optimization System';
             const isCompleted = pilot.status === 'Completed';
 
             return (

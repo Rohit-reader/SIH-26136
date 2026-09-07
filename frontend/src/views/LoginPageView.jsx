@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { 
   Shield, 
   LogIn, 
@@ -21,8 +22,10 @@ import {
 } from 'lucide-react';
 import { MaharashtraEmblem } from '../components/Emblems';
 import { formatText } from '../utils/textUtils';
+import { LanguageSwitcher } from '../components/LanguageSwitcher';
 
 export const LoginPageView = ({ onLoginSuccess, onNavigateToLanding, isModal = false, onClose }) => {
+  const { t } = useTranslation();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
@@ -223,15 +226,18 @@ export const LoginPageView = ({ onLoginSuccess, onNavigateToLanding, isModal = f
               </div>
             </div>
 
-            {onNavigateToLanding && (
-              <button 
-                onClick={onNavigateToLanding}
-                className="btn-secondary"
-                style={{ backgroundColor: 'rgba(255,255,255,0.1)', color: '#FFFFFF', borderColor: 'rgba(255,255,255,0.2)', padding: '0.4rem 0.85rem' }}
-              >
-                <ArrowLeft size={16} /> Back to Landing Page
-              </button>
-            )}
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+              <LanguageSwitcher />
+              {onNavigateToLanding && (
+                <button 
+                  onClick={onNavigateToLanding}
+                  className="btn-secondary"
+                  style={{ backgroundColor: 'rgba(255,255,255,0.1)', color: '#FFFFFF', borderColor: 'rgba(255,255,255,0.2)', padding: '0.4rem 0.85rem' }}
+                >
+                  <ArrowLeft size={16} /> {t('common.back')}
+                </button>
+              )}
+            </div>
           </div>
         </header>
       )}

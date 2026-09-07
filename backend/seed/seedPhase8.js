@@ -13,7 +13,7 @@ const ScaleUpDecisionCase = require('../models/ScaleUpDecisionCase');
 const AuditLog = require('../models/AuditLog');
 const Notification = require('../models/Notification');
 
-const seedPhase8 = async () => {
+const seedPhase8 = async (standalone = true) => {
   try {
     await connectDB();
     console.log('MongoDB Connected for Phase 8 Seeding...');
@@ -24,11 +24,12 @@ const seedPhase8 = async () => {
     const validations = await Validation.find();
     const contracts = await Contract.find();
 
-    console.log(`Found: ${challenges.length} challenges, ${startups.length} startups, ${pilots.length} pilots, ${validations.length} validations`);
+    console.log(`Found: ${challenges.length} challenges, ${startups.length} startups, ${pilots.length} pilots, ${validations.length} validations, ${contracts.length} contracts`);
 
     if (pilots.length === 0) {
       console.log('No pilots found. Please seed main database first.');
-      process.exit(1);
+      if (standalone) process.exit(1);
+      return;
     }
 
     // Clean existing ScaleUpDecisionCases
@@ -83,6 +84,45 @@ const seedPhase8 = async () => {
     const opdPilot = pilots.find(p => p.pilotTitle?.includes('SmartOPD') || p.pilotTitle?.includes('OPD')) || (pilots.length > 1 ? pilots[1] : pilots[0]);
     const opdStartup = startups.find(s => s.name?.includes('HealthAI')) || startups[0];
     const opdChallenge = challenges.find(c => c._id.toString() === opdPilot.challengeId?.toString()) || challenges[0];
+    const opdContract = contracts.find(c => c.pilotId?.toString() === opdPilot._id.toString()) || contracts[0];
+    let opdValidation = validations.find(v => v.pilotId?.toString() === opdPilot._id.toString());
+    if (!opdValidation) {
+      opdValidation = await Validation.create({
+        reportNumber: 'IVR-MH-2026-7731',
+        pilotId: opdPilot._id,
+        contractId: opdContract ? opdContract._id : null,
+        proposalId: opdPilot.proposalId,
+        startupId: opdPilot.startupId,
+        challengeId: opdPilot.challengeId,
+        validatorName: 'Dr. Rameshwar Naik',
+        validatorOrg: 'Maharashtra State Innovation Society (MSInS) Quality Control Board',
+        coiDeclared: true,
+        validationScope: {
+          targetSites: 'Chhatrapati Sambhajinagar District Hospital',
+          sampleSize: '15,000 OPD Patient Transactions',
+          periodCovered: '60-Day Controlled Pilot Trial'
+        },
+        kpiVerifications: [
+          { metricName: 'Average OPD Waiting Time', baseline: '45 mins', claimed: '18 mins', verifiedLive: '18 mins', variancePct: 0, verificationStatus: 'Verified Pass', evidenceType: 'Server Telemetry Logs' },
+          { metricName: 'Patient Satisfaction Score', baseline: '42%', claimed: '89%', verifiedLive: '86%', variancePct: -3.4, verificationStatus: 'Discrepancy Noted', evidenceType: 'Patient Exit Survey' }
+        ],
+        milestoneAudits: [
+          { milestoneNumber: 1, deliverableTitle: 'Infrastructure & AI Kiosk Setup', auditFinding: '100% hardware units and edge gateway verified.', evidenceQuality: 'High', complianceStatus: 'Compliant' },
+          { milestoneNumber: 2, deliverableTitle: 'Controlled Live Trial (30 Days)', auditFinding: '15,000 tokens processed successfully.', evidenceQuality: 'High', complianceStatus: 'Compliant' },
+          { milestoneNumber: 3, deliverableTitle: 'Final Performance Target & Audit', auditFinding: 'Elderly patient assistance required for voice accessibility.', evidenceQuality: 'Medium', complianceStatus: 'Conditional' }
+        ],
+        securityAndComplianceAudit: {
+          certInPassed: true,
+          dpdpDataPrivacyPassed: true,
+          vulnerabilityReport: 'Zero vulnerabilities in telemetry logs; password policy compliant.',
+          slaAchievedPct: 99.5
+        },
+        overallValidationScore: 88.5,
+        recommendation: 'Recommended with Minor Conditions',
+        executiveSummary: 'Independent field audit confirms 60% reduction in OPD wait times with robust DPDP Act 2023 compliance. Recommended for controlled 45-day re-pilot with Marathi voice assist before statewide rollout.'
+      });
+      console.log('Seeded Phase 7 Independent Validation Report (IVR-MH-2026-7731)');
+    }
 
     // 1. Decision Case A: SCALE_AND_PROCURE (AgriSense)
     const caseA = await ScaleUpDecisionCase.create({
@@ -321,7 +361,8 @@ const seedPhase8 = async () => {
       challengeId: opdChallenge._id,
       startupId: opdStartup._id,
       pilotId: opdPilot._id,
-      validationId: opdPilot._id,
+      contractId: opdContract ? opdContract._id : null,
+      validationId: opdValidation ? opdValidation._id : opdPilot._id,
       status: 'RE_PILOT_REQUIRED',
       scaleReadiness: {
         categories: [
@@ -487,12 +528,18 @@ const seedPhase8 = async () => {
     console.log(`- Case A (SCALE_AND_PROCURE - AgriSense): ${caseA.decisionId} [Status: ${caseA.status}]`);
     console.log(`- Case B (RE_PILOT - HealthAI): ${caseB.decisionId} [Status: ${caseB.status}]`);
     console.log('======================================================\n');
-
-    process.exit(0);
+    if (standalone) {
+      process.exit(0);
+    }
   } catch (err) {
     console.error('Phase 8 Seeding Error:', err);
-    process.exit(1);
+    if (standalone) process.exit(1);
+    throw err;
   }
 };
 
-seedPhase8();
+if (require.main === module) {
+  seedPhase8(true);
+}
+
+module.exports = seedPhase8;

@@ -196,7 +196,7 @@ export const GovtProcurementTab = ({ pilots = [], proposals = [], onRefresh }) =
                   </div>
                   <div>
                     <span style={{ color: '#64748B', display: 'block', fontSize: '0.7rem', fontWeight: 700 }}>IP CLAUSE</span>
-                    <strong style={{ color: '#2563EB' }}>✓ Startup Retains AI Model IP</strong>
+                    <strong style={{ color: '#2563EB' }}>✓ Startup Retains Software & Model IP</strong>
                   </div>
                 </div>
 

@@ -24,7 +24,7 @@ export const PROBLEM_FORMULATION_TEMPLATES = [
     id: 'tpl_health_1',
     sector: 'Public Health',
     SectorIcon: Building2,
-    title: 'AI OPD Queue Triage & Hospital Crowding Reduction',
+    title: 'Smart OPD Queue Triage & Hospital Crowding Reduction',
     department: 'Public Health Department, Government of Maharashtra',
     problemDescription: 'High patient overcrowding at District Hospital registration desks causes average waiting times exceeding 210 minutes (3.5 hours) prior to triage, increasing cross-infection risks and emergency care delays.',
     currentSituation: 'Manual token distribution with average 210 mins wait time; no real-time emergency triage escalation.',
@@ -33,7 +33,7 @@ export const PROBLEM_FORMULATION_TEMPLATES = [
     kpiTarget: '< 45 minutes average wait time; 100% emergency triage escalation within 3 mins',
     estimatedBudget: 1420000,
     pilotDurationDays: 90,
-    requiredTechnology: 'Edge Computer Vision, ML Queue Optimization, Smart Token Kiosks, WhatsApp Business API',
+    requiredTechnology: 'Edge Computer Vision, Intelligent Queue Optimization, Smart Token Kiosks, WhatsApp Business API',
     securityRequirements: 'DPDP Act 2023 Compliance, ISO 27001 Certified Edge Nodes, Zero PII Storage on Public Cloud',
     legalClauses: '100% Waived Turnover & EMD for DPIIT Startups under Maharashtra Innovation Procurement Rules 2024.'
   },
@@ -41,7 +41,7 @@ export const PROBLEM_FORMULATION_TEMPLATES = [
     id: 'tpl_agri_1',
     sector: 'Agriculture & Irrigation',
     SectorIcon: Sprout,
-    title: 'Precision Soil Moisture Telemetry & AI Pest Early Warning System',
+    title: 'Precision Soil Moisture Telemetry & Pest Early Warning System',
     department: 'Department of Agriculture, Government of Maharashtra',
     problemDescription: 'Smallholder farmers in Marathwada & Vidarbha suffer 35% crop losses due to unmonitored soil moisture depletion and delayed detection of Pink Bollworm and Fall Armyworm pest outbreaks.',
     currentSituation: 'Manual physical field extension visits occurring once every 3 weeks; delayed pest advisories.',
@@ -50,15 +50,15 @@ export const PROBLEM_FORMULATION_TEMPLATES = [
     kpiTarget: '< 8% crop damage; 48-hour automated pest advisory alert delivery',
     estimatedBudget: 1850000,
     pilotDurationDays: 120,
-    requiredTechnology: 'IoT Soil Telemetry Sensors, Satellite Multispectral Imaging, Edge Camera Traps, Vernacular Voice AI',
+    requiredTechnology: 'IoT Soil Telemetry Sensors, Satellite Multispectral Imaging, Edge Camera Traps, Vernacular Voice Interface',
     securityRequirements: 'ISRO BHUVAN Data Standards, Encrypted Field LoRaWAN Mesh Networks',
-    legalClauses: '100% Government ownership of soil telemetry data; 100% Startup retention of proprietary AI ML model IP.'
+    legalClauses: '100% Government ownership of soil telemetry data; 100% Startup retention of proprietary software & algorithm IP.'
   },
   {
     id: 'tpl_edu_1',
     sector: 'School Education & Skills',
     SectorIcon: GraduationCap,
-    title: 'AI Early Warning System for Rural Student Dropout Risk & Skill Analytics',
+    title: 'Early Warning System for Rural Student Dropout Risk & Skill Analytics',
     department: 'School Education & Sports Department, Government of Maharashtra',
     problemDescription: 'Secondary schools in tribal districts experience a 28% annual dropout rate post 8th grade due to unidentified learning gaps and seasonal migration patterns.',
     currentSituation: 'Manual paper register attendance tracking analyzed only at quarterly district review meetings.',
@@ -101,7 +101,7 @@ export const PROBLEM_FORMULATION_TEMPLATES = [
     kpiTarget: '< 48 hours pothole identification & contractor repair SLA dispatch',
     estimatedBudget: 1500000,
     pilotDurationDays: 60,
-    requiredTechnology: 'Dashcam Computer Vision, Geospatial AI (GIS), Automated Contractor SLA Dispatch Engine',
+    requiredTechnology: 'Dashcam Computer Vision, Geospatial GIS, Automated Contractor SLA Dispatch Engine',
     securityRequirements: 'Geo-fenced GIS Mapping, PWD Contractor Portal Integration, Encrypted Evidence Chain',
     legalClauses: 'Automated video evidence log generated for direct inclusion in PWD contractor SLA penalty notices.'
   }
