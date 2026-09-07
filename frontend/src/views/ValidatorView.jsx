@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import { 
   ShieldCheck, 
   Award, 
@@ -24,6 +25,7 @@ import { EvaluationCriteriaChart } from '../components/charts/RoleAnalyticsChart
 import { RoleSidebar } from '../components/RoleSidebar';
 
 export const ValidatorView = ({ onRefreshData, currentUser, onLogout, onOpenAudit }) => {
+  const { t } = useTranslation();
   const [pilots, setPilots] = useState([]);
   const [validations, setValidations] = useState([]);
   const [activeTab, setActiveTab] = useState('dashboard');
@@ -143,10 +145,10 @@ export const ValidatorView = ({ onRefreshData, currentUser, onLogout, onOpenAudi
   const currentValidation = validations[0] || null;
 
   const sidebarItems = [
-    { id: 'dashboard', label: 'Validation Console', icon: LayoutDashboard },
-    { id: 'ivr', label: 'Validation Reports (IVR)', icon: FileCheck, count: validations.length },
-    { id: 'audits', label: 'Empirical KPI Audits', icon: CheckCircle2, count: pilots.length },
-    { id: 'coi', label: 'COI Declarations', icon: ShieldCheck, count: validations.filter(v => v.coiDeclared).length }
+    { id: 'dashboard', label: formatText('Validation Console'), icon: LayoutDashboard },
+    { id: 'ivr', label: formatText('Validation Reports (IVR)'), icon: FileCheck, count: validations.length },
+    { id: 'audits', label: formatText('Empirical KPI Audits'), icon: CheckCircle2, count: pilots.length },
+    { id: 'coi', label: formatText('COI Declarations'), icon: ShieldCheck, count: validations.filter(v => v.coiDeclared).length }
   ];
 
   return (
@@ -174,17 +176,17 @@ export const ValidatorView = ({ onRefreshData, currentUser, onLogout, onOpenAudi
               <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.2rem' }}>
                 <ShieldCheck size={26} color="#FF9933" />
                 <h2 style={{ fontSize: '1.3rem', fontWeight: 800, color: '#FFFFFF', margin: 0 }}>
-                  Phase 7 — Independent Quality & Evidence Validation Board
+                  {formatText('Phase 7 — Independent Quality & Evidence Validation Board')}
                 </h2>
               </div>
               <p style={{ fontSize: '0.85rem', color: '#94A3B8', margin: '0.2rem 0 0 0' }}>
-                Lead Validator: <strong style={{ color: '#FFFFFF' }}>Dr. Rameshwar Naik</strong> • Organization: Maharashtra State Innovation Society (MSInS)
+                {formatText('Lead Validator')}: <strong style={{ color: '#FFFFFF' }}>{currentUser?.name || 'Dr. Rameshwar Naik'}</strong> • {formatText('Maharashtra State Innovation Society (MSInS)')}
               </p>
             </div>
 
             <div style={{ display: 'flex', gap: '0.75rem', alignItems: 'center' }}>
               <div style={{ backgroundColor: 'rgba(255,255,255,0.08)', padding: '0.65rem 1.15rem', borderRadius: '8px', border: '1px solid rgba(255,255,255,0.15)', textAlign: 'center' }}>
-                <span style={{ fontSize: '0.7rem', color: '#94A3B8', fontWeight: 600 }}>VALIDATION INDEX</span>
+                <span style={{ fontSize: '0.7rem', color: '#94A3B8', fontWeight: 600 }}>{formatText('Validation Index')}</span>
                 <div style={{ fontWeight: 800, color: '#10B981', fontSize: '1.25rem', marginTop: '0.1rem' }}>
                   {currentValidation?.overallValidationScore ?? '—'} / 100
                 </div>
@@ -197,7 +199,7 @@ export const ValidatorView = ({ onRefreshData, currentUser, onLogout, onOpenAudi
                 });
                 setIsAuditModalOpen(true);
               }} className="btn-emerald">
-                <Plus size={16} /> Conduct Independent Audit
+                <Plus size={16} /> {formatText('Conduct Independent Audit')}
               </button>
             </div>
           </div>

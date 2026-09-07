@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import { 
   Rocket, 
   LayoutDashboard,
@@ -27,6 +28,7 @@ import { StartupNotificationsTab } from '../components/startup/StartupNotificati
 import { StartupScaleUpTab } from '../components/startup/StartupScaleUpTab';
 
 export const StartupView = ({ onOpenProposalModal, currentUser, onLogout, onOpenAudit }) => {
+  const { t } = useTranslation();
   const [activeTab, setActiveTab] = useState('dashboard');
   const [collapsed, setCollapsed] = useState(false);
   const [loading, setLoading] = useState(true);
@@ -88,14 +90,14 @@ export const StartupView = ({ onOpenProposalModal, currentUser, onLogout, onOpen
 
   // Sidebar navigation items with live badges
   const sidebarItems = [
-    { id: 'dashboard', label: 'Dashboard Overview', icon: LayoutDashboard },
-    { id: 'challenges', label: 'Browse Challenges', icon: Target, count: challenges.length },
-    { id: 'applications', label: 'My Applications', icon: FileText, count: proposals.length },
-    { id: 'pilots', label: 'Pilot Workspace', icon: Rocket, count: pilots.length },
-    { id: 'payments', label: 'Payments & Milestones', icon: IndianRupee },
-    { id: 'scaleup', label: 'Scale-Up & Rollouts', icon: TrendingUp },
-    { id: 'notifications', label: 'Notifications', icon: Bell, count: notifications.filter(n => !n.isRead).length },
-    { id: 'profile', label: 'Company Profile', icon: User }
+    { id: 'dashboard', label: formatText('Dashboard Overview'), icon: LayoutDashboard },
+    { id: 'challenges', label: formatText('Browse Challenges'), icon: Target, count: challenges.length },
+    { id: 'applications', label: formatText('My Applications'), icon: FileText, count: proposals.length },
+    { id: 'pilots', label: formatText('Pilot Workspace'), icon: Rocket, count: pilots.length },
+    { id: 'payments', label: formatText('Payments & Milestones'), icon: IndianRupee },
+    { id: 'scaleup', label: formatText('Scale-Up & Rollouts'), icon: TrendingUp },
+    { id: 'notifications', label: formatText('Notifications'), icon: Bell, count: notifications.filter(n => !n.isRead).length },
+    { id: 'profile', label: formatText('Company Profile'), icon: User }
   ];
 
   return (
@@ -122,7 +124,7 @@ export const StartupView = ({ onOpenProposalModal, currentUser, onLogout, onOpen
       <section className="govt-content-area">
         {loading ? (
           <div className="gov-card" style={{ textAlign: 'center', padding: '3rem' }}>
-            <p style={{ color: '#64748B', fontWeight: 600 }}>Loading Startup Portal & Innovation Registry Data...</p>
+            <p style={{ color: '#64748B', fontWeight: 600 }}>{formatText('Loading Startup Portal & Innovation Registry Data...')}</p>
           </div>
         ) : (
           <>

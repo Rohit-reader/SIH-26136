@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import { 
   Scale, 
   ShieldAlert, 
@@ -17,6 +18,7 @@ import { EvaluationCriteriaChart } from '../components/charts/RoleAnalyticsChart
 import { RoleSidebar } from '../components/RoleSidebar';
 
 export const EvaluatorView = ({ onOpenEvaluationModal, currentUser, onLogout, onOpenAudit }) => {
+  const { t } = useTranslation();
   const [evaluations, setEvaluations] = useState([]);
   const [proposals, setProposals] = useState([]);
   const [activeTab, setActiveTab] = useState('dashboard');
@@ -50,10 +52,10 @@ export const EvaluatorView = ({ onOpenEvaluationModal, currentUser, onLogout, on
   });
 
   const sidebarItems = [
-    { id: 'dashboard', label: 'Evaluation Console', icon: LayoutDashboard },
-    { id: 'proposals', label: 'Assigned Proposals', icon: FileText, count: eligibleProposals.length },
-    { id: 'scorecard', label: 'Scoring Criteria', icon: Award },
-    { id: 'coi', label: 'COI Declarations', icon: ShieldCheck, count: evaluations.filter(e => e.coiDeclared).length }
+    { id: 'dashboard', label: formatText('Evaluation Console'), icon: LayoutDashboard },
+    { id: 'proposals', label: formatText('Assigned Proposals'), icon: FileText, count: eligibleProposals.length },
+    { id: 'scorecard', label: formatText('Scoring Criteria'), icon: Award },
+    { id: 'coi', label: formatText('COI Declarations'), icon: ShieldCheck, count: evaluations.filter(e => e.coiDeclared).length }
   ];
 
   return (
@@ -81,16 +83,16 @@ export const EvaluatorView = ({ onOpenEvaluationModal, currentUser, onLogout, on
               <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.2rem' }}>
                 <UserCheck size={24} color="#0A2540" />
                 <h2 style={{ fontSize: '1.3rem', fontWeight: 800, color: '#0A2540' }}>
-                  Multi-Expert Evaluation Console
+                  {formatText('Multi-Expert Evaluation Console')}
                 </h2>
               </div>
               <p style={{ fontSize: '0.85rem', color: '#475569' }}>
-                Evaluator: <strong style={{ color: '#0A2540' }}>Dr. A. Sharma (Senior Health Tech Expert)</strong> • Panel: Public Health Innovation Board
+                {formatText('Evaluator')}: <strong style={{ color: '#0A2540' }}>{currentUser?.name || 'Dr. A. Sharma'}</strong> • {formatText('Public Health Department')}
               </p>
             </div>
 
             <div className="badge badge-navy" style={{ fontSize: '0.85rem', padding: '0.4rem 0.85rem' }}>
-              Mandatory COI Declaration Required Before Scoring
+              {formatText('Mandatory COI Declaration Required Before Scoring')}
             </div>
           </div>
         </div>
@@ -116,20 +118,20 @@ export const EvaluatorView = ({ onOpenEvaluationModal, currentUser, onLogout, on
         {(activeTab === 'dashboard' || activeTab === 'proposals') && (
           <div>
             <h3 style={{ fontSize: '1.15rem', fontWeight: 700, color: '#0A2540', marginBottom: '1rem' }}>
-              Assigned Startup Applications for Phase 4 Review
+              {formatText('Assigned Startup Applications for Phase 4 Review')}
             </h3>
 
             {eligibleProposals.length === 0 ? (
               <div className="gov-card" style={{ textAlign: 'center', padding: '2.5rem', color: '#64748B' }}>
                 <FileText size={36} color="#CBD5E1" style={{ marginBottom: '0.5rem' }} />
-                <p style={{ margin: 0 }}>No proposals currently assigned for evaluation. Proposals that pass Phase 3 Eligibility will appear here.</p>
+                <p style={{ margin: 0 }}>{formatText('No proposals currently assigned for evaluation. Proposals that pass Phase 3 Eligibility will appear here.')}</p>
               </div>
             ) : eligibleProposals.map((prop) => (
               <div key={prop._id} className="gov-card" style={{ marginBottom: '1rem' }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', flexWrap: 'wrap', gap: '1rem', marginBottom: '1rem' }}>
                   <div>
                     <div style={{ display: 'flex', gap: '0.4rem', marginBottom: '0.35rem' }}>
-                      <span className="badge badge-saffron">Public Health Department</span>
+                      <span className="badge badge-saffron">{formatText('Public Health Department')}</span>
                       <span className="badge badge-emerald">
                         Phase 3 Gate: {formatText(prop.eligibilityScreening?.screeningStatus || prop.status || 'Eligible')}
                       </span>
@@ -139,17 +141,17 @@ export const EvaluatorView = ({ onOpenEvaluationModal, currentUser, onLogout, on
                       {formatText(prop.solutionTitle)}
                     </h4>
                     <p style={{ fontSize: '0.85rem', color: '#64748B' }}>
-                      Applicant: <strong>{formatText(prop.startupId?.name || prop.startupName || 'HealthAI Solutions Pvt Ltd')}</strong> • Budget: {formatCurrency(prop.proposedBudget)}
+                      {formatText('Applicant')}: <strong>{formatText(prop.startupId?.name || prop.startupName || 'HealthAI Solutions Pvt Ltd')}</strong> • {formatText('Budget')}: {formatCurrency(prop.proposedBudget)}
                     </p>
                   </div>
 
                   <button onClick={() => onOpenEvaluationModal(prop)} className="btn-emerald">
-                    <Award size={16} /> Submit Evaluation & COI
+                    <Award size={16} /> {formatText('Submit Evaluation & COI')}
                   </button>
                 </div>
 
                 <div style={{ backgroundColor: '#F8FAFC', padding: '1rem', borderRadius: '8px', border: '1px solid #E2E8F0' }}>
-                  <strong style={{ fontSize: '0.8rem', color: '#0A2540', display: 'block', marginBottom: '0.25rem' }}>TECHNICAL APPROACH SUMMARY:</strong>
+                  <strong style={{ fontSize: '0.8rem', color: '#0A2540', display: 'block', marginBottom: '0.25rem' }}>{formatText('Technical Approach Summary')}:</strong>
                   <p style={{ fontSize: '0.85rem', color: '#334155', margin: 0 }}>
                     {formatText(prop.technicalApproach)}
                   </p>

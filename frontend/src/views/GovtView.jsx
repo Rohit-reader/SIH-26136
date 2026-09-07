@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import axios from 'axios';
+import { formatText } from '../utils/textUtils';
 import { GovtSidebar } from '../components/govt/GovtSidebar';
 import { GovtDashboardTab } from '../components/govt/GovtDashboardTab';
 import { GovtChallengesTab } from '../components/govt/GovtChallengesTab';
@@ -15,6 +17,7 @@ import { GovtNotificationsTab } from '../components/govt/GovtNotificationsTab';
 import { GovtOfficersManagementTab } from '../components/govt/GovtOfficersManagementTab';
 
 export const GovtView = ({ onOpenCreateModal, currentUser, onLogout, onOpenAudit }) => {
+  const { t } = useTranslation();
   const [activeTab, setActiveTab] = useState('dashboard');
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
   const [loading, setLoading] = useState(true);
@@ -100,7 +103,7 @@ export const GovtView = ({ onOpenCreateModal, currentUser, onLogout, onOpenAudit
       <section className="govt-content-area">
         {loading ? (
           <div className="gov-card" style={{ textAlign: 'center', padding: '3rem' }}>
-            <p style={{ color: '#64748B', fontWeight: 600 }}>Loading Government Innovation Registry Data...</p>
+            <p style={{ color: '#64748B', fontWeight: 600 }}>{formatText('Loading Government Innovation Registry Data...')}</p>
           </div>
         ) : (
           <>

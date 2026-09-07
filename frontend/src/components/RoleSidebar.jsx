@@ -70,17 +70,18 @@ export const RoleSidebar = ({
         {items.map((item) => {
           const Icon = item.icon;
           const isActive = activeTab === item.id;
+          const translatedLabel = formatText(item.label);
           
           return (
             <div
               key={item.id}
               onClick={() => onSelectTab(item.id)}
               className={`govt-sidebar-item ${isActive ? 'active' : ''}`}
-              title={collapsed ? item.label : undefined}
+              title={collapsed ? translatedLabel : undefined}
             >
               <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
                 <Icon size={18} color={isActive ? '#0A2540' : '#FFFFFF'} />
-                {!collapsed && <span>{item.label}</span>}
+                {!collapsed && <span>{translatedLabel}</span>}
               </div>
               
               {!collapsed && item.count !== undefined && item.count > 0 && (

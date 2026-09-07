@@ -218,10 +218,10 @@ export const LoginPageView = ({ onLoginSuccess, onNavigateToLanding, isModal = f
               <MaharashtraEmblem className="govt-emblem-img" style={{ width: '40px', height: '40px' }} />
               <div>
                 <h1 style={{ fontSize: '1.25rem', fontWeight: 700, color: '#FFFFFF', display: 'flex', alignItems: 'center', gap: '0.5rem', margin: 0 }}>
-                  GovInnovate Portal
+                  {t('app.title')}
                 </h1>
                 <p style={{ fontSize: '0.75rem', color: '#94A3B8', margin: 0 }}>
-                  Government of Maharashtra • Unified User Authentication Portal
+                  {formatText('Government of Maharashtra')} • {formatText('Unified User Authentication Portal')}
                 </p>
               </div>
             </div>
@@ -281,10 +281,10 @@ export const LoginPageView = ({ onLoginSuccess, onNavigateToLanding, isModal = f
                 </div>
                 <div>
                   <h2 style={{ fontSize: '1.35rem', fontWeight: 700, margin: 0, color: '#FFFFFF' }}>
-                    User Account Sign-In
+                    {formatText('User Account Sign In')}
                   </h2>
                   <p style={{ fontSize: '0.8rem', color: '#94A3B8', margin: 0 }}>
-                    Enter your email & password or select a demo role profile
+                    {formatText('Enter your credentials or select an official profile below')}
                   </p>
                 </div>
               </div>
@@ -344,10 +344,10 @@ export const LoginPageView = ({ onLoginSuccess, onNavigateToLanding, isModal = f
                     <CheckCircle2 size={18} color={selectedDemo.textColor} />
                     <div>
                       <span style={{ fontSize: '0.75rem', fontWeight: 700, color: selectedDemo.textColor, display: 'block' }}>
-                        SELECTED DEMO USER PROFILE
+                        {formatText('Selected Profile')}
                       </span>
                       <strong style={{ fontSize: '0.875rem', color: '#0A2540' }}>
-                        {selectedDemo.name} ({selectedDemo.roleName})
+                        {selectedDemo.name} ({formatText(selectedDemo.roleName)})
                       </strong>
                     </div>
                   </div>
@@ -359,7 +359,7 @@ export const LoginPageView = ({ onLoginSuccess, onNavigateToLanding, isModal = f
                     }}
                     style={{ fontSize: '0.75rem', color: '#64748B', background: 'none', border: 'none', cursor: 'pointer', textDecoration: 'underline' }}
                   >
-                    Clear
+                    {t('common.cancel')}
                   </button>
                 </div>
               )}
@@ -368,15 +368,15 @@ export const LoginPageView = ({ onLoginSuccess, onNavigateToLanding, isModal = f
                 {/* Email Field */}
                 <div className="form-group" style={{ marginBottom: '1.25rem' }}>
                   <label className="form-label" style={{ fontWeight: 600, color: '#334155', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                    <span>Email Address</span>
-                    <span style={{ fontSize: '0.7rem', color: '#64748B' }}>Official / Registered Email</span>
+                    <span>{formatText('Email Address')}</span>
+                    <span style={{ fontSize: '0.7rem', color: '#64748B' }}>{formatText('Official / Registered Email')}</span>
                   </label>
                   <div style={{ position: 'relative' }}>
                     <Mail size={18} color="#64748B" style={{ position: 'absolute', left: '12px', top: '50%', transform: 'translateY(-50%)' }} />
                     <input
                       type="email"
                       required
-                      placeholder="e.g. officer@maharashtra.gov.in"
+                      placeholder="officer@maharashtra.gov.in"
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
                       className="form-input"
@@ -388,13 +388,13 @@ export const LoginPageView = ({ onLoginSuccess, onNavigateToLanding, isModal = f
                 {/* Password Field */}
                 <div className="form-group" style={{ marginBottom: '1.25rem' }}>
                   <label className="form-label" style={{ fontWeight: 600, color: '#334155', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                    <span>Password</span>
+                    <span>{formatText('Password')}</span>
                     <button 
                       type="button" 
                       onClick={() => setPassword('GovInnovate@2026')}
                       style={{ background: 'none', border: 'none', color: '#2563EB', fontSize: '0.725rem', cursor: 'pointer', fontWeight: 600 }}
                     >
-                      Fill Master Password
+                      {formatText('Auto Fill Password')}
                     </button>
                   </label>
                   <div style={{ position: 'relative' }}>
