@@ -12,6 +12,7 @@ import {
   ShoppingBag, 
   TrendingUp, 
   Bell,
+  Users,
   ChevronLeft,
   ChevronRight,
   LogOut,
@@ -44,6 +45,7 @@ export const GovtSidebar = ({
     { id: 'validation', label: t('nav.validation'), icon: CheckCircle2, count: counts.validations },
     { id: 'procurement', label: t('nav.procurement'), icon: ShoppingBag },
     { id: 'scaleup', label: t('nav.scaleup'), icon: TrendingUp, count: counts.scaleUps },
+    { id: 'officers', label: t('nav.officers') || 'Government Officers', icon: Users, count: counts.officers },
     { id: 'notifications', label: t('nav.notifications'), icon: Bell, count: counts.notifications }
   ];
 

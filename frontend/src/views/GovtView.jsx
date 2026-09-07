@@ -12,6 +12,7 @@ import { GovtValidationTab } from '../components/govt/GovtValidationTab';
 import { GovtProcurementTab } from '../components/govt/GovtProcurementTab';
 import { GovtScaleUpTab } from '../components/govt/GovtScaleUpTab';
 import { GovtNotificationsTab } from '../components/govt/GovtNotificationsTab';
+import { GovtOfficersManagementTab } from '../components/govt/GovtOfficersManagementTab';
 
 export const GovtView = ({ onOpenCreateModal, currentUser, onLogout, onOpenAudit }) => {
   const [activeTab, setActiveTab] = useState('dashboard');
@@ -26,6 +27,7 @@ export const GovtView = ({ onOpenCreateModal, currentUser, onLogout, onOpenAudit
   const [pilots, setPilots] = useState([]);
   const [scaleUps, setScaleUps] = useState([]);
   const [scaleDecisions, setScaleDecisions] = useState([]);
+  const [officers, setOfficers] = useState([]);
   const [notifications, setNotifications] = useState([]);
   const [auditLogs, setAuditLogs] = useState([]);
 
@@ -37,7 +39,7 @@ export const GovtView = ({ onOpenCreateModal, currentUser, onLogout, onOpenAudit
     setLoading(true);
     try {
       const [
-        resC, resS, resP, resE, resPilots, resScale, resDecisions, resN, resA
+        resC, resS, resP, resE, resPilots, resScale, resDecisions, resOfficers, resN, resA
       ] = await Promise.all([
         axios.get('/api/challenges'),
         axios.get('/api/startups'),
@@ -46,6 +48,7 @@ export const GovtView = ({ onOpenCreateModal, currentUser, onLogout, onOpenAudit
         axios.get('/api/pilots'),
         axios.get('/api/scaleups'),
         axios.get('/api/scale-decisions'),
+        axios.get('/api/users/officers'),
         axios.get('/api/notifications'),
         axios.get('/api/audit')
       ]);
@@ -57,6 +60,7 @@ export const GovtView = ({ onOpenCreateModal, currentUser, onLogout, onOpenAudit
       setPilots(resPilots.data || []);
       setScaleUps(resScale.data || []);
       setScaleDecisions(resDecisions.data || []);
+      setOfficers(resOfficers.data || []);
       setNotifications(resN.data || []);
       setAuditLogs(resA.data || []);
     } catch (err) {
@@ -74,6 +78,7 @@ export const GovtView = ({ onOpenCreateModal, currentUser, onLogout, onOpenAudit
     pilots: pilots.length,
     validations: pilots.filter(p => p.validationStatus === 'Pending Review').length,
     scaleUps: scaleDecisions.length || scaleUps.length,
+    officers: officers.length,
     notifications: notifications.filter(n => !n.isRead).length
   };
 
@@ -183,6 +188,13 @@ export const GovtView = ({ onOpenCreateModal, currentUser, onLogout, onOpenAudit
                 pilots={pilots}
                 challenges={challenges}
                 startups={startups}
+                currentUser={currentUser}
+                onRefresh={fetchAllData}
+              />
+            )}
+
+            {activeTab === 'officers' && (
+              <GovtOfficersManagementTab
                 currentUser={currentUser}
                 onRefresh={fetchAllData}
               />
