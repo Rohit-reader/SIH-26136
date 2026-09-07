@@ -53,7 +53,7 @@ export const GovtSidebar = ({
       <div className="govt-sidebar-header" style={{ flexDirection: 'column', alignItems: 'stretch', gap: '0.75rem' }}>
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-            <MaharashtraEmblem style={{ height: '32px', width: 'auto' }} />
+            <MaharashtraEmblem style={{ height: '32px', width: '32px' }} />
             {!collapsed && (
               <div>
                 <h3 style={{ fontSize: '1rem', fontWeight: 800, color: '#FFFFFF', lineHeight: 1.1 }}>

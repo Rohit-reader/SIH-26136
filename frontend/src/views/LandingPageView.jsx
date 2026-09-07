@@ -16,6 +16,7 @@ import {
 } from 'lucide-react';
 import axios from 'axios';
 import { formatText, formatCurrency } from '../utils/textUtils';
+import { MaharashtraEmblem } from '../components/Emblems';
 
 export const LandingPageView = ({ onOpenLogin }) => {
   const { t } = useTranslation();
@@ -52,6 +53,10 @@ export const LandingPageView = ({ onOpenLogin }) => {
         boxShadow: '0 10px 25px -5px rgba(10,37,64,0.25)'
       }}>
         <div style={{ maxWidth: '1280px', margin: '0 auto', textAlign: 'center' }}>
+          <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '1.25rem' }}>
+            <MaharashtraEmblem style={{ height: '72px', width: '72px', filter: 'drop-shadow(0 4px 10px rgba(0,0,0,0.5))' }} />
+          </div>
+
           <div style={{ display: 'inline-flex', alignItems: 'center', gap: '0.5rem', backgroundColor: 'rgba(255,255,255,0.1)', border: '1px solid rgba(255,255,255,0.2)', padding: '0.35rem 0.85rem', borderRadius: '9999px', fontSize: '0.8rem', fontWeight: 600, marginBottom: '1.25rem' }}>
             <Award size={14} color="#FF9933" /> <span style={{ color: '#FF9933' }}>{t('landing.badge')}</span>
           </div>

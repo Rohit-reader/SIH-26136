@@ -1,15 +1,19 @@
 import React from 'react';
+import maharashtraLogo from '../assets/Government-of-Maharashtra.jpg';
 
-export const MaharashtraEmblem = ({ className = "h-12 w-auto" }) => (
-  <svg className={className} viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <circle cx="60" cy="60" r="56" fill="#D97706" stroke="#FFFFFF" strokeWidth="4"/>
-    <circle cx="60" cy="60" r="48" fill="#0A2540" stroke="#FF9933" strokeWidth="2"/>
-    {/* Rajmudra Lotus & Inscription Graphic Representation */}
-    <path d="M60 20 L75 35 L60 50 L45 35 Z" fill="#FF9933"/>
-    <text x="60" y="65" textAnchor="middle" fill="#FFFFFF" fontSize="10" fontWeight="bold" fontFamily="serif">प्रतिपच्चंद्रलेखेव</text>
-    <text x="60" y="78" textAnchor="middle" fill="#FFFFFF" fontSize="9" fontWeight="bold" fontFamily="serif">वर्धिष्णुर्विश्ववंदिता</text>
-    <text x="60" y="90" textAnchor="middle" fill="#FF9933" fontSize="8" fontWeight="bold" fontFamily="serif">महाराष्ट्र शासन</text>
-  </svg>
+export const MaharashtraEmblem = ({ className = "h-12 w-auto", style = {}, ...props }) => (
+  <img 
+    src={maharashtraLogo} 
+    alt="Government of Maharashtra Official Seal" 
+    className={`govt-emblem-img ${className}`}
+    style={{
+      objectFit: 'contain',
+      borderRadius: '50%',
+      display: 'inline-block',
+      ...style
+    }}
+    {...props}
+  />
 );
 
 export const AshokaEmblem = ({ className = "h-12 w-auto" }) => (
