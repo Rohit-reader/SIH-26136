@@ -1,6 +1,8 @@
 const express = require('express');
 const router = express.Router();
 const Proposal = require('../models/Proposal');
+const Challenge = require('../models/Challenge');
+const Startup = require('../models/Startup');
 const AuditLog = require('../models/AuditLog');
 const Notification = require('../models/Notification');
 
@@ -13,6 +15,112 @@ router.get('/', async (req, res) => {
       .sort({ submittedAt: -1 });
     res.json(proposals);
   } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// Create new Proposal (Startup Submit Flow)
+router.post('/', async (req, res) => {
+  try {
+    const {
+      challengeId,
+      startupId,
+      solutionTitle,
+      technicalApproach,
+      architectureSummary,
+      implementationTimelineDays,
+      proposedBudget,
+      teamOverview,
+      securityApproach
+    } = req.body;
+
+    if (!challengeId) return res.status(400).json({ error: 'challengeId is required' });
+    if (!startupId) return res.status(400).json({ error: 'startupId is required' });
+    if (!solutionTitle) return res.status(400).json({ error: 'solutionTitle is required' });
+
+    const challenge = await Challenge.findById(challengeId);
+    if (!challenge) return res.status(404).json({ error: 'Target Challenge not found' });
+
+    const startup = await Startup.findById(startupId);
+    if (!startup) return res.status(404).json({ error: 'Startup not found' });
+
+    const isDpiit = startup.dpiitRecognized || startup.verificationStatus === 'DPIIT Verified';
+    const isDigiLocker = startup.digilockerVerification?.status === 'Verified';
+
+    const newProposal = await Proposal.create({
+      challengeId,
+      startupId,
+      solutionTitle,
+      technicalApproach: technicalApproach || 'Localized solution methodology using modern technology stack.',
+      architectureSummary: architectureSummary || 'Scalable architecture with MeitY cloud compliance and secure API integrations.',
+      implementationTimelineDays: Number(implementationTimelineDays) || 75,
+      proposedBudget: Number(proposedBudget) || challenge.estimatedBudget || 1500000,
+      teamOverview: teamOverview || `${startup.name} core engineering team of ${startup.teamSize || 20}+ domain specialists.`,
+      securityApproach: securityApproach || 'Strict compliance with DPDP Act 2023, ISO 27001, and CERT-In baseline standards.',
+      status: 'Submitted',
+      eligibilityScreening: {
+        screeningStatus: 'Pending Screening',
+        screenedBy: 'Department Screening Desk',
+        officerNotes: '',
+        automatedChecks: {
+          dpiitVerified: isDpiit,
+          digilockerDocVerified: isDigiLocker || isDpiit,
+          gfrTurnoverExemptionApplied: isDpiit,
+          gfrExperienceExemptionApplied: isDpiit,
+          emdDepositExempted: true,
+          cyberSecurityDeclared: true,
+          trlLevelPassed: true
+        }
+      },
+      evaluationSummary: {
+        aggregateScore: 0,
+        evaluationsCount: 0,
+        consensusRecommendation: 'Pending Evaluation',
+        evaluationStatus: 'Pending Assignment'
+      },
+      submittedAt: new Date()
+    });
+
+    // Populate for response
+    await newProposal.populate(['challengeId', 'startupId']);
+
+    // Record Audit Log
+    await AuditLog.create({
+      action: 'PROPOSAL_SUBMITTED',
+      actorRole: 'Startup Admin',
+      actorName: startup.name,
+      details: `Submitted outcome-based innovation proposal "${solutionTitle}" for challenge "${challenge.title}"`,
+      entityId: newProposal._id.toString()
+    });
+
+    // Notification for Government Dept
+    await Notification.create({
+      recipientRole: 'Government Officer',
+      recipientName: challenge.department || 'Department Officer',
+      type: 'Proposal',
+      title: `New Proposal Submitted: ${solutionTitle}`,
+      message: `${startup.name} has submitted a proposal for "${challenge.title}". Ready for Phase 3 Eligibility Screening.`,
+      link: `/govt?tab=applications&proposalId=${newProposal._id}`,
+      entityId: newProposal._id.toString(),
+      isRead: false
+    });
+
+    // Notification for Startup
+    await Notification.create({
+      recipientRole: 'Startup Admin',
+      recipientName: startup.name,
+      recipientEmail: startup.contactEmail || '',
+      type: 'Proposal',
+      title: `Proposal Submitted: ${solutionTitle}`,
+      message: `Your proposal for "${challenge.title}" has been successfully submitted and entered the Phase 3 Screening Queue.`,
+      link: `/startup?tab=applications&proposalId=${newProposal._id}`,
+      entityId: newProposal._id.toString(),
+      isRead: false
+    });
+
+    res.status(201).json(newProposal);
+  } catch (err) {
+    console.error('Proposal submission error:', err);
     res.status(500).json({ error: err.message });
   }
 });

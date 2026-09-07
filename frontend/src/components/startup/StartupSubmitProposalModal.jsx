@@ -138,28 +138,41 @@ export const StartupSubmitProposalModal = ({ isOpen, onClose, challenge, primary
     setErrorMessage('');
 
     try {
-      // Send proposal payload to backend
-      const resS = await axios.get('/api/startups');
-      const startupId = resS.data[0]?._id || primaryStartup._id;
+      // Determine startupId
+      let targetStartupId = primaryStartup?._id;
+      if (!targetStartupId) {
+        const resS = await axios.get('/api/startups');
+        targetStartupId = resS.data[0]?._id;
+      }
 
-      await axios.post('/api/evaluations', {
-        proposalId: challenge._id,
-        evaluatorName: 'Dr. Anand Sharma',
-        coiDeclared: true,
-        scores: { technicalFeasibility: 92, innovation: 94, expectedImpact: 96, scalability: 90, costEffectiveness: 88, security: 92, teamCapability: 95 },
-        recommendation: 'Recommend for Pilot'
-      });
+      if (!targetStartupId) {
+        throw new Error('No startup profile found. Please complete startup registration first.');
+      }
+
+      const proposalPayload = {
+        challengeId: challenge._id,
+        startupId: targetStartupId,
+        solutionTitle: formData.solutionTitle || 'Outcome-Based Innovation Solution',
+        technicalApproach: formData.technicalApproach || 'Edge computing with real-time analytics.',
+        architectureSummary: formData.architectureSummary || formData.shortSummary || 'High-availability secure architecture.',
+        implementationTimelineDays: Number(formData.implementationDays) || 75,
+        proposedBudget: Number(formData.proposedBudget) || challenge.estimatedBudget || 1500000,
+        teamOverview: `Core engineering & domain team specializing in ${formData.technologyStack?.join(', ') || 'Government Tech'}.`,
+        securityApproach: formData.safetyCompliance || 'Strict compliance with DPDP Act 2023, ISO 27001, and CERT-In standards.'
+      };
+
+      const res = await axios.post('/api/proposals', proposalPayload);
 
       setIsSubmitting(false);
-      alert('Proposal Submitted Successfully! Your proposal is now in the Multi-Expert Evaluation Queue.');
-      onProposalSubmitted();
+      alert('Proposal Submitted Successfully! Your proposal has entered the Phase 3 Eligibility Screening queue.');
+      if (onProposalSubmitted) onProposalSubmitted(res.data);
       onClose();
     } catch (err) {
-      console.error(err);
+      console.error('Submission error:', err);
       setIsSubmitting(false);
-      alert('Proposal Submitted Successfully! Candidate entered Evaluation Queue.');
-      onProposalSubmitted();
-      onClose();
+      const errMsg = err.response?.data?.error || err.message || 'Failed to submit proposal';
+      setErrorMessage(`Failed to submit proposal: ${errMsg}`);
+      alert(`Submission Error: ${errMsg}`);
     }
   };
 

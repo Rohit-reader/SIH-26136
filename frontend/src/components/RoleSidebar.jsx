@@ -63,19 +63,6 @@ export const RoleSidebar = ({
         <div style={{ display: 'flex', justifyContent: collapsed ? 'center' : 'flex-start' }}>
           <LanguageSwitcher isCollapsed={collapsed} />
         </div>
-
-        {!collapsed && (
-          <div style={{ backgroundColor: 'rgba(255, 255, 255, 0.06)', padding: '0.5rem 0.65rem', borderRadius: '6px', border: '1px solid rgba(255, 255, 255, 0.1)' }}>
-            <h4 style={{ fontSize: '0.75rem', fontWeight: 700, letterSpacing: '0.5px', color: '#93C5FD', textTransform: 'uppercase' }}>
-              {title}
-            </h4>
-            {subtitle && (
-              <p style={{ fontSize: '0.675rem', color: '#94A3B8', fontWeight: 500 }}>
-                {subtitle}
-              </p>
-            )}
-          </div>
-        )}
       </div>
 
       {/* Navigation Items */}
